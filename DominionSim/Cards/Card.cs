@@ -43,7 +43,7 @@ namespace DominionSim
             VictoryPoints = vps;
         }
 
-        public virtual void ExecuteCard(Player p, IStrategy s)
+        public virtual void ExecuteCard(Player p, Strategy.IStrategy s)
         {
             p.DrawCards(Draws);
             p.Actions += Actions;

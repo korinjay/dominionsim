@@ -26,21 +26,21 @@ namespace DominionSim.Strategy
             mNumChapels = numChapels;
         }
 
-        public override void TurnAction(Player p, Supply s)
+        public override void TurnAction(PlayerFacade p, Supply s)
         {
-            if (p.Hand.Contains(CardList.Chapel))
+            if (p.GetHand().Contains(CardList.Chapel))
             {
                 p.PlayActionCard(CardList.Chapel);
             }
         }
 
-        public override void TurnBuy(Player p, Supply s)
+        public override void TurnBuy(PlayerFacade p, Supply s)
         {
             // Grab our chapels as early as possible
-            int chapelCount = p.CountCardIn(CardList.Chapel, p.Deck);
+            int chapelCount = Utility.CountCardIn(CardList.Chapel, p.GetDeck());
             if (chapelCount < mNumChapels)
             {
-                if (p.Moneys < 4 && CanAfford(p, CardList.Chapel))
+                if (p.GetMoneys() < 4 && CanAfford(p, CardList.Chapel))
                 {
                     p.BuyCard(CardList.Chapel);
                     return;
@@ -51,14 +51,14 @@ namespace DominionSim.Strategy
             base.TurnBuy(p, s);
         }
 
-        public override List<string> ChooseCardsToTrash(Player p, int min, int max)
+        public override List<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
         {
             List<string> toTrash = new List<string>();
 
-            int numEstates = p.CountCardIn(CardList.Estate, p.Hand);
-            int numCopper = p.CountCardIn(CardList.Copper, p.Hand);
+            int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
+            int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
 
-            List<string> allTreasure = p.GetCardsOfType(Card.CardType.Treasure);
+            List<string> allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
             foreach (string t in allTreasure)
             {

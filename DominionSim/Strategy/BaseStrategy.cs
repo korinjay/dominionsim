@@ -9,26 +9,26 @@ namespace DominionSim.Strategy
     {
         #region IStrategy Members
 
-        public virtual void TurnAction(Player p, Supply s)
+        public virtual void TurnAction(PlayerFacade p, Supply s)
         {
             /// Default to playing no action cards.  Many strategies will override this to actually do something.
             p.PlayActionCard(null);
         }
 
-        public virtual void TurnBuy(Player p, Supply s)
+        public virtual void TurnBuy(PlayerFacade p, Supply s)
         {
             /// Default to buying no cards.  Probably all strategies will override this to actually do something.
             p.BuyCard(null);
         }
 
-        public virtual List<string> ChooseCardsToTrash(Player p, int min, int max)
+        public virtual List<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
         {
             List<string> trashed = new List<string>();
 
             // Horribly naive - just trash the first MIN cards
             for (int i = 0; i < min; i++)
             {
-                trashed.Add(p.Hand[i]);
+                trashed.Add(p.GetHand()[i]);
             }
 
             return trashed;
@@ -39,9 +39,9 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="cardName"></param>
         /// <returns></returns>
-        protected bool CanAfford(Player p, string cardName)
+        protected bool CanAfford(PlayerFacade p, string cardName)
         {
-            return (p.Moneys >= CardList.Cards[cardName].Cost);
+            return (p.GetMoneys() >= CardList.Cards[cardName].Cost);
         }
 
         #endregion

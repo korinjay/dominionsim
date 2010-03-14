@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DominionSim
+namespace DominionSim.Strategy
 {
     interface IStrategy
     {
@@ -12,14 +12,14 @@ namespace DominionSim
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
         /// <param name="s">The Supply for this game</param>
-        void TurnAction(Player p, Supply s);
+        void TurnAction(PlayerFacade p, Supply s);
 
         /// <summary>
         /// Take the "buy" phase of this Player's turn.  Buy as many cards as you wish to buy.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
         /// <param name="s">The Supply for this game</param>
-        void TurnBuy(Player p, Supply s);
+        void TurnBuy(PlayerFacade p, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to trash some cards!
@@ -29,6 +29,6 @@ namespace DominionSim
         /// <param name="min">Minimum number of cards you must trash</param>
         /// <param name="max">Maximum number of cards you may trash</param>
         /// <returns></returns>
-        List<string> ChooseCardsToTrash(Player p, int min, int max);
+        List<string> ChooseCardsToTrash(PlayerFacade p, int min, int max);
     }
 }

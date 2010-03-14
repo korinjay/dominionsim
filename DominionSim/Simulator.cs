@@ -100,7 +100,7 @@ namespace DominionSim
                 Player player = Players[i];
                 int vps = player.GetNumVictoryPoints();
 
-                List<string> vpCards = player.GetCardsOfType(Card.CardType.Victory);
+                List<string> vpCards = Utility.FilterCardListByType(player.Deck, Card.CardType.Victory);
                 if (verbose)
                 {
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
