@@ -39,6 +39,14 @@ namespace DominionSim
                 comboBox.Items.AddRange(types.ToArray());
                 comboBox.SelectedIndex = 0;
             }
+            
+            // Default to something playable immediately
+            var rand = new Random();
+            int numTypes = types.Count();
+            playerCombo0.SelectedIndex = (rand.Next() % numTypes) +1;
+            playerCombo1.SelectedIndex = (rand.Next() % numTypes) +1;
+            playerCombo2.SelectedIndex = (rand.Next() % numTypes) +1;
+            playerCombo3.SelectedIndex = (rand.Next() % numTypes) +1;
         }
 
         /// <summary>
@@ -142,7 +150,6 @@ namespace DominionSim
                     return methodInfo.Invoke(null, null).ToString();
                 }
             }
-
             return Name;
         }
 
