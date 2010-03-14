@@ -18,6 +18,7 @@ namespace DominionSim
 
         public const string Smithy = "Smithy";
         public const string Chapel = "Chapel";
+        public const string Workshop = "Workshop";
 
         public static Dictionary<string, Card> Cards;
 

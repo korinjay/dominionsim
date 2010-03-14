@@ -11,11 +11,13 @@ namespace DominionSim.Strategy
 
         public virtual void TurnAction(Player p, Supply s)
         {
+            /// Default to playing no action cards.  Many strategies will override this to actually do something.
             p.PlayActionCard(null);
         }
 
         public virtual void TurnBuy(Player p, Supply s)
         {
+            /// Default to buying no cards.  Probably all strategies will override this to actually do something.
             p.BuyCard(null);
         }
 
