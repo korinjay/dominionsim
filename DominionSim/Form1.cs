@@ -33,6 +33,12 @@ namespace DominionSim
                 comboBox.Items.Add("Chapel");
                 comboBox.SelectedIndex = 0;
             }
+
+            // Default to something playable immediately
+            playerCombo0.Text = "Big Money";
+            playerCombo1.Text = "Big Money Duchy";
+            playerCombo2.Text = "Smithy";
+            playerCombo3.Text = "Chapel";
         }
 
         /// <summary>
