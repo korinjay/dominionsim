@@ -16,65 +16,31 @@ namespace DominionSim
     {
         public List<Player> Players { get; set; }
         public Supply Supply { get; set; }
+        public Dictionary<string, int> Wins {get ; set;} 
+
 
         public Simulator()
         {
             CardList.SetupCardList();
             Players = new List<Player>();
             Supply = new Supply();
-        }
-
-        public void CreatePlayers(int num, bool verbose)
-        {
-            Player newPlayer = new Player("Big Money");
-            newPlayer.Strategy = new Strategy.BigMoney();
-            newPlayer.Verbose = false;
-            Players.Add(newPlayer);
-            
-            newPlayer = new Player("2 Smithy");
-            newPlayer.Strategy = new Strategy.Smithy(2);
-            newPlayer.Verbose = verbose;
-            Players.Add(newPlayer);
-            
-            newPlayer = new Player("1 Smithy");
-            newPlayer.Strategy = new Strategy.Smithy(1);
-            newPlayer.Verbose = false;
-            Players.Add(newPlayer);
-
-            newPlayer = new Player("Big Money Duchy");
-            newPlayer.Strategy = new Strategy.BigMoneyDuchy();
-            newPlayer.Verbose = false;
-            Players.Add(newPlayer);
+            Wins = new Dictionary<string, int>();
         }
 
         public void PlayNGames(int n, bool verbose)
         {
-            Dictionary<string, int> wins = new Dictionary<string, int>();
-
             for(int i=0; i < n; i++)
             {
                 GameStats results = PlayOneGame(verbose);
 
-                if (wins.ContainsKey(results.Winner))
+                if (Wins.ContainsKey(results.Winner))
                 {
-                    wins[results.Winner]++;
+                    Wins[results.Winner]++;
                 }
                 else
                 {
-                    wins[results.Winner] = 1;
+                    Wins[results.Winner] = 1;
                 }
-            }
-
-            int numTies = wins.ContainsKey("Tie") ? wins["Tie"] : 0;
-            Console.WriteLine(n + " games playes, "+ (n - numTies) + " games had an outright winner.");
-
-            for (int i = 0; i < Players.Count; i++ )
-            {
-                string playerName = Players[i].Name;
-                int numWins = wins.ContainsKey(playerName) ? wins[playerName] : 0;
-
-                float percent = 100.0f * numWins / (n - numTies);
-                Console.WriteLine(playerName + " : " + numWins + " / " + (n - numTies) + " = " + percent + "%");
             }
         }
 
