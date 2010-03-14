@@ -1,0 +1,8 @@
+# use glob syntax
+syntax: glob
+
+obj/*
+bin/*
+*.suo
+*.csproj.user
+*.exe.manifest
