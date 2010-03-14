@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    class BaseStrategy : IStrategy
+    abstract class BaseStrategy : IStrategy
     {
         #region IStrategy Members
 
@@ -30,6 +30,16 @@ namespace DominionSim.Strategy
             }
 
             return trashed;
+        }
+
+        /// <summary>
+        /// Return whether, given the current hand and amount of Money, the Strategy can buy the given card name
+        /// </summary>
+        /// <param name="cardName"></param>
+        /// <returns></returns>
+        protected bool CanAfford(Player p, string cardName)
+        {
+            return (p.Moneys >= CardList.Cards[cardName].Cost);
         }
 
         #endregion
