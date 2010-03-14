@@ -5,7 +5,19 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    class Chapel : BigMoneyDuchy
+    class Chapel1 : Chapel
+    {
+        public Chapel1() : base(1) {}
+        public static string GetDisplayName() { return "Chapel - Buy 1"; }
+    }
+    class Chapel2 : Chapel
+    {
+        public Chapel2() : base(2) {}
+        public static string GetDisplayName() { return "Chapel - Buy 2"; }
+    }
+
+
+    abstract class Chapel : BigMoneyDuchy
     {
         private int mNumChapels = 0;
 
@@ -28,7 +40,7 @@ namespace DominionSim.Strategy
             int chapelCount = p.CountCardIn(CardList.Chapel, p.Deck);
             if (chapelCount < mNumChapels)
             {
-                if (p.Moneys < 4)
+                if (p.Moneys < 4 && CanAfford(p, CardList.Chapel))
                 {
                     p.BuyCard(CardList.Chapel);
                     return;

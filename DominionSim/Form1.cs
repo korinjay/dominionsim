@@ -22,23 +22,23 @@ namespace DominionSim
 
             PlayerComboBoxes.AddRange(new ComboBox[] { playerCombo0, playerCombo1, playerCombo2, playerCombo3, playerCombo4, playerCombo5 });
 
-            // TODO Get this from Reflection or something
-            // TODO These can be objects of any kind, not just Strings
+            // Use cool C# runtime type info and reflection stuff to find all non-abstract classes in all loaded
+            // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
+            // we can throw into a ComboBox
+            var inheritType = typeof(IStrategy);
+            var types = AppDomain.CurrentDomain.GetAssemblies().ToList()
+                .SelectMany(assemblies => assemblies.GetTypes())
+                .Where(type => inheritType.IsAssignableFrom(type) && !type.IsAbstract)
+                .Select(type => new StrategyTypeHolder(type.Name, type))
+                .OrderBy(holder => holder.Name);
+
+            // Populate each ComboBox with those StrategyTypeHolders, plus a Dummy one for "None"
             foreach (ComboBox comboBox in PlayerComboBoxes)
             {
-                comboBox.Items.Add("None");
-                comboBox.Items.Add("Big Money");
-                comboBox.Items.Add("Big Money Duchy");
-                comboBox.Items.Add("Smithy");
-                comboBox.Items.Add("Chapel");
+                comboBox.Items.Add(new StrategyTypeHolder("None", null));
+                comboBox.Items.AddRange(types.ToArray());
                 comboBox.SelectedIndex = 0;
             }
-
-            // Default to something playable immediately
-            playerCombo0.Text = "Big Money";
-            playerCombo1.Text = "Big Money Duchy";
-            playerCombo2.Text = "Smithy";
-            playerCombo3.Text = "Chapel";
         }
 
         /// <summary>
@@ -48,22 +48,21 @@ namespace DominionSim
         /// <param name="e">Event params</param>
         private void playButton_Click(object sender, EventArgs e)
         {
-            // Track a count of AIs we have so we can number them
-            Dictionary<string, int> countAIs = new Dictionary<string, int>();
-
-            // Loop through all the AI selections
+            // Count up all the AIs of each type we have selected so we can spawn the right number of each
+            var countAIs = new Dictionary<StrategyTypeHolder, int>();
             int totalPlayers = 0;
             foreach (ComboBox comboBox in PlayerComboBoxes)
             {
-                if ("None" != comboBox.Text)
+                StrategyTypeHolder typeInfo = comboBox.SelectedItem as StrategyTypeHolder;
+                if (null != typeInfo.Type)
                 {
-                    if (countAIs.ContainsKey(comboBox.Text))
+                    if (countAIs.ContainsKey(typeInfo))
                     {
-                        countAIs[comboBox.Text] += 1;
+                        countAIs[typeInfo] += 1;
                     }
                     else
                     {
-                        countAIs[comboBox.Text] = 1;
+                        countAIs[typeInfo] = 1;
                     }
                     totalPlayers++;
                 }
@@ -73,17 +72,18 @@ namespace DominionSim
             {
                 Simulator sim = new Simulator();
 
+                // Loop through all the AIs that were selected and spawn Players and Strategies for each
                 foreach (var iter in countAIs)
                 {
                     for (var i = 0; i < iter.Value; ++i)
                     {
-                        string name = iter.Key;
+                        string name = iter.Key.ToString();
                         if (1 < iter.Value)
                         {
                             name += " " + (i + 1);
                         }
                         Player newPlayer = new Player(name);
-                        newPlayer.Strategy = MakeStrategyFromKey(iter.Key);
+                        newPlayer.Strategy = Activator.CreateInstance(iter.Key.Type) as IStrategy;
                         newPlayer.Verbose = false;
                         sim.Players.Add(newPlayer);
                     }
@@ -95,10 +95,12 @@ namespace DominionSim
                 int numTies = sim.Wins.ContainsKey("Tie") ? sim.Wins["Tie"] : 0;
                 outputBox.Text = NumGames + " games played, " + (NumGames - numTies) + " games had an outright winner.\r\n";
 
-                for (int i = 0; i < sim.Players.Count; i++)
+                // Sort out the players so the most wins go on top
+                var sortedPlayes = sim.Players.OrderBy(p => sim.Wins[p.Name]).Reverse();
+                foreach (var player in sortedPlayes)
                 {
-                    string playerName = sim.Players[i].Name;
-                    int numWins = sim.Wins.ContainsKey(playerName) ? sim.Wins[playerName] : 0;
+                    string playerName = player.Name;
+                    int numWins = sim.Wins.ContainsKey(player.Name) ? sim.Wins[player.Name] : 0;
 
                     float percent = 100.0f * numWins / (NumGames - numTies);
                     outputBox.Text += playerName + " : " + numWins + " / " + (NumGames - numTies) + " = " + percent + "%\r\n";
@@ -109,31 +111,62 @@ namespace DominionSim
                 outputBox.Text = "Not enough Players.  Please select at least 2 players.";
             }
         }
+    }
+
+    /// <summary>
+    /// Simple class to hold info about a Type we could use.  This class only exists so that I can make the dummy
+    /// "None" type, which has no class.
+    /// </summary>
+    class StrategyTypeHolder
+    {
+        public string Name;
+        public Type Type;
+        public StrategyTypeHolder(string name, Type type)
+        {
+            Name = name;
+            Type = type;
+        }
 
         /// <summary>
-        /// Return a new Strategy with the given Key
+        /// Return a String for this 
         /// </summary>
-        /// <param name="key">Name of the Strategy</param>
-        /// <returns>A new Strategy</returns>
-        private IStrategy MakeStrategyFromKey(string key)
+        /// <returns></returns>
+        public override string ToString()
         {
- 	        switch (key)
+            if (null != Type)
             {
-                case "Big Money":
-                    return new Strategy.BigMoney();
-
-                case "Big Money Duchy":
-                    return new Strategy.BigMoneyDuchy();
-
-                case "Smithy":
-                    return new Strategy.Smithy(1);
-
-                case "Chapel":
-                    return new Strategy.Chapel(1);
-
-                default:
-                    throw new Exception("Could not find Strategy named " + key);
+                // See if the Strategy has supplied us with an alternate display name via a public static function
+                var methodInfo = Type.GetMethod("GetDisplayName", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                if (null != methodInfo)
+                {
+                    return methodInfo.Invoke(null, null).ToString();
+                }
             }
+
+            return Name;
+        }
+
+        /// <summary>
+        /// Overriding equality
+        /// </summary>
+        /// <param name="obj">Compare against</param>
+        /// <returns>true if equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is StrategyTypeHolder)
+            {
+                return (obj as StrategyTypeHolder).Type == Type;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Override hashcode
+        /// </summary>
+        /// <returns>HashCode</returns>
+        public override int GetHashCode()
+        {
+            return Type.GetHashCode();
         }
     }
 }
