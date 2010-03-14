@@ -87,6 +87,7 @@
     <Compile Include="Simulator.cs" />
     <Compile Include="Strategy\BigMoney.cs" />
     <Compile Include="Strategy\BigMoneyDuchy.cs" />
+    <Compile Include="Strategy\PlayerFacade.cs" />
     <Compile Include="Strategy\Smithy.cs" />
     <Compile Include="Supply.cs" />
     <Compile Include="Utility.cs" />

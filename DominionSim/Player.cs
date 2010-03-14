@@ -10,7 +10,7 @@ namespace DominionSim
     {
         public string Name { get; set; }
 
-        public IStrategy Strategy { get; set; }
+        public Strategy.IStrategy Strategy { get; set; }
         public List<string> Deck { get; set; }
         public List<string> DrawPile { get; set; }
         public List<string> DiscardPile { get; set; }
@@ -27,8 +27,11 @@ namespace DominionSim
         private Dictionary<int, string> mPurchases;
         private Supply mSupply;
 
+        private Strategy.PlayerFacade mFacade;
+
         public Player(string name)
         {
+            mFacade = new Strategy.PlayerFacade(this);
             Name = name;
 
             StartNewGame();
@@ -100,7 +103,7 @@ namespace DominionSim
             mSupply = supply;
 
             Log("  Choosing an action...");
-            Strategy.TurnAction(this, supply);
+            Strategy.TurnAction(mFacade, supply);
 
             // Cash in Treasure
             foreach (string name in Hand)
@@ -114,7 +117,7 @@ namespace DominionSim
             Log("  I have "+Moneys+" moneys");
 
             Log("  Choosing Buys...");
-            Strategy.TurnBuy(this, supply);
+            Strategy.TurnBuy(mFacade, supply);
 
             Cleanup();
             mTurn++;
@@ -229,19 +232,12 @@ namespace DominionSim
             }
         }
 
-        public List<string> GetCardsOfType(Card.CardType type)
+        public Strategy.PlayerFacade GetFacade()
         {
-            List<string> list = new List<string>();
-            foreach (string name in Deck)
-            {
-                Card c = CardList.Cards[name];
-                if ((type & c.Type) != 0)
-                {
-                    list.Add(name);
-                }
-            }
-            return list;
+            return mFacade;
         }
+
+ 
 
         public int GetNumVictoryPoints()
         {
@@ -253,22 +249,6 @@ namespace DominionSim
             }
 
             return vps;
-        }
-
-        public int CountCardIn(string card, List<string> inThis)
-        {
-            int numCard = 0;
-            var g = inThis.GroupBy(name => name);
-            
-            foreach (var grp in g)
-            {
-                if (grp.Key == card)
-                {
-                    numCard = grp.Count();
-                }
-            }
-
-            return numCard;
         }
 
         public String PurchaseString()

@@ -25,7 +25,7 @@ namespace DominionSim
             // Use cool C# runtime type info and reflection stuff to find all non-abstract classes in all loaded
             // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
             // we can throw into a ComboBox
-            var inheritType = typeof(IStrategy);
+            var inheritType = typeof(Strategy.IStrategy);
             var types = AppDomain.CurrentDomain.GetAssemblies().ToList()
                 .SelectMany(assemblies => assemblies.GetTypes())
                 .Where(type => inheritType.IsAssignableFrom(type) && !type.IsAbstract)
@@ -91,7 +91,7 @@ namespace DominionSim
                             name += " " + (i + 1);
                         }
                         Player newPlayer = new Player(name);
-                        newPlayer.Strategy = Activator.CreateInstance(iter.Key.Type) as IStrategy;
+                        newPlayer.Strategy = Activator.CreateInstance(iter.Key.Type) as Strategy.IStrategy;
                         newPlayer.Verbose = false;
                         sim.Players.Add(newPlayer);
                     }
