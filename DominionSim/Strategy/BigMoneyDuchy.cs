@@ -8,16 +8,11 @@ namespace DominionSim.Strategy
     /// <summary>
     /// Starts off using a Big Money strategy, but will buy Duchies if there are few Provinces remaining
     /// </summary>
-    class BigMoneyDuchy : IStrategy
+    class BigMoneyDuchy : BaseStrategy
     {
         const int PROVINCE_THRESHOLD = 4;
 
-        public void TurnAction(Player p, Supply s)
-        {
-            p.PlayActionCard(null);
-        }
-
-        public void TurnBuy(Player p, Supply s)
+        public override void TurnBuy(Player p, Supply s)
         {
             // Always buy provinces
             if (p.Moneys >= 8)

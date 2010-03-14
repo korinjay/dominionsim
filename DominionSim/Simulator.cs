@@ -25,6 +25,7 @@ namespace DominionSim
             Players = new List<Player>();
             Supply = new Supply();
             Wins = new Dictionary<string, int>();
+            newPlayer.Verbose = verbose;
         }
 
         public void PlayNGames(int n, bool verbose)
@@ -61,7 +62,7 @@ namespace DominionSim
             {
                 foreach (Player player in Players)
                 {
-                    player.TakeTurn(Supply);
+                    player.TakeTurn(turns, Supply);
                     if (Supply.IsGameOver())
                     {
                         break;
@@ -73,12 +74,7 @@ namespace DominionSim
             GameStats stats = new GameStats();
             stats.VictoryPoints = new Dictionary<string, int>();
 
-            if (verbose)
-            {
-                Console.WriteLine("Game ended after "+turns+" turns.");
-            }
-
-            for(int i=0; i < Players.Count; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
                 Player player = Players[i];
                 int vps = player.GetNumVictoryPoints();
@@ -93,11 +89,24 @@ namespace DominionSim
                 {
                     stats.Winner = "Tie";
                 }
+            }
+
+            if (verbose)
+            {
+                Console.WriteLine("Game ended after "+turns+" turns.  "+stats.Winner+" won with "+stats.WinnerScore+" points!");
+            }
+
+            for(int i=0; i < Players.Count; i++)
+            {
+                Player player = Players[i];
+                int vps = player.GetNumVictoryPoints();
 
                 List<string> vpCards = player.GetCardsOfType(Card.CardType.Victory);
                 if (verbose)
                 {
-                    Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ") ( " + player.PurchaseString() + ")");
+                    Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
+                    Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck) + ")");
+                    Console.WriteLine("  Purchases: ( " + player.PurchaseString() + ")");
                 }
             }
 

@@ -31,6 +31,7 @@ namespace DominionSim
             CardSupply.Add(CardList.Province, 12 + ((mNumPlayers - 4) * 3));
 
             CardSupply.Add(CardList.Smithy, 10);
+            CardSupply.Add(CardList.Chapel, 10);
         }
 
         /// <summary>

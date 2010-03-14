@@ -48,8 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Card.cs" />
+    <Compile Include="Cards\Card.cs" />
     <Compile Include="CardList.cs" />
+    <Compile Include="Cards\ChapelCard.cs" />
+    <Compile Include="Strategy\BaseStrategy.cs" />
+    <Compile Include="Strategy\Chapel.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Form1.cs">

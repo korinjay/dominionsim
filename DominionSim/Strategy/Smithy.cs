@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    class Smithy : IStrategy
+    class Smithy : BaseStrategy
     {
         private int mNumSmithysToBuy = 1;
 
@@ -17,7 +17,7 @@ namespace DominionSim.Strategy
         #region IStrategy Members
         const int PROVINCE_THRESHOLD = 4;
 
-        public void TurnAction(Player p, Supply s)
+        public override void TurnAction(Player p, Supply s)
         {
             if (p.Hand.Contains(CardList.Smithy))
             {
@@ -25,7 +25,7 @@ namespace DominionSim.Strategy
             }
         }
 
-        public void TurnBuy(Player p, Supply s)
+        public override void TurnBuy(Player p, Supply s)
         {
             // Always buy provinces
             if (p.Moneys >= 8)
@@ -48,16 +48,7 @@ namespace DominionSim.Strategy
                 return;
             }
 
-            int numSmithys = 0;
-            var g = p.Deck.GroupBy(name => name);
-            foreach (var grp in g)
-            {
-                if (grp.Key == CardList.Smithy)
-                {
-                    numSmithys = grp.Count();
-                }
-            }
-
+            int numSmithys = p.CountCardIn(CardList.Smithy, p.Deck);
             // If we have 4 and we didn't already buy a smithy, buy one!
             if (p.Moneys >= 4 && numSmithys < mNumSmithysToBuy)
             {

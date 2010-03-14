@@ -9,5 +9,7 @@ namespace DominionSim
     {
         void TurnAction(Player p, Supply s);
         void TurnBuy(Player p, Supply s);
+
+        List<string> ChooseCardsToTrash(Player p, int min, int max);
     }
 }

@@ -17,6 +17,7 @@ namespace DominionSim
         public const string Curse = "Curse";
 
         public const string Smithy = "Smithy";
+        public const string Chapel = "Chapel";
 
         public static Dictionary<string, Card> Cards;
 
@@ -39,6 +40,7 @@ namespace DominionSim
 
             // Original Dominion
             Cards.Add(Smithy, new Card(Smithy, Card.CardType.Action, 4, 3, 0, 0, 0, 0));
+            Cards.Add(Chapel, new Cards.ChapelCard());
         } 
     }
 }

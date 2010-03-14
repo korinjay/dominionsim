@@ -5,15 +5,10 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    class BigMoney : IStrategy
+    class BigMoney : BaseStrategy
     {
 
-        public void TurnAction(Player p, Supply s)
-        {
-            p.PlayActionCard(null);
-        }
-
-        public void TurnBuy(Player p, Supply s)
+        public override void TurnBuy(Player p, Supply s)
         {
             if (p.Moneys >= 8)
             {

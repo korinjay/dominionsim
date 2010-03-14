@@ -51,13 +51,13 @@ namespace DominionSim
             DrawCards(5);
         }
 
-        private void MoveCards<T>(List<T> from, List<T> to)
+        public void MoveCards<T>(List<T> from, List<T> to)
         {
             to.AddRange(from);
             from.Clear();
         }
 
-        private void MoveCard<T>(T c, List<T> from, List<T> to)
+        public void MoveCard<T>(T c, List<T> from, List<T> to)
         {
             from.Remove(c);
             to.Add(c);
@@ -91,9 +91,9 @@ namespace DominionSim
         }
 
  
-        public void TakeTurn(Supply supply)
+        public void TakeTurn(int turn, Supply supply)
         {
-            Log("== "+Name+" taking a turn ==");
+            Log("== "+Name+" taking Turn #"+turn+" ==");
             PrintDeckStats();            
             Log("  Hand: "+StringFromList(Hand));
 
@@ -133,9 +133,17 @@ namespace DominionSim
                     DrawPile = Utility.Shuffle(DrawPile);
                 }
 
-                string draw = DrawPile[0];
-                DrawPile.RemoveAt(0);
-                Hand.Add(draw);
+                string draw;
+                if (DrawPile.Count > 0)
+                {
+                    draw = DrawPile[0];
+                    DrawPile.RemoveAt(0);
+                    Hand.Add(draw);
+                }
+                else
+                {
+                    draw = "<nothing>";
+                }
 
                 draws += draw;
                 if (i != num - 1)
@@ -161,7 +169,7 @@ namespace DominionSim
 
                 Actions--;
                 MoveCard(name, Hand, PlayPile);
-                c.ExecuteCard(this);
+                c.ExecuteCard(this, Strategy);
             }
         }
 
@@ -197,12 +205,27 @@ namespace DominionSim
             {
                 if (Buys == 0)
                 {
-                    Log("    Failed!  Out of Buys!");
+                    throw new Exception("Attempted a buy with none remaining!");
                 }
                 else
                 {
-                    Log("    Failed!  Not enough Moneys!");
+                    throw new Exception("Tried to buy a card I couldn't afford!");
                 }
+            }
+        }
+
+        public void TrashCard(string s)
+        {
+            if (Hand.Contains(s))
+            {
+                Log("    Trashing "+s+"!");
+
+                Hand.Remove(s);
+                Deck.Remove(s);
+            }
+            else
+            {
+                throw new Exception("Told to trash " + s + " but I'm not holding that!");
             }
         }
 
@@ -230,6 +253,22 @@ namespace DominionSim
             }
 
             return vps;
+        }
+
+        public int CountCardIn(string card, List<string> inThis)
+        {
+            int numCard = 0;
+            var g = inThis.GroupBy(name => name);
+            
+            foreach (var grp in g)
+            {
+                if (grp.Key == card)
+                {
+                    numCard = grp.Count();
+                }
+            }
+
+            return numCard;
         }
 
         public String PurchaseString()

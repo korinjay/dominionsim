@@ -30,6 +30,7 @@ namespace DominionSim
                 comboBox.Items.Add("Big Money");
                 comboBox.Items.Add("Big Money Duchy");
                 comboBox.Items.Add("Smithy");
+                comboBox.Items.Add("Chapel");
                 comboBox.SelectedIndex = 0;
             }
         }
@@ -119,10 +120,13 @@ namespace DominionSim
                     return new Strategy.BigMoneyDuchy();
 
                 case "Smithy":
-                    return new Strategy.BigMoneyDuchy();
+                    return new Strategy.Smithy(1);
+
+                case "Chapel":
+                    return new Strategy.Chapel(1);
 
                 default:
-                    throw new Exception("Count not find Strategy named " + key);
+                    throw new Exception("Could not find Strategy named " + key);
             }
         }
     }
