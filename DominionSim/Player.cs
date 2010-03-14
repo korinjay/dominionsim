@@ -11,11 +11,11 @@ namespace DominionSim
         public string Name { get; set; }
 
         public IStrategy Strategy { get; set; }
-        public List<Card> Deck { get; set; }
-        public List<Card> DrawPile { get; set; }
-        public List<Card> DiscardPile { get; set; }
-        public List<Card> Hand { get; set; }
-        public List<Card> PlayPile { get; set; }
+        public List<string> Deck { get; set; }
+        public List<string> DrawPile { get; set; }
+        public List<string> DiscardPile { get; set; }
+        public List<string> Hand { get; set; }
+        public List<string> PlayPile { get; set; }
 
         public int Buys { get; set; }
         public int Actions { get; set; }
@@ -48,29 +48,16 @@ namespace DominionSim
         private void DrawNewHand()
         {
             Log("  Drawing a new hand...");
-            while (Hand.Count < 5)
-            {
-                if (DrawPile.Count == 0)
-                {
-                    Log("  Had to shuffle!");
-                    MoveCards(DiscardPile, DrawPile);
-                    DrawPile = Utility.Shuffle(DrawPile);
-                }
-
-                Card draw = DrawPile[0];
-                DrawPile.RemoveAt(0);
-
-                Hand.Add(draw);
-            }
+            DrawCards(5);
         }
 
-        private void MoveCards(List<Card> from, List<Card> to)
+        private void MoveCards<T>(List<T> from, List<T> to)
         {
             to.AddRange(from);
             from.Clear();
         }
 
-        private void MoveCard(Card c, List<Card> from, List<Card> to)
+        private void MoveCard<T>(T c, List<T> from, List<T> to)
         {
             from.Remove(c);
             to.Add(c);
@@ -80,22 +67,22 @@ namespace DominionSim
         {
             mPurchases = new Dictionary<int, string>();
             mTurn = 0;
-            Deck = new List<Card>();
-            DrawPile = new List<Card>();
-            DiscardPile = new List<Card>();
-            Hand = new List<Card>();
-            PlayPile = new List<Card>();
+            Deck = new List<string>();
+            DrawPile = new List<string>();
+            DiscardPile = new List<string>();
+            Hand = new List<string>();
+            PlayPile = new List<string>();
 
             for (int i = 0; i < 7; i++)
             {
-                Deck.Add(CardList.Copper.Clone());
-                DrawPile.Add(CardList.Copper.Clone());
+                Deck.Add(CardList.Copper);
+                DrawPile.Add(CardList.Copper);
             }
 
             for (int i = 0; i < 3; i++)
             {
-                Deck.Add(CardList.Estate.Clone());
-                DrawPile.Add(CardList.Estate.Clone());
+                Deck.Add(CardList.Estate);
+                DrawPile.Add(CardList.Estate);
             }
 
             DrawPile = Utility.Shuffle(DrawPile);
@@ -116,8 +103,9 @@ namespace DominionSim
             Strategy.TurnAction(this, supply);
 
             // Cash in Treasure
-            foreach (Card c in Hand)
+            foreach (string name in Hand)
             {
+                Card c = CardList.Cards[name];
                 if ( (c.Type & Card.CardType.Treasure) != 0)
                 {
                     Moneys += c.Moneys;
@@ -132,24 +120,54 @@ namespace DominionSim
             mTurn++;
         }
 
-        public void PlayActionCard(Card c)
+        public void DrawCards(int num)
         {
+            Log("  Drawing " + num + " cards.");
+            string draws = "Drew ";
+            for (int i = 0; i < num; i++ )
+            {
+                if (DrawPile.Count == 0)
+                {
+                    Log("  Had to shuffle!");
+                    MoveCards(DiscardPile, DrawPile);
+                    DrawPile = Utility.Shuffle(DrawPile);
+                }
 
-            if (c == null)
+                string draw = DrawPile[0];
+                DrawPile.RemoveAt(0);
+                Hand.Add(draw);
+
+                draws += draw;
+                if (i != num - 1)
+                {
+                    draws += ", ";
+                }
+            }
+            Log("    " + draws);
+        }
+
+        public void PlayActionCard(string name)
+        {
+            if (name == null)
             {
                 Log("    Playing no actions!");
                 Actions--;
                 return;
             }
-            else
+            else if(Hand.Contains(name))
             {
+                Card c = CardList.Cards[name];
+                Log("    Playing a " + name + "!");
 
+                Actions--;
+                MoveCard(name, Hand, PlayPile);
+                c.ExecuteCard(this);
             }
         }
 
-        public void BuyCard(Card c)
+        public void BuyCard(string name)
         {
-            if (c == null)
+            if (name == null)
             {
                 Log("    Buying nothing!");
                 mPurchases.Add(mTurn, "<nothing>");
@@ -157,16 +175,18 @@ namespace DominionSim
                 return;
             }
 
-            Log("    Buying a "+c.Name);
+            Card c = CardList.Cards[name];
+
+            Log("    Buying a "+name);
             if (Moneys >= c.Cost && Buys > 0)
             {
-                if (mSupply.GainCard(c))
+                if (mSupply.GainCard(name))
                 {
-                    DiscardPile.Add(c.Clone());
-                    Deck.Add(c.Clone());
+                    DiscardPile.Add(name);
+                    Deck.Add(name);
                     Moneys -= c.Cost;
                     Buys--;
-                    mPurchases.Add(mTurn, c.Name);
+                    mPurchases.Add(mTurn, name);
                 }
                 else
                 {
@@ -186,14 +206,15 @@ namespace DominionSim
             }
         }
 
-        public List<Card> GetCardsOfType(Card.CardType type)
+        public List<string> GetCardsOfType(Card.CardType type)
         {
-            List<Card> list = new List<Card>();
-            foreach (Card c in Deck)
+            List<string> list = new List<string>();
+            foreach (string name in Deck)
             {
+                Card c = CardList.Cards[name];
                 if ((type & c.Type) != 0)
                 {
-                    list.Add(c);
+                    list.Add(name);
                 }
             }
             return list;
@@ -202,8 +223,9 @@ namespace DominionSim
         public int GetNumVictoryPoints()
         {
             int vps = 0;
-            foreach (Card c in Deck)
+            foreach (string name in Deck)
             {
+                Card c = CardList.Cards[name];
                 vps += c.VictoryPoints;
             }
 
@@ -220,28 +242,28 @@ namespace DominionSim
             return str;
         }
 
-        public String StringFromList(List<Card> list)
+        public String StringFromList(List<string> list)
         {
             string str = "";
-            foreach (Card card in list)
+            foreach (string card in list)
             {
-                str += (card.Name + " ");
+                str += (card+ " ");
             }
             return str;
         }
 
-        public String StatStringFromList(List<Card> list)
+        public String StatStringFromList(List<string> list)
         {
             Dictionary<string, int> counts = new Dictionary<string, int>();
-            foreach (Card card in list)
+            foreach (string card in list)
             {
-                if (counts.ContainsKey(card.Name))
+                if (counts.ContainsKey(card))
                 {
-                    counts[card.Name]++;
+                    counts[card]++;
                 }
                 else
                 {
-                    counts[card.Name] = 1;
+                    counts[card] = 1;
                 }
             }
 
@@ -253,7 +275,7 @@ namespace DominionSim
             return str;
         }
 
-        public void Print(List<Card> list)
+        public void Print(List<string> list)
         {
             Log(StringFromList(list));
         }

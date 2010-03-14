@@ -5,16 +5,24 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    /// <summary>
-    /// Starts off using a Big Money strategy, but will buy Duchies if there are few Provinces remaining
-    /// </summary>
-    class BigMoneyDuchy : IStrategy
+    class Smithy : IStrategy
     {
+        private int mNumSmithysToBuy = 1;
+
+        public Smithy(int numSmithys)
+        {
+            mNumSmithysToBuy = numSmithys;
+        }
+
+        #region IStrategy Members
         const int PROVINCE_THRESHOLD = 4;
 
         public void TurnAction(Player p, Supply s)
         {
-            p.PlayActionCard(null);
+            if (p.Hand.Contains(CardList.Smithy))
+            {
+                p.PlayActionCard(CardList.Smithy);
+            }
         }
 
         public void TurnBuy(Player p, Supply s)
@@ -40,14 +48,31 @@ namespace DominionSim.Strategy
                 return;
             }
 
+            int numSmithys = 0;
+            var g = p.Deck.GroupBy(name => name);
+            foreach (var grp in g)
+            {
+                if (grp.Key == CardList.Smithy)
+                {
+                    numSmithys = grp.Count();
+                }
+            }
+
+            // If we have 4 and we didn't already buy a smithy, buy one!
+            if (p.Moneys >= 4 && numSmithys < mNumSmithysToBuy)
+            {
+                p.BuyCard(CardList.Smithy);
+                return;
+            }
+
             // Else buy silver
             if (p.Moneys >= 3)
             {
                 p.BuyCard(CardList.Silver);
                 return;
             }
-
-            p.BuyCard(null);
         }
+
+        #endregion
     }
 }

@@ -17,15 +17,15 @@ namespace DominionSim.Strategy
         {
             if (p.Moneys >= 8)
             {
-                p.BuyCard(CardList.Province.Clone());
+                p.BuyCard(CardList.Province);
             }
             else if (p.Moneys >= 6)
             {
-                p.BuyCard(CardList.Gold.Clone());
+                p.BuyCard(CardList.Gold);
             }
             else if (p.Moneys >= 3)
             {
-                p.BuyCard(CardList.Silver.Clone());
+                p.BuyCard(CardList.Silver);
             }
             else
             {

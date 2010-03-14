@@ -7,28 +7,30 @@ namespace DominionSim
 {
     class Supply
     {
-        public Dictionary<string, int> Counts { get; set; }
+        public Dictionary<string, int> CardSupply { get; set; }
 
         private int mNumPlayers;
 
         public Supply()
         {
-            Counts = new Dictionary<string, int>();
+            CardSupply = new Dictionary<string, int>();
         }
 
         public void SetupForNewGame(int numPlayers)
         {
             mNumPlayers = numPlayers;
 
-            Counts.Clear();
+            CardSupply.Clear();
 
-            Counts.Add("Copper", 100);
-            Counts.Add("Silver", 100);
-            Counts.Add("Gold", 100);
+            CardSupply.Add(CardList.Copper, 100);
+            CardSupply.Add(CardList.Silver, 100);
+            CardSupply.Add(CardList.Gold, 100);
 
-            Counts.Add("Estate", 12);
-            Counts.Add("Duchy", 12);
-            Counts.Add("Province", 12 + ((mNumPlayers - 4) * 3));
+            CardSupply.Add(CardList.Estate, 12);
+            CardSupply.Add(CardList.Duchy, 12);
+            CardSupply.Add(CardList.Province, 12 + ((mNumPlayers - 4) * 3));
+
+            CardSupply.Add(CardList.Smithy, 10);
         }
 
         /// <summary>
@@ -36,11 +38,16 @@ namespace DominionSim
         /// </summary>
         /// <param name="c">Card you would like to gain</param>
         /// <returns>TRUE if there were enough left for you to gain one</returns>
-        public bool GainCard(Card c)
+        public bool GainCard(string cardName)
         {
-            if (Counts[c.Name] > 0)
+            if (!CardSupply.ContainsKey(cardName))
             {
-                Counts[c.Name]--;
+                throw new Exception("Card "+cardName+" is not in the supply for this game!");
+            }
+
+            if (CardSupply[cardName] > 0)
+            {
+                CardSupply[cardName]--;
                 return true;
             }
             else
@@ -49,21 +56,21 @@ namespace DominionSim
             }
         }
 
-        public int Quantity(Card c)
+        public int Quantity(string cardName)
         {
-            return Counts[c.Name];
+            return CardSupply[cardName];
         }
 
         public bool IsGameOver()
         {
-            if(Counts["Province"] == 0)
+            if(CardSupply[CardList.Province] == 0)
             {
                 return true;
             }
             else
             {
                 int numEmpty = 0;
-                foreach(KeyValuePair<string, int> kvp in Counts)
+                foreach(KeyValuePair<string, int> kvp in CardSupply)
                 {
                     if(kvp.Value == 0)
                     {

@@ -43,15 +43,12 @@ namespace DominionSim
             VictoryPoints = vps;
         }
 
-        public Card Clone()
+        public void ExecuteCard(Player p)
         {
-            Card clone = new Card(Name, Type, Cost, Draws, Actions, Moneys, Buys, VictoryPoints);
-            return clone;
-        }
-
-        public bool Is(Card otherCard)
-        {
-            return otherCard.Name == Name;
+            p.DrawCards(Draws);
+            p.Actions += Actions;
+            p.Buys += Buys;
+            p.Moneys += Moneys;
         }
     }
 }

@@ -19,30 +19,31 @@ namespace DominionSim
 
         public Simulator()
         {
+            CardList.SetupCardList();
             Players = new List<Player>();
             Supply = new Supply();
         }
 
         public void CreatePlayers(int num, bool verbose)
         {
-            Player newPlayer = new Player("Big Money 1");
+            Player newPlayer = new Player("Big Money");
             newPlayer.Strategy = new Strategy.BigMoney();
             newPlayer.Verbose = false;
             Players.Add(newPlayer);
             
-            newPlayer = new Player("Big Money 2");
-            newPlayer.Strategy = new Strategy.BigMoney();
-            newPlayer.Verbose = false;
+            newPlayer = new Player("2 Smithy");
+            newPlayer.Strategy = new Strategy.Smithy(2);
+            newPlayer.Verbose = verbose;
             Players.Add(newPlayer);
             
-            newPlayer = new Player("Big Money 3");
-            newPlayer.Strategy = new Strategy.BigMoney();
+            newPlayer = new Player("1 Smithy");
+            newPlayer.Strategy = new Strategy.Smithy(1);
             newPlayer.Verbose = false;
             Players.Add(newPlayer);
 
             newPlayer = new Player("Big Money Duchy");
             newPlayer.Strategy = new Strategy.BigMoneyDuchy();
-            newPlayer.Verbose = verbose;
+            newPlayer.Verbose = false;
             Players.Add(newPlayer);
         }
 
@@ -127,7 +128,7 @@ namespace DominionSim
                     stats.Winner = "Tie";
                 }
 
-                List<Card> vpCards = player.GetCardsOfType(Card.CardType.Victory);
+                List<string> vpCards = player.GetCardsOfType(Card.CardType.Victory);
                 if (verbose)
                 {
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ") ( " + player.PurchaseString() + ")");
