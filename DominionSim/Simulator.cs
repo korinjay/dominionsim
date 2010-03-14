@@ -25,7 +25,6 @@ namespace DominionSim
             Players = new List<Player>();
             Supply = new Supply();
             Wins = new Dictionary<string, int>();
-            newPlayer.Verbose = verbose;
         }
 
         public void PlayNGames(int n, bool verbose)
