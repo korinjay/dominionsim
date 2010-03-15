@@ -39,7 +39,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum cards to trash</param>
         /// <param name="max">Maximum cards to trash</param>
         /// <returns>Set of cards out of hand to trash</returns>
-        public virtual IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
+        public virtual IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Supply s)
         {
             return p.GetHand().OrderBy(c => CardList.Cards[c].Cost).Take(min);
         }
@@ -51,11 +51,12 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>The kind of card you wish to gain</returns>
-        public string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost)
+        public string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Supply s)
         {
-            // TODO I would like to get a random card of the most expensive.  Instead
-            // I am ridiculously stupidly getting a Copper.
-            return CardList.Copper;
+            IEnumerable<string> bestCards = s.CardSupply.Where((k) => CardList.Cards[k.Key].Cost == maxCost)
+                                                        .Select((k) => k.Key);
+
+            return bestCards.ElementAt(Utility.RandBetween(0, bestCards.Count()));
         }
 
         /// <summary>

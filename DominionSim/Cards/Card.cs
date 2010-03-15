@@ -19,6 +19,7 @@ namespace DominionSim
             Curse = 0x40,
         }
 
+        public const CardType ActionAttack = CardType.Action | CardType.Attack;
         public const CardType TreasureAction = CardType.Treasure | CardType.Action;
         public const CardType TreasureVictory = CardType.Treasure | CardType.Victory;
         public const CardType VictoryAction = CardType.Victory | CardType.Action;
@@ -45,7 +46,7 @@ namespace DominionSim
             VictoryPoints = vps;
         }
 
-        public virtual void ExecuteCard(Player p, Strategy.IStrategy s)
+        public virtual void ExecuteCard(Player p, Strategy.IStrategy s, Supply supply)
         {
             p.DrawCards(Draws);
             p.Actions += Actions;

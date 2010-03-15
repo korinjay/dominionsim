@@ -114,6 +114,8 @@ namespace DominionSim
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
                     Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck) + ")");
                     Console.WriteLine("  Purchases: ( " + player.PurchaseString() + ")");
+                    Console.WriteLine(player.Name+" Activity:");
+                    Console.WriteLine(player.ActivityString());
                 }
             }
 

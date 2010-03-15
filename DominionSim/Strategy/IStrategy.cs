@@ -29,7 +29,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum number of cards you must trash</param>
         /// <param name="max">Maximum number of cards you may trash</param>
         /// <returns>An enumeration of cards in hand to trash</returns>
-        IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max);
+        IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to gain a card.
@@ -38,6 +38,6 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost);
+        string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Supply s);
     }
 }

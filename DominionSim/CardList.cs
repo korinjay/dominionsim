@@ -47,6 +47,7 @@ namespace DominionSim
             // Original Dominion
             Cards.Add(Smithy, new SmithyCard());
             Cards.Add(Chapel, new Cards.ChapelCard());
+            Cards.Add(Workshop, new Cards.WorkshopCard());
 
             // Workin' on it - Colin
             //Cards.Add(Militia, new Cards.MilitiaCard());
