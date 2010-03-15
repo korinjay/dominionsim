@@ -254,7 +254,7 @@ namespace DominionSim
         public String PurchaseString()
         {
             // Loop through all purchases and output a string in the format:
-            //    "1: Silver 2: Silver 3: Gold"
+            //    "1:Silver 2:Silver 3:Gold"
             return mPurchases.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value + " ");
         }
 
