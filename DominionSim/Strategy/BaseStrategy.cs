@@ -53,10 +53,11 @@ namespace DominionSim.Strategy
         /// <returns>The kind of card you wish to gain</returns>
         public string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Supply s)
         {
-            IEnumerable<string> bestCards = s.CardSupply.Where((k) => CardList.Cards[k.Key].Cost == maxCost)
+            IEnumerable<string> bestCards = s.CardSupply.Where((k) => CardList.Cards[k.Key].Cost <= maxCost)
+                                                        .OrderByDescending((k) => CardList.Cards[k.Key].Cost)
                                                         .Select((k) => k.Key);
 
-            return bestCards.ElementAt(Utility.RandBetween(0, bestCards.Count()));
+            return bestCards.ElementAt(0);
         }
 
         /// <summary>

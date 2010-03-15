@@ -51,6 +51,7 @@
     <Compile Include="Cards\Card.cs" />
     <Compile Include="CardList.cs" />
     <Compile Include="Cards\ChapelCard.cs" />
+    <Compile Include="Cards\FeastCard.cs" />
     <Compile Include="Cards\MilitiaCard.cs" />
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />

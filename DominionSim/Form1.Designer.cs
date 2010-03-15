@@ -207,6 +207,7 @@
             this.gameVerbose.TabIndex = 17;
             this.gameVerbose.Text = "Output each Game";
             this.gameVerbose.UseVisualStyleBackColor = true;
+            this.gameVerbose.CheckedChanged += new System.EventHandler(this.gameVerbose_CheckedChanged);
             // 
             // Form1
             // 

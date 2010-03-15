@@ -230,6 +230,15 @@ namespace DominionSim
                 Hand.Remove(s);
                 Deck.Remove(s);
             }
+            else if (PlayPile.Contains(s))
+            {
+                // Some cards trash when you play them (like Feast)
+                Log("    Trashing " + s + "!");
+                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Trash));
+
+                PlayPile.Remove(s);
+                Deck.Remove(s);
+            }
             else
             {
                 throw new Exception("Told to trash " + s + " but I'm not holding that!");
