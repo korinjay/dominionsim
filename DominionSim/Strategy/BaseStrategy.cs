@@ -9,29 +9,53 @@ namespace DominionSim.Strategy
     {
         #region IStrategy Members
 
+        /// <summary>
+        /// Base implementation of the TurnAction function
+        /// Defaults to playing no action cards.  Many strategies will override this to actually do something.
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="s">Strategy</param>
         public virtual void TurnAction(PlayerFacade p, Supply s)
         {
-            /// Default to playing no action cards.  Many strategies will override this to actually do something.
             p.PlayActionCard(null);
         }
 
+        /// <summary>
+        /// Base implementation of the TurnBuy function.
+        /// Default to buying no cards.  Probably all strategies will override this to actually do something.
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="s">Strategy</param>
         public virtual void TurnBuy(PlayerFacade p, Supply s)
         {
-            /// Default to buying no cards.  Probably all strategies will override this to actually do something.
             p.BuyCard(null);
         }
 
-        public virtual List<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
+        /// <summary>
+        /// Base implementation of the ChooseCardsToTrash function.
+        /// Default to naively choosing the cheapest cards in hand
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="min">Minimum cards to trash</param>
+        /// <param name="max">Maximum cards to trash</param>
+        /// <returns>Set of cards out of hand to trash</returns>
+        public virtual IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
         {
-            List<string> trashed = new List<string>();
+            return p.GetHand().OrderBy(c => CardList.Cards[c].Cost).Take(min);
+        }
 
-            // Horribly naive - just trash the first MIN cards
-            for (int i = 0; i < min; i++)
-            {
-                trashed.Add(p.GetHand()[i]);
-            }
-
-            return trashed;
+        /// <summary>
+        /// An Action (perhaps one you played) is forcing you to gain a card.
+        /// Default to randomly choosing among the most expensive available cards
+        /// </summary>
+        /// <param name="minCost">Minimum cost of the card</param>
+        /// <param name="maxCost">Maximum cost of the card</param>
+        /// <returns>The kind of card you wish to gain</returns>
+        public string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost)
+        {
+            // TODO I would like to get a random card of the most expensive.  Instead
+            // I am ridiculously stupidly getting a Copper.
+            return CardList.Copper;
         }
 
         /// <summary>

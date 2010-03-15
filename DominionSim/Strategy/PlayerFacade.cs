@@ -43,8 +43,8 @@ namespace DominionSim.Strategy
         /// <summary>
         /// Return a copy of the Player's Hand, so that there's no chance the actual Hand can be manipulated
         /// </summary>
-        /// <returns></returns>
-        public List<string> GetHand()
+        /// <returns>Cards in hand</returns>
+        public IEnumerable<string> GetHand()
         {
             return CopyList(mPlayer.Hand);
         }
@@ -52,8 +52,8 @@ namespace DominionSim.Strategy
         /// <summary>
         /// Return a copy of the Player's Deck, so that there's no chance the actual Deck can by manipulated
         /// </summary>
-        /// <returns></returns>
-        public List<string> GetDeck()
+        /// <returns>Cards in deck</returns>
+        public IEnumerable<string> GetDeck()
         {
             return CopyList(mPlayer.Deck);
         }

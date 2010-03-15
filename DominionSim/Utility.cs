@@ -28,7 +28,7 @@ namespace DominionSim
             return shuffled;
         }
 
-        public static int CountCardIn(string card, List<string> inThis)
+        public static int CountCardIn(string card, IEnumerable<string> inThis)
         {
             int numCard = 0;
             var g = inThis.GroupBy(name => name);
@@ -44,18 +44,9 @@ namespace DominionSim
             return numCard;
         }
 
-        public static List<string> FilterCardListByType(List<string> toFilter, Card.CardType type)
+        public static IEnumerable<string> FilterCardListByType(IEnumerable<string> toFilter, Card.CardType type)
         {
-            List<string> list = new List<string>();
-            foreach (string name in toFilter)
-            {
-                Card c = CardList.Cards[name];
-                if ((type & c.Type) != 0)
-                {
-                    list.Add(name);
-                }
-            }
-            return list;
+            return toFilter.Where(c => (CardList.Cards[c].Type & type) != 0);
         }
     }
 }

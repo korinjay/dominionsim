@@ -34,7 +34,7 @@ namespace DominionSim.Strategy
             if (CanAfford(p, CardList.Smithy))
             {
                 int numSmithies = Utility.CountCardIn(CardList.Smithy, p.GetDeck());
-                int numCards = p.GetDeck().Count;
+                int numCards = p.GetDeck().Count();
                 // Attempt to maintain a healthy ratio of 1 per # cards
                 if ((numCards / 8) > numSmithies)
                 {
