@@ -68,8 +68,8 @@ namespace DominionSim
 
             if (checkBox.Checked)
             {
-                txtNumGames.Text = "1";
                 gameVerbose.Checked = true;
+                txtNumGames.Text = "1";
             }
         }
 
@@ -118,6 +118,11 @@ namespace DominionSim
             {
                 outputBox.Text = "Not enough Players.  Please select at least 2 players.";
             }
+        }
+
+        private void gameVerbose_CheckedChanged(object sender, EventArgs e)
+        {
+            txtNumGames.Text = "1";
         }
     }
 
