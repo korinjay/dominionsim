@@ -60,6 +60,10 @@ namespace DominionSim.Strategy
 
         #region Passthrough Functions
 
+        public int GetTurn()
+        {
+            return mPlayer.GetTurn();
+        }
 
         public int GetMoneys()
         {

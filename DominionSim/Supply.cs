@@ -34,6 +34,7 @@ namespace DominionSim
             CardSupply.Add(CardList.Chapel, 10);
             CardSupply.Add(CardList.Workshop, 10);
             CardSupply.Add(CardList.Feast, 10);
+            CardSupply.Add(CardList.Cellar, 10);
         }
 
         /// <summary>

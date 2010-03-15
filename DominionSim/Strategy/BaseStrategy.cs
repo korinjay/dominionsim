@@ -44,6 +44,11 @@ namespace DominionSim.Strategy
             return p.GetHand().OrderBy(c => CardList.Cards[c].Cost).Take(min);
         }
 
+        public virtual IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Supply s)
+        {
+            return p.GetHand().OrderByDescending(c => CardList.Cards[c].VictoryPoints).Take(min);
+        }
+
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to gain a card.
         /// Default to randomly choosing among the most expensive available cards
@@ -53,11 +58,11 @@ namespace DominionSim.Strategy
         /// <returns>The kind of card you wish to gain</returns>
         public string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Supply s)
         {
-            IEnumerable<string> bestCards = s.CardSupply.Where((k) => CardList.Cards[k.Key].Cost <= maxCost)
-                                                        .OrderByDescending((k) => CardList.Cards[k.Key].Cost)
-                                                        .Select((k) => k.Key);
-
-            return bestCards.ElementAt(0);
+            return s.CardSupply
+                    .Where((k) => CardList.Cards[k.Key].Cost <= maxCost)
+                    .OrderByDescending((k) => CardList.Cards[k.Key].Cost)
+                    .Select((k) => k.Key)
+                    .ElementAt(0);           
         }
 
         /// <summary>
