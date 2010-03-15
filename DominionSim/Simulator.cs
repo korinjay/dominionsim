@@ -16,8 +16,8 @@ namespace DominionSim
     {
         public List<Player> Players { get; set; }
         public Supply Supply { get; set; }
-        public Dictionary<string, int> Wins {get ; set;}
-        public Dictionary<string, int> Ties {get; set;}
+        public Dictionary<Player, int> Wins {get ; set;}
+        public Dictionary<Player, int> Ties { get; set; }
 
 
         public Simulator()
@@ -25,8 +25,8 @@ namespace DominionSim
             CardList.SetupCardList();
             Players = new List<Player>();
             Supply = new Supply();
-            Wins = new Dictionary<string, int>();
-            Ties = new Dictionary<string, int>();
+            Wins = new Dictionary<Player, int>();
+            Ties = new Dictionary<Player, int>();
         }
 
         public void PlayNGames(int n, bool verbose)
@@ -38,13 +38,13 @@ namespace DominionSim
                 var listToAddTo = (results.Winners.Count() > 1 ? Wins : Ties);
                 foreach (var winner in results.Winners)
                 {
-                    if (listToAddTo.ContainsKey(winner.Name))
+                    if (listToAddTo.ContainsKey(winner))
                     {
-                        listToAddTo[winner.Name]++;
+                        listToAddTo[winner]++;
                     }
                     else
                     {
-                        listToAddTo[winner.Name] = 1;
+                        listToAddTo[winner] = 1;
                     }
                 }
             }
