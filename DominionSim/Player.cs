@@ -245,6 +245,22 @@ namespace DominionSim
             }
         }
 
+
+        public void DiscardCard(string s)
+        {
+            if (Hand.Contains(s))
+            {
+                Log("    Discarding " + s + "!");
+                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Discard));
+
+                Hand.Remove(s);
+                DiscardPile.Add(s);
+            }
+            else
+            {
+                throw new Exception("Told to discard " + s + " but I'm not holding that!");
+            }
+        }
         public void GainCard(string s)
         {
             if (mSupply.GainCard(s))
@@ -262,7 +278,10 @@ namespace DominionSim
             return mFacade;
         }
 
- 
+        public int GetTurn()
+        {
+            return mTurn;
+        }
 
         public int GetNumVictoryPoints()
         {
@@ -362,6 +381,7 @@ namespace DominionSim
         public const string Gain = "Gain";
         public const string Trash = "Trash";
         public const string Play = "Play";
+        public const string Discard = "Discard";
 
         public int Turn;
         public string Action;

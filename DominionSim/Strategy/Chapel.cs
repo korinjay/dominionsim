@@ -55,6 +55,8 @@ namespace DominionSim.Strategy
         {
             List<string> toTrash = new List<string>();
 
+            int turn = p.GetTurn();
+
             int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
             int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
 
@@ -69,10 +71,13 @@ namespace DominionSim.Strategy
             // Don't trash so much we drop our deck below 3 treasure
             numCopper = Math.Min(numCopper, totalMoney - 3);
 
-            // Trash all the estates we can
-            for (int i = 0; i < numEstates && toTrash.Count < max; i++)
+            if (turn < 8)
             {
-                toTrash.Add(CardList.Estate);
+                // Trash all the estates we can
+                for (int i = 0; i < numEstates && toTrash.Count < max; i++)
+                {
+                    toTrash.Add(CardList.Estate);
+                }
             }
             // After that trash all the copper we can
             for (int i = 0; i < numCopper && toTrash.Count < max; i++)

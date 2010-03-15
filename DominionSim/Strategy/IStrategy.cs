@@ -32,6 +32,17 @@ namespace DominionSim.Strategy
         IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Supply s);
 
         /// <summary>
+        /// An Action (perhaps one you played) is forcing you to discard some cards!
+        /// Choose which cards from your hand you would like to discard.
+        /// </summary>
+        /// <param name="p">Player who is using this strategy</param>
+        /// <param name="min">Minimum number of cards you must discard</param>
+        /// <param name="max">Maximum number of cards you may discard</param>
+        /// <param name="s">An enumeration of cards in hand to discard</param>
+        /// <returns></returns>
+        IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Supply s);
+
+        /// <summary>
         /// An Action (perhaps one you played) is forcing you to gain a card.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>

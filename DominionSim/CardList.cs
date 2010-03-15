@@ -20,6 +20,7 @@ namespace DominionSim
         public const string Chapel = "Chapel";
         public const string Workshop = "Workshop";
         public const string Feast = "Feast";
+        public const string Cellar = "Cellar";
 
         public const string Militia = "Militia";
         public const string Moat = "Moat";
@@ -50,6 +51,7 @@ namespace DominionSim
             Cards.Add(Chapel, new Cards.ChapelCard());
             Cards.Add(Workshop, new Cards.WorkshopCard());
             Cards.Add(Feast, new Cards.FeastCard());
+            Cards.Add(Cellar, new Cards.CellarCard());
 
             // Workin' on it - Colin
             //Cards.Add(Militia, new Cards.MilitiaCard());
