@@ -14,13 +14,19 @@ namespace DominionSim
         /// <summary>
         /// List of all the Combo Boxes for players so we can quickly loop through them
         /// </summary>
-        private List<ComboBox> PlayerComboBoxes = new List<ComboBox>();
+        private List<AIUIInfo> AIUIComponents = new List<AIUIInfo>();
 
         public Form1()
         {
             InitializeComponent();
 
-            PlayerComboBoxes.AddRange(new ComboBox[] { playerCombo0, playerCombo1, playerCombo2, playerCombo3, playerCombo4, playerCombo5 });
+            AIUIComponents.AddRange(new AIUIInfo[] {
+                new AIUIInfo(playerCombo0, null),
+                new AIUIInfo(playerCombo1, null),
+                new AIUIInfo(playerCombo2, null),
+                new AIUIInfo(playerCombo3, null),
+                new AIUIInfo(playerCombo4, null),
+                new AIUIInfo(playerCombo5, null)});
 
             // Use cool C# runtime type info and reflection stuff to find all non-abstract classes in all loaded
             // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
@@ -33,7 +39,7 @@ namespace DominionSim
                 .OrderBy(holder => holder.Name);                                        // Sort by name
 
             // Populate each ComboBox with those StrategyTypeHolders, plus a Dummy one for "None"
-            foreach (ComboBox comboBox in PlayerComboBoxes)
+            foreach (ComboBox comboBox in AIUIComponents.Select(aiui=>aiui.AISelection))
             {
                 comboBox.Items.Add(new StrategyTypeHolder("None", null));
                 comboBox.Items.AddRange(types.ToArray());
@@ -56,45 +62,22 @@ namespace DominionSim
         /// <param name="e">Event params</param>
         private void playButton_Click(object sender, EventArgs e)
         {
-            // Count up all the AIs of each type we have selected so we can spawn the right number of each
-            var countAIs = new Dictionary<StrategyTypeHolder, int>();
-            int totalPlayers = 0;
-            foreach (ComboBox comboBox in PlayerComboBoxes)
-            {
-                StrategyTypeHolder typeInfo = comboBox.SelectedItem as StrategyTypeHolder;
-                if (null != typeInfo.Type)
-                {
-                    if (countAIs.ContainsKey(typeInfo))
-                    {
-                        countAIs[typeInfo] += 1;
-                    }
-                    else
-                    {
-                        countAIs[typeInfo] = 1;
-                    }
-                    totalPlayers++;
-                }
-            }
+            // Get a list of all the AIs to use
+            var aisToUse = AIUIComponents.Where(aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type != null);
 
-            if (1 < totalPlayers)
+            if (1 < aisToUse.Count())
             {
                 Simulator sim = new Simulator();
 
                 // Loop through all the AIs that were selected and spawn Players and Strategies for each
-                foreach (var iter in countAIs)
+                foreach (var iter in aisToUse)
                 {
-                    for (var i = 0; i < iter.Value; ++i)
-                    {
-                        string name = iter.Key.ToString();
-                        if (1 < iter.Value)
-                        {
-                            name += " " + (i + 1);
-                        }
-                        Player newPlayer = new Player(name);
-                        newPlayer.Strategy = Activator.CreateInstance(iter.Key.Type) as Strategy.IStrategy;
-                        newPlayer.Verbose = false;
-                        sim.Players.Add(newPlayer);
-                    }
+                    StrategyTypeHolder strategyTypeHolder = (iter.AISelection.SelectedItem as StrategyTypeHolder);
+                    string name = strategyTypeHolder.ToString();
+                    Player newPlayer = new Player(name);
+                    newPlayer.Strategy = Activator.CreateInstance(strategyTypeHolder.Type) as Strategy.IStrategy;
+                    newPlayer.Verbose = (iter.VerboseCheckbox != null ? iter.VerboseCheckbox.Checked : false);
+                    sim.Players.Add(newPlayer);
                 }
 
                 const int NumGames = 5000;
@@ -117,6 +100,21 @@ namespace DominionSim
             {
                 outputBox.Text = "Not enough Players.  Please select at least 2 players.";
             }
+        }
+    }
+
+    /// <summary>
+    /// Simple class to hold info on a given AI.  Contains all the UI elements for one.
+    /// Could be its own Component if we cared.
+    /// </summary>
+    class AIUIInfo
+    {
+        public ComboBox AISelection;
+        public CheckBox VerboseCheckbox;
+        public AIUIInfo (ComboBox ai, CheckBox verbose)
+        {
+            AISelection = ai;
+            VerboseCheckbox = verbose;
         }
     }
 

@@ -9,7 +9,7 @@ namespace DominionSim
     {
         public IEnumerable<Player> Winners;
         public int WinnerScore;
-        public Dictionary<string, int> VictoryPoints = new Dictionary<string, int>();
+        public Dictionary<Player, int> VictoryPoints = new Dictionary<Player, int>();
     }
 
     class Simulator
@@ -82,13 +82,13 @@ namespace DominionSim
             foreach (var player in Players)
             {
                 int vps = player.GetNumVictoryPoints();
-                stats.VictoryPoints.Add(player.Name, vps);
+                stats.VictoryPoints.Add(player, vps);
                 if (vps > highScore)
                 {
                     highScore = vps;
                 }
             }
-            stats.Winners = Players.Where(p => stats.VictoryPoints[p.Name] == highScore);
+            stats.Winners = Players.Where(p => stats.VictoryPoints[p] == highScore);
             stats.WinnerScore = highScore;
             
 
