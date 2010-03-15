@@ -103,7 +103,7 @@ namespace DominionSim
                 outputBox.Text = NumGames + " games played" + Environment.NewLine;
 
                 // Sort out the players so the most wins go on top
-                var sortedPlayes = sim.Players.OrderBy(p => sim.Wins[p.Name]).Reverse();
+                var sortedPlayes = sim.Players.OrderByDescending(p => sim.Wins[p.Name]);
                 foreach (var player in sortedPlayes)
                 {
                     string playerName = player.Name;

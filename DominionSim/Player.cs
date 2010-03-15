@@ -271,7 +271,7 @@ namespace DominionSim
             return str;
         }
 
-        public String StatStringFromList(List<string> list)
+        public String StatStringFromList(IEnumerable<string> list)
         {
             Dictionary<string, int> counts = new Dictionary<string, int>();
             foreach (string card in list)

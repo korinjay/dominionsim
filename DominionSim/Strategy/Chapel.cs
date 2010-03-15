@@ -51,14 +51,14 @@ namespace DominionSim.Strategy
             base.TurnBuy(p, s);
         }
 
-        public override List<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
+        public override IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max)
         {
             List<string> toTrash = new List<string>();
 
             int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
             int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
 
-            List<string> allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
+            var allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
             foreach (string t in allTreasure)
             {
