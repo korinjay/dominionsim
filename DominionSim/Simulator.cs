@@ -5,18 +5,19 @@ using System.Text;
 
 namespace DominionSim
 {
-    struct GameStats
+    class GameStats
     {
-        public string Winner;
+        public IEnumerable<Player> Winners;
         public int WinnerScore;
-        public Dictionary<string, int> VictoryPoints;
+        public Dictionary<string, int> VictoryPoints = new Dictionary<string, int>();
     }
 
     class Simulator
     {
         public List<Player> Players { get; set; }
         public Supply Supply { get; set; }
-        public Dictionary<string, int> Wins {get ; set;} 
+        public Dictionary<string, int> Wins {get ; set;}
+        public Dictionary<string, int> Ties {get; set;}
 
 
         public Simulator()
@@ -25,6 +26,7 @@ namespace DominionSim
             Players = new List<Player>();
             Supply = new Supply();
             Wins = new Dictionary<string, int>();
+            Ties = new Dictionary<string, int>();
         }
 
         public void PlayNGames(int n, bool verbose)
@@ -33,13 +35,17 @@ namespace DominionSim
             {
                 GameStats results = PlayOneGame(verbose);
 
-                if (Wins.ContainsKey(results.Winner))
+                var listToAddTo = (results.Winners.Count() > 1 ? Wins : Ties);
+                foreach (var winner in results.Winners)
                 {
-                    Wins[results.Winner]++;
-                }
-                else
-                {
-                    Wins[results.Winner] = 1;
+                    if (listToAddTo.ContainsKey(winner.Name))
+                    {
+                        listToAddTo[winner.Name]++;
+                    }
+                    else
+                    {
+                        listToAddTo[winner.Name] = 1;
+                    }
                 }
             }
         }
@@ -71,28 +77,24 @@ namespace DominionSim
             }
 
             GameStats stats = new GameStats();
-            stats.VictoryPoints = new Dictionary<string, int>();
 
-            for (int i = 0; i < Players.Count; i++)
+            int highScore = 0;
+            foreach (var player in Players)
             {
-                Player player = Players[i];
                 int vps = player.GetNumVictoryPoints();
                 stats.VictoryPoints.Add(player.Name, vps);
-
-                if (vps > stats.WinnerScore)
+                if (vps > highScore)
                 {
-                    stats.Winner = player.Name;
-                    stats.WinnerScore = vps;
-                }
-                else if (vps == stats.WinnerScore)
-                {
-                    stats.Winner = "Tie";
+                    highScore = vps;
                 }
             }
+            stats.Winners = Players.Where(p => stats.VictoryPoints[p.Name] == highScore);
+            stats.WinnerScore = highScore;
+            
 
             if (verbose)
             {
-                Console.WriteLine("Game ended after "+turns+" turns.  "+stats.Winner+" won with "+stats.WinnerScore+" points!");
+                Console.WriteLine("Game ended after "+turns+" turns.  "+stats.Winners+" won with "+stats.WinnerScore+" points!");
             }
 
             for(int i=0; i < Players.Count; i++)

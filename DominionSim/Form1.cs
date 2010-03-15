@@ -100,8 +100,7 @@ namespace DominionSim
                 const int NumGames = 5000;
                 sim.PlayNGames(NumGames, false);
 
-                int numTies = sim.Wins.ContainsKey("Tie") ? sim.Wins["Tie"] : 0;
-                outputBox.Text = NumGames + " games played, " + (NumGames - numTies) + " games had an outright winner.\r\n";
+                outputBox.Text = NumGames + " games played" + Environment.NewLine;
 
                 // Sort out the players so the most wins go on top
                 var sortedPlayes = sim.Players.OrderBy(p => sim.Wins[p.Name]).Reverse();
@@ -109,9 +108,9 @@ namespace DominionSim
                 {
                     string playerName = player.Name;
                     int numWins = sim.Wins.ContainsKey(player.Name) ? sim.Wins[player.Name] : 0;
+                    int numTies = sim.Ties.ContainsKey(player.Name) ? sim.Ties[player.Name] : 0;
 
-                    float percent = 100.0f * numWins / (NumGames - numTies);
-                    outputBox.Text += playerName + " : " + numWins + " / " + (NumGames - numTies) + " = " + percent + "%\r\n";
+                    outputBox.Text += playerName + " - Wins: " + numWins + ", Ties: " + numTies + ", Highest Score %: " + ((numWins + numTies) * 100.0f / NumGames) + Environment.NewLine;
                 }
             }
             else
