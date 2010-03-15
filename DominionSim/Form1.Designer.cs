@@ -42,6 +42,9 @@
             this.playerVerbose1 = new System.Windows.Forms.CheckBox();
             this.playerVerbose5 = new System.Windows.Forms.CheckBox();
             this.playerVerbose4 = new System.Windows.Forms.CheckBox();
+            this.txtNumGames = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.gameVerbose = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // playerCombo0
@@ -56,7 +59,7 @@
             // playButton
             // 
             this.playButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.playButton.Location = new System.Drawing.Point(12, 93);
+            this.playButton.Location = new System.Drawing.Point(12, 134);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(438, 52);
             this.playButton.TabIndex = 6;
@@ -112,7 +115,10 @@
             // outputBox
             // 
             this.outputBox.AcceptsReturn = true;
-            this.outputBox.Location = new System.Drawing.Point(13, 152);
+            this.outputBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.outputBox.Location = new System.Drawing.Point(12, 192);
             this.outputBox.Multiline = true;
             this.outputBox.Name = "outputBox";
             this.outputBox.ReadOnly = true;
@@ -174,11 +180,42 @@
             this.playerVerbose4.TabIndex = 14;
             this.playerVerbose4.UseVisualStyleBackColor = true;
             // 
+            // txtNumGames
+            // 
+            this.txtNumGames.Location = new System.Drawing.Point(126, 102);
+            this.txtNumGames.Name = "txtNumGames";
+            this.txtNumGames.Size = new System.Drawing.Size(59, 20);
+            this.txtNumGames.TabIndex = 15;
+            this.txtNumGames.Text = "5000";
+            this.txtNumGames.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(191, 105);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Games";
+            // 
+            // gameVerbose
+            // 
+            this.gameVerbose.AutoSize = true;
+            this.gameVerbose.Location = new System.Drawing.Point(237, 104);
+            this.gameVerbose.Name = "gameVerbose";
+            this.gameVerbose.Size = new System.Drawing.Size(116, 17);
+            this.gameVerbose.TabIndex = 17;
+            this.gameVerbose.Text = "Output each Game";
+            this.gameVerbose.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 376);
+            this.ClientSize = new System.Drawing.Size(462, 416);
+            this.Controls.Add(this.gameVerbose);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtNumGames);
             this.Controls.Add(this.playerVerbose4);
             this.Controls.Add(this.playerVerbose5);
             this.Controls.Add(this.playerVerbose1);
@@ -194,7 +231,7 @@
             this.Controls.Add(this.playerCombo2);
             this.Controls.Add(this.playerCombo0);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "DominionSim";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,6 +253,9 @@
         private System.Windows.Forms.CheckBox playerVerbose1;
         private System.Windows.Forms.CheckBox playerVerbose5;
         private System.Windows.Forms.CheckBox playerVerbose4;
+        private System.Windows.Forms.TextBox txtNumGames;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox gameVerbose;
     }
 }
 
