@@ -32,6 +32,7 @@ namespace DominionSim
 
             CardSupply.Add(CardList.Smithy, 10);
             CardSupply.Add(CardList.Chapel, 10);
+            CardSupply.Add(CardList.Workshop, 10);
         }
 
         /// <summary>

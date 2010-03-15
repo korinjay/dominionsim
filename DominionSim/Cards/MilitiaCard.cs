@@ -7,7 +7,7 @@ namespace DominionSim.Cards
 {
     class MilitiaCard : Card
     {
-        public MilitiaCard() : base(CardList.Militia, CardType.Action, 4, 0, 0, 2, 0, 0)
+        public MilitiaCard() : base(CardList.Militia, Card.ActionAttack, 4, 0, 0, 2, 0, 0)
         {
             throw new NotImplementedException("Workin' on it. - Colin");
         }

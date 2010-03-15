@@ -9,6 +9,11 @@ namespace DominionSim
     {
         private static Random sRandom;
 
+        public static int RandBetween(int min, int max)
+        {
+            return sRandom.Next(min, max);
+        }
+
         public static List<T> Shuffle<T>(List<T> deck)
         {
             if (sRandom == null)

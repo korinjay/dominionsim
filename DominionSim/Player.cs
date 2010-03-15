@@ -24,7 +24,7 @@ namespace DominionSim
         public bool Verbose { get; set; }
 
         private int mTurn = 0;
-        private Dictionary<int, string> mPurchases;
+        private List<PlayerAction> mActions;
         private Supply mSupply;
 
         private Strategy.PlayerFacade mFacade;
@@ -68,7 +68,7 @@ namespace DominionSim
 
         public void StartNewGame()
         {
-            mPurchases = new Dictionary<int, string>();
+            mActions = new List<PlayerAction>();
             mTurn = 0;
             Deck = new List<string>();
             DrawPile = new List<string>();
@@ -170,9 +170,11 @@ namespace DominionSim
                 Card c = CardList.Cards[name];
                 Log("    Playing a " + name + "!");
 
+                mActions.Add(new PlayerAction(mTurn, name, PlayerAction.Play));
+
                 Actions--;
                 MoveCard(name, Hand, PlayPile);
-                c.ExecuteCard(this, Strategy);
+                c.ExecuteCard(this, Strategy, mSupply);
             }
         }
 
@@ -181,7 +183,7 @@ namespace DominionSim
             if (name == null)
             {
                 Log("    Buying nothing!");
-                mPurchases.Add(mTurn, "<nothing>");
+
                 Buys--;
                 return;
             }
@@ -197,7 +199,7 @@ namespace DominionSim
                     Deck.Add(name);
                     Moneys -= c.Cost;
                     Buys--;
-                    mPurchases.Add(mTurn, name);
+                    mActions.Add(new PlayerAction(mTurn, name, PlayerAction.Buy));
                 }
                 else
                 {
@@ -222,6 +224,8 @@ namespace DominionSim
             if (Hand.Contains(s))
             {
                 Log("    Trashing "+s+"!");
+                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Trash));
+
 
                 Hand.Remove(s);
                 Deck.Remove(s);
@@ -229,6 +233,18 @@ namespace DominionSim
             else
             {
                 throw new Exception("Told to trash " + s + " but I'm not holding that!");
+            }
+        }
+
+        public void GainCard(string s)
+        {
+            if (mSupply.GainCard(s))
+            {
+                Log("  Gained a " + s);
+                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Gain));
+
+                DiscardPile.Add(s);
+                Deck.Add(s);
             }
         }
 
@@ -251,11 +267,32 @@ namespace DominionSim
             return vps;
         }
 
+        public String ActivityString()
+        {
+            string str = "";
+
+            var grouped = mActions
+                .GroupBy((a) => a.Turn)
+                .OrderBy((a) => a.Key);
+
+            foreach (var group in grouped)
+            {
+                str += "[Turn " + group.Key + "] ";
+                foreach (var action in group)
+                {
+                    str += action.Action + " " + action.Card + "  ";
+                }
+                str += "\n";
+            }
+
+            return str;
+        }
+
         public String PurchaseString()
         {
             // Loop through all purchases and output a string in the format:
             //    "1:Silver 2:Silver 3:Gold"
-            return mPurchases.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value + " ");
+            return mActions.Where( (a) => (a.Action == PlayerAction.Buy)).Aggregate("", (s, a) => s + a.Turn + ":" + a.Card + " ");
         }
 
         public String StringFromList(IEnumerable<string> list)
@@ -310,5 +347,23 @@ namespace DominionSim
         }
     }
 
+    class PlayerAction
+    {
+        public const string Buy = "Buy";
+        public const string Gain = "Gain";
+        public const string Trash = "Trash";
+        public const string Play = "Play";
+
+        public int Turn;
+        public string Action;
+        public string Card;
+
+        public PlayerAction(int turn, string card, string action)
+        {
+            Turn = turn;
+            Card = card;
+            Action = action;
+        }
+    }
 
 }
