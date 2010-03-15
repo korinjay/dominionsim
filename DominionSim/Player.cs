@@ -253,22 +253,16 @@ namespace DominionSim
 
         public String PurchaseString()
         {
-            string str = "";
-            foreach (KeyValuePair<int, string> kvp in mPurchases)
-            {
-                str += kvp.Key + ":" + kvp.Value + " ";
-            }
-            return str;
+            // Loop through all purchases and output a string in the format:
+            //    "1: Silver 2: Silver 3: Gold"
+            return mPurchases.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value + " ");
         }
 
-        public String StringFromList(List<string> list)
+        public String StringFromList(IEnumerable<string> list)
         {
-            string str = "";
-            foreach (string card in list)
-            {
-                str += (card+ " ");
-            }
-            return str;
+            // Loop through the list and concatenate everything together like:
+            //     "listItem1 listItem2 listItem3"
+            return list.Aggregate("", (s, c) => s + c + " ");
         }
 
         public String StatStringFromList(IEnumerable<string> list)

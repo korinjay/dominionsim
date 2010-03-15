@@ -26,11 +26,11 @@ namespace DominionSim
             // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
             // we can throw into a ComboBox
             var inheritType = typeof(Strategy.IStrategy);
-            var types = AppDomain.CurrentDomain.GetAssemblies().ToList()
-                .SelectMany(assemblies => assemblies.GetTypes())
-                .Where(type => inheritType.IsAssignableFrom(type) && !type.IsAbstract)
-                .Select(type => new StrategyTypeHolder(type.Name, type))
-                .OrderBy(holder => holder.Name);
+            var types = AppDomain.CurrentDomain.GetAssemblies().ToList()                // List of all loaded assemblies (this exe, dlls)
+                .SelectMany(assemblies => assemblies.GetTypes())                        // Convert that list to a list of all loaded Types from each Assembly
+                .Where(type => inheritType.IsAssignableFrom(type) && !type.IsAbstract)  // Only pick out the bits that implement the given type (IStrategy) and are not abstract
+                .Select(type => new StrategyTypeHolder(type.Name, type))                // Throw each of those into my little StrategyTypeHolder class
+                .OrderBy(holder => holder.Name);                                        // Sort by name
 
             // Populate each ComboBox with those StrategyTypeHolders, plus a Dummy one for "None"
             foreach (ComboBox comboBox in PlayerComboBoxes)
