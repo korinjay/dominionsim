@@ -17,7 +17,7 @@ namespace DominionSim.Cards
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="s">Strategy</param>
-        public override void ExecuteCard(Player p, DominionSim.Strategy.IStrategy s)
+        public override void ExecuteCard(Player p, Strategy.IStrategy s)
         {
             base.ExecuteCard(p, s);
 

@@ -31,6 +31,12 @@ namespace DominionSim
 
         public void PlayNGames(int n, bool verbose)
         {
+            foreach (Player player in Players)
+            {
+                Wins[player] = 0;
+                Ties[player] = 0;
+            }
+
             for(int i=0; i < n; i++)
             {
                 GameStats results = PlayOneGame(verbose);
@@ -94,7 +100,7 @@ namespace DominionSim
 
             if (verbose)
             {
-                Console.WriteLine("Game ended after "+turns+" turns.  "+stats.Winners+" won with "+stats.WinnerScore+" points!");
+                Console.WriteLine("Game ended after "+turns+" turns.  "+stats.Winners.Aggregate("", (s, p) => (s + "'"+ p.Name + "' "))+"won with "+stats.WinnerScore+" points!");
             }
 
             for(int i=0; i < Players.Count; i++)

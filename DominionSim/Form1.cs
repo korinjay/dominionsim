@@ -50,6 +50,7 @@ namespace DominionSim
             foreach (CheckBox checkBox in AIUIComponents.Select(aiui => aiui.VerboseCheckbox))
             {
                 toolTip.SetToolTip(checkBox, "Verbose");
+                checkBox.CheckedChanged += new EventHandler(checkBox_CheckedChanged);
             }
 
             // Default to something playable immediately
@@ -59,6 +60,17 @@ namespace DominionSim
             playerCombo1.SelectedIndex = (rand.Next() % numTypes) +1;
             playerCombo2.SelectedIndex = (rand.Next() % numTypes) +1;
             playerCombo3.SelectedIndex = (rand.Next() % numTypes) +1;
+        }
+
+        void checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+
+            if (checkBox.Checked)
+            {
+                txtNumGames.Text = "1";
+                gameVerbose.Checked = true;
+            }
         }
 
         /// <summary>
@@ -86,8 +98,8 @@ namespace DominionSim
                     sim.Players.Add(newPlayer);
                 }
 
-                const int NumGames = 5000;
-                sim.PlayNGames(NumGames, false);
+                int NumGames = int.Parse(txtNumGames.Text);
+                sim.PlayNGames(NumGames, gameVerbose.Checked);
 
                 outputBox.Text = NumGames + " games played" + Environment.NewLine;
 
