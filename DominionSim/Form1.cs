@@ -21,12 +21,12 @@ namespace DominionSim
             InitializeComponent();
 
             AIUIComponents.AddRange(new AIUIInfo[] {
-                new AIUIInfo(playerCombo0, null),
-                new AIUIInfo(playerCombo1, null),
-                new AIUIInfo(playerCombo2, null),
-                new AIUIInfo(playerCombo3, null),
-                new AIUIInfo(playerCombo4, null),
-                new AIUIInfo(playerCombo5, null)});
+                new AIUIInfo(playerCombo0, playerVerbose0),
+                new AIUIInfo(playerCombo1, playerVerbose1),
+                new AIUIInfo(playerCombo2, playerVerbose2),
+                new AIUIInfo(playerCombo3, playerVerbose3),
+                new AIUIInfo(playerCombo4, playerVerbose4),
+                new AIUIInfo(playerCombo5, playerVerbose5)});
 
             // Use cool C# runtime type info and reflection stuff to find all non-abstract classes in all loaded
             // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
@@ -45,7 +45,13 @@ namespace DominionSim
                 comboBox.Items.AddRange(types.ToArray());
                 comboBox.SelectedIndex = 0;
             }
-            
+
+            ToolTip toolTip = new ToolTip();
+            foreach (CheckBox checkBox in AIUIComponents.Select(aiui => aiui.VerboseCheckbox))
+            {
+                toolTip.SetToolTip(checkBox, "Verbose");
+            }
+
             // Default to something playable immediately
             var rand = new Random();
             int numTypes = types.Count();

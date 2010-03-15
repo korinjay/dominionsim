@@ -86,6 +86,11 @@ namespace DominionSim.Strategy
             mPlayer.BuyCard(name);
         }
 
+        public void Log(string msg)
+        {
+            mPlayer.Log(msg);
+        }
+
         #endregion
     }
 }
