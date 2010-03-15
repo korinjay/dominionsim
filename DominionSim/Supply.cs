@@ -62,6 +62,18 @@ namespace DominionSim
             return CardSupply[cardName];
         }
 
+        public IEnumerable<string> GetAllCardsAtCost(int cost)
+        {
+            return GetAllCardsInCostRange(cost, cost);
+        }
+
+        public IEnumerable<string> GetAllCardsInCostRange(int min, int max)
+        {
+            return CardSupply.Where( (kvp) => CardList.Cards[kvp.Key].Cost >= min && CardList.Cards[kvp.Key].Cost <= max)
+                             .OrderByDescending( (kvp) => CardList.Cards[kvp.Key].Cost)
+                             .Select((kvp) => kvp.Key);
+        }
+
         public bool IsGameOver()
         {
             if(CardSupply[CardList.Province] == 0)
