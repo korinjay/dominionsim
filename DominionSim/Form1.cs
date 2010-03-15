@@ -86,12 +86,12 @@ namespace DominionSim
                 outputBox.Text = NumGames + " games played" + Environment.NewLine;
 
                 // Sort out the players so the most wins go on top
-                var sortedPlayes = sim.Players.OrderByDescending(p => sim.Wins[p.Name]);
+                var sortedPlayes = sim.Players.OrderByDescending(p => sim.Wins[p] + sim.Ties[p]);
                 foreach (var player in sortedPlayes)
                 {
                     string playerName = player.Name;
-                    int numWins = sim.Wins.ContainsKey(player.Name) ? sim.Wins[player.Name] : 0;
-                    int numTies = sim.Ties.ContainsKey(player.Name) ? sim.Ties[player.Name] : 0;
+                    int numWins = sim.Wins.ContainsKey(player) ? sim.Wins[player] : 0;
+                    int numTies = sim.Ties.ContainsKey(player) ? sim.Ties[player] : 0;
 
                     outputBox.Text += playerName + " - Wins: " + numWins + ", Ties: " + numTies + ", Highest Score %: " + ((numWins + numTies) * 100.0f / NumGames) + Environment.NewLine;
                 }
