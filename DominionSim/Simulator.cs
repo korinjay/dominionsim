@@ -41,7 +41,7 @@ namespace DominionSim
             {
                 GameStats results = PlayOneGame(verbose);
 
-                var listToAddTo = (results.Winners.Count() > 1 ? Wins : Ties);
+                var listToAddTo = (results.Winners.Count() > 1 ? Ties : Wins);
                 foreach (var winner in results.Winners)
                 {
                     if (listToAddTo.ContainsKey(winner))
