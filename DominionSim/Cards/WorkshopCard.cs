@@ -18,11 +18,11 @@ namespace DominionSim.Cards
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="s">Strategy</param>
-        public override void ExecuteCard(Player p, Strategy.IStrategy s, Supply supply)
+        public override void ExecuteCard(Player p, Supply supply)
         {
-            base.ExecuteCard(p, s, supply);
+            base.ExecuteCard(p, supply);
 
-            string card = s.ChooseCardToGain(p.GetFacade(), 0, 4, supply);
+            string card = p.Strategy.ChooseCardToGain(p.GetFacade(), 0, 4, supply);
 
             p.GainCard(card);
         }

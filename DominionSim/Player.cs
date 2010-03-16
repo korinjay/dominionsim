@@ -10,6 +10,8 @@ namespace DominionSim
     {
         public string Name { get; set; }
 
+        public IEnumerable<Player> OtherPlayers { get; set; }
+
         public Strategy.IStrategy Strategy { get; set; }
         public List<string> Deck { get; set; }
         public List<string> DrawPile { get; set; }
@@ -174,7 +176,7 @@ namespace DominionSim
 
                 Actions--;
                 MoveCard(name, Hand, PlayPile);
-                c.ExecuteCard(this, Strategy, mSupply);
+                c.ExecuteCard(this, mSupply);
             }
         }
 

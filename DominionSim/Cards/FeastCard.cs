@@ -11,18 +11,19 @@ namespace DominionSim.Cards
         {
         }
 
-        public override void ExecuteCard(Player p, DominionSim.Strategy.IStrategy s, Supply supply)
+        public override void ExecuteCard(Player p, Supply supply)
         {
-            base.ExecuteCard(p, s, supply);
+            base.ExecuteCard(p, supply);
 
             // First trash ourselves!
             p.TrashCard(Name);
 
             // Now choose what to gain
-            string gain = s.ChooseCardToGain(p.GetFacade(), 0, 5, supply);
+            string gain = p.Strategy.ChooseCardToGain(p.GetFacade(), 0, 5, supply);
 
             // Now gain it!
             p.GainCard(gain);
-        }
+        }
+
     }
 }
