@@ -69,12 +69,12 @@ namespace DominionSim
             }
 
             int turns = 0;
-            while(!Supply.IsGameOver())
+            while(Supply.GetGameState() == Supply.GameState.Playing)
             {
                 foreach (Player player in Players)
                 {
                     player.TakeTurn(turns, Supply);
-                    if (Supply.IsGameOver())
+                    if (Supply.GetGameState() != Supply.GameState.Playing)
                     {
                         break;
                     }
@@ -82,6 +82,7 @@ namespace DominionSim
                 turns++;
             }
 
+            Supply.GameState state = Supply.GetGameState();
             GameStats stats = new GameStats();
 
             int highScore = 0;
@@ -100,7 +101,8 @@ namespace DominionSim
 
             if (verbose)
             {
-                Console.WriteLine("Game ended after "+turns+" turns.  "+stats.Winners.Aggregate("", (s, p) => (s + "'"+ p.Name + "' "))+"won with "+stats.WinnerScore+" points!");
+                Console.WriteLine("Game ended after "+turns+" turns: "+Supply.GetGameStateString());
+                Console.WriteLine(stats.Winners.Aggregate("", (s, p) => (s + "'"+ p.Name + "' "))+"won with "+stats.WinnerScore+" points!");
             }
 
             for(int i=0; i < Players.Count; i++)
