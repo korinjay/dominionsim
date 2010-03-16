@@ -48,7 +48,10 @@ namespace DominionSim
 
         public virtual void ExecuteCard(Player p, Supply supply)
         {
-            p.DrawCards(Draws);
+            if (Draws > 0)
+            {
+                p.DrawCards(Draws);
+            }
             p.Actions += Actions;
             p.Buys += Buys;
             p.Moneys += Moneys;

@@ -55,10 +55,10 @@ namespace DominionSim.Strategy
         /// <returns></returns>
         public virtual IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Supply s)
         {
-            var deadCards = p.GetHand().Where(c => (CardList.Cards[c].Type & (Card.CardType.Curse | Card.CardType.Victory)) != 0 );
-            int num = Math.Min(deadCards.Count(), max);
+            var orderedCards = p.GetHand().OrderBy( c => (CardList.Cards[c].Cost) )
+                                          .OrderByDescending(c => (CardList.Cards[c].Type & (Card.CardType.Curse | Card.CardType.Victory)) != 0);
 
-            return deadCards.Take(num);
+            return orderedCards.Take(min);
         }
 
         /// <summary>

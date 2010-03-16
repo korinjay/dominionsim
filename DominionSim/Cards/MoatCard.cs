@@ -9,7 +9,6 @@ namespace DominionSim.Cards
     {
         public MoatCard() : base(CardList.Moat, ReactionAction, 2, 2, 0, 0, 0, 0)
         {
-            throw new NotImplementedException("Workin' on it. - Colin");
         }
     }
 }

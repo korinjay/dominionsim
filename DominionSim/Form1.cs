@@ -91,7 +91,16 @@ namespace DominionSim
                 foreach (var iter in aisToUse)
                 {
                     StrategyTypeHolder strategyTypeHolder = (iter.AISelection.SelectedItem as StrategyTypeHolder);
-                    string name = strategyTypeHolder.ToString();
+                    string baseName = strategyTypeHolder.ToString();
+
+                    IEnumerable<string> existingNames = sim.Players.Select((p) => p.Name);
+                    string name = baseName;
+                    int i = 2;
+                    while (existingNames.Contains(name))
+                    {
+                        name = baseName + " #"+i.ToString();
+                        i++;
+                    }
                     Player newPlayer = new Player(name);
                     newPlayer.Strategy = Activator.CreateInstance(strategyTypeHolder.Type) as Strategy.IStrategy;
                     newPlayer.Verbose = (iter.VerboseCheckbox != null ? iter.VerboseCheckbox.Checked : false);

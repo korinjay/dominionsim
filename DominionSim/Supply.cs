@@ -23,7 +23,7 @@ namespace DominionSim
             CardSupply = new Dictionary<string, int>();
         }
 
-        public void SetupForNewGame(int numPlayers)
+        private void SetupTreasureAndVictory(int numPlayers)
         {
             mNumPlayers = numPlayers;
 
@@ -36,6 +36,39 @@ namespace DominionSim
             CardSupply.Add(CardList.Estate, 12);
             CardSupply.Add(CardList.Duchy, 12);
             CardSupply.Add(CardList.Province, 12 + ((mNumPlayers - 4) * 3));
+        }
+
+        /// <summary>
+        /// Set up the Supply to have every card available just for testing purposes
+        /// </summary>
+        /// <param name="numPlayers"></param>
+        public void SetupForTesting(int numPlayers)
+        {
+            SetupTreasureAndVictory(numPlayers);
+
+            var cardsToAdd = CardList.Cards.Where((kvp) => !CardSupply.ContainsKey(kvp.Key))
+                                           .Select((kvp) => kvp.Key);
+
+            foreach (string name in cardsToAdd)
+            {
+                Card.CardType type = CardList.Cards[name].Type;
+
+                if ((type & Card.CardType.Victory) != 0)
+                {
+                    // Add 12 copies of Victory cards
+                    CardSupply.Add(name, 12);
+                }
+                else
+                {
+                    // Add 10 copies of all other cards
+                    CardSupply.Add(name, 10);
+                }
+            }
+        }
+
+        public void SetupForStartingSet(int numPlayers)
+        {
+            SetupTreasureAndVictory(numPlayers);
 
             // STARTING SET
             CardSupply.Add(CardList.Cellar, 10);
@@ -49,9 +82,6 @@ namespace DominionSim
             //CardSupply.Add(CardList.Mine, 10);
             CardSupply.Add(CardList.Market, 10);
             // END STARTING SET
-
-            CardSupply.Add(CardList.Chapel, 10);
-            CardSupply.Add(CardList.Feast, 10);
         }
 
         /// <summary>
