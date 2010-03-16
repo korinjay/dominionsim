@@ -7,6 +7,13 @@ namespace DominionSim
 {
     class Supply
     {
+        public enum GameState
+        {
+            Playing,
+            EndViaProvinces,
+            EndViaSupply
+        }
+
         public Dictionary<string, int> CardSupply { get; set; }
 
         private int mNumPlayers;
@@ -87,22 +94,15 @@ namespace DominionSim
                              .Select((kvp) => kvp.Key);
         }
 
-        public bool IsGameOver()
+        public GameState GetGameState()
         {
             if(CardSupply[CardList.Province] == 0)
             {
-                return true;
+                return GameState.EndViaProvinces;
             }
             else
             {
-                int numEmpty = 0;
-                foreach(KeyValuePair<string, int> kvp in CardSupply)
-                {
-                    if(kvp.Value == 0)
-                    {
-                        numEmpty++;
-                    }
-                }
+                int numEmpty = CardSupply.Where(k => k.Value == 0).Count();
 
                 int numToEnd = 3;
                 if(mNumPlayers > 4)
@@ -111,11 +111,35 @@ namespace DominionSim
                 }
                 if(numEmpty >= numToEnd)
                 {
-                    return true;
+                    return GameState.EndViaSupply;
                 }
             }
 
-            return false;
+            return GameState.Playing;
+        }
+
+        public string GetGameStateString()
+        {
+            GameState state = GetGameState();
+
+            if (state == GameState.Playing)
+            {
+                return "Playing";
+            }
+            else if (state == GameState.EndViaProvinces)
+            {
+                return "Ran out of Provinces";
+            }
+            else if (state == GameState.EndViaSupply)
+            {
+                var emptyPiles = CardSupply.Where(k => k.Value == 0);
+
+                return "Ran out of "+emptyPiles.Aggregate("", (a, k) => a + k.Key + " ");
+            }
+            else
+            {
+                return "Unknown state!";
+            }
         }
     }
 }
