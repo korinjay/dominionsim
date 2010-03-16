@@ -10,7 +10,7 @@ namespace DominionSim
     {
         public string Name { get; set; }
 
-        public IEnumerable<Player> OtherPlayers { get; set; }
+        public List<Player> OtherPlayers { get; set; }
 
         public Strategy.IStrategy Strategy { get; set; }
         public List<string> Deck { get; set; }
@@ -77,6 +77,7 @@ namespace DominionSim
             DiscardPile = new List<string>();
             Hand = new List<string>();
             PlayPile = new List<string>();
+            OtherPlayers = new List<Player>();
 
             for (int i = 0; i < 7; i++)
             {
@@ -263,6 +264,8 @@ namespace DominionSim
                 throw new Exception("Told to discard " + s + " but I'm not holding that!");
             }
         }
+
+
         public void GainCard(string s)
         {
             if (mSupply.GainCard(s))
@@ -274,6 +277,13 @@ namespace DominionSim
                 Deck.Add(s);
             }
         }
+
+        public void AttackedBy(string player, string card)
+        {
+            Log(this.Name + " was attacked by a " + card + " from " + player + "!");
+            mActions.Add(new PlayerAction(mTurn, card, PlayerAction.AttackedBy));
+        }
+
 
         public Strategy.PlayerFacade GetFacade()
         {
@@ -375,6 +385,7 @@ namespace DominionSim
                 Console.WriteLine(str);
             }
         }
+
     }
 
     class PlayerAction
@@ -384,6 +395,7 @@ namespace DominionSim
         public const string Trash = "Trash";
         public const string Play = "Play";
         public const string Discard = "Discard";
+        public const string AttackedBy = "Attacked by";
 
         public int Turn;
         public string Action;

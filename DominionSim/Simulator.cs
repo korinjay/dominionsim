@@ -35,8 +35,6 @@ namespace DominionSim
             {
                 Wins[player] = 0;
                 Ties[player] = 0;
-
-                player.OtherPlayers = Players.Where(p => p != player);
             }
 
             for(int i=0; i < n; i++)
@@ -61,13 +59,16 @@ namespace DominionSim
  
         public GameStats PlayOneGame(bool verbose)
         {
-            Supply.SetupForNewGame(Players.Count);
+            Supply.SetupForTesting(Players.Count);
 
             Players = Utility.Shuffle(Players);
 
             foreach (Player player in Players)
             {
                 player.StartNewGame();
+
+                player.OtherPlayers.AddRange(Players.Where(p => p != player));
+
             }
 
             int turns = 0;
