@@ -35,6 +35,8 @@ namespace DominionSim
             {
                 Wins[player] = 0;
                 Ties[player] = 0;
+
+                player.OtherPlayers = Players.Where(p => p != player);
             }
 
             for(int i=0; i < n; i++)

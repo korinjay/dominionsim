@@ -15,9 +15,9 @@ namespace DominionSim.Cards
         {
         }
 
-        public override void ExecuteCard(Player p, Strategy.IStrategy s, Supply supply)
+        public override void ExecuteCard(Player p, Supply supply)
         {
-            var toTrash = s.ChooseCardsToTrash(p.GetFacade(), 0, 4, supply);
+            var toTrash = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 0, 4, supply);
             foreach (string card in toTrash)
             {
                 p.TrashCard(card);

@@ -12,11 +12,11 @@ namespace DominionSim.Cards
 
         }
 
-        public override void ExecuteCard(Player p, DominionSim.Strategy.IStrategy s, Supply supply)
+        public override void ExecuteCard(Player p, Supply supply)
         {
-            base.ExecuteCard(p, s, supply);
+            base.ExecuteCard(p, supply);
 
-            IEnumerable<string> cards = s.ChooseCardsToDiscard(p.GetFacade(), 0, 4, supply);
+            IEnumerable<string> cards = p.Strategy.ChooseCardsToDiscard(p.GetFacade(), 0, 4, supply);
 
             foreach (string card in cards)
             {
