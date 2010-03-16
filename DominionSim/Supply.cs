@@ -30,11 +30,21 @@ namespace DominionSim
             CardSupply.Add(CardList.Duchy, 12);
             CardSupply.Add(CardList.Province, 12 + ((mNumPlayers - 4) * 3));
 
-            CardSupply.Add(CardList.Smithy, 10);
-            CardSupply.Add(CardList.Chapel, 10);
-            CardSupply.Add(CardList.Workshop, 10);
-            CardSupply.Add(CardList.Feast, 10);
+            // STARTING SET
             CardSupply.Add(CardList.Cellar, 10);
+            //CardSupply.Add(CardList.Moat, 10);
+            CardSupply.Add(CardList.Village, 10);
+            //CardSupply.Add(CardList.Militia, 10);
+            CardSupply.Add(CardList.Workshop, 10);
+            CardSupply.Add(CardList.Woodcutter, 10);
+            CardSupply.Add(CardList.Smithy, 10);
+            //CardSupply.Add(CardList.Remodel, 10);
+            //CardSupply.Add(CardList.Mine, 10);
+            CardSupply.Add(CardList.Market, 10);
+            // END STARTING SET
+
+            CardSupply.Add(CardList.Chapel, 10);
+            CardSupply.Add(CardList.Feast, 10);
         }
 
         /// <summary>

@@ -44,9 +44,21 @@ namespace DominionSim.Strategy
             return p.GetHand().OrderBy(c => CardList.Cards[c].Cost).Take(min);
         }
 
+        /// <summary>
+        /// Base implementation of the ChooseCardsToDiscard function.
+        /// Default to naively choosing the most victory-point-heavy cards in hand.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public virtual IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Supply s)
         {
-            return p.GetHand().OrderByDescending(c => CardList.Cards[c].VictoryPoints).Take(min);
+            var deadCards = p.GetHand().Where(c => (CardList.Cards[c].Type & (Card.CardType.Curse | Card.CardType.Victory)) != 0 );
+            int num = Math.Min(deadCards.Count(), max);
+
+            return deadCards.Take(num);
         }
 
         /// <summary>

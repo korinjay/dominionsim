@@ -66,6 +66,11 @@ namespace DominionSim
 
     #region Dominion
     class SmithyCard    : Card { public SmithyCard()    : base(CardList.Smithy,     Card.CardType.Action,   4, 3, 0, 0, 0, 0) {} }
+    class VillageCard   : Card { public VillageCard()   : base(CardList.Village,    Card.CardType.Action,   3, 1, 2, 0, 0, 0) {} }
+    class LaboratoryCard : Card { public LaboratoryCard() : base(CardList.Laboratory, Card.CardType.Action, 5, 2, 1, 0, 0, 0) {} }
+    class FestivalCard  : Card { public FestivalCard()  : base(CardList.Festival,   Card.CardType.Action,   5, 0, 2, 2, 1, 0) {} }
+    class MarketCard    : Card { public MarketCard()    : base(CardList.Market,     Card.CardType.Action,   5, 1, 1, 1, 1, 0) {} }
+    class WoodcutterCard : Card { public WoodcutterCard() : base(CardList.Woodcutter, CardType.Action,      3, 0, 0, 2, 1, 0) {} }
     #endregion
 
     #region Intrigue

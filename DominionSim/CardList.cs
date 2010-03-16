@@ -21,6 +21,11 @@ namespace DominionSim
         public const string Workshop = "Workshop";
         public const string Feast = "Feast";
         public const string Cellar = "Cellar";
+        public const string Village = "Village";
+        public const string Laboratory = "Laboratory";
+        public const string Festival = "Festival";
+        public const string Market = "Market";
+        public const string Woodcutter = "Woodcutter";
 
         public const string Militia = "Militia";
         public const string Moat = "Moat";
@@ -52,6 +57,9 @@ namespace DominionSim
             Cards.Add(Workshop, new Cards.WorkshopCard());
             Cards.Add(Feast, new Cards.FeastCard());
             Cards.Add(Cellar, new Cards.CellarCard());
+            Cards.Add(Village, new VillageCard());
+            Cards.Add(Market, new MarketCard());
+            Cards.Add(Woodcutter, new WoodcutterCard());
 
             // Workin' on it - Colin
             //Cards.Add(Militia, new Cards.MilitiaCard());
