@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace DominionSim
 {
@@ -15,6 +16,10 @@ namespace DominionSim
         /// List of all the Combo Boxes for players so we can quickly loop through them
         /// </summary>
         private List<AIUIInfo> AIUIComponents = new List<AIUIInfo>();
+
+        private Simulator mSim;
+
+        private Thread ProgressThread;
 
         public Form1()
         {
@@ -73,6 +78,12 @@ namespace DominionSim
             }
         }
 
+        private void ProgressThreadTask()
+        {
+            progressBar.Value = mSim.CurrentGame;
+            Thread.Sleep(100);
+        }
+
         /// <summary>
         /// Play button was clicked
         /// </summary>
@@ -85,7 +96,7 @@ namespace DominionSim
 
             if (1 < aisToUse.Count())
             {
-                Simulator sim = new Simulator();
+                mSim = new Simulator();
 
                 // Loop through all the AIs that were selected and spawn Players and Strategies for each
                 foreach (var iter in aisToUse)
@@ -93,7 +104,7 @@ namespace DominionSim
                     StrategyTypeHolder strategyTypeHolder = (iter.AISelection.SelectedItem as StrategyTypeHolder);
                     string baseName = strategyTypeHolder.ToString();
 
-                    IEnumerable<string> existingNames = sim.Players.Select((p) => p.Name);
+                    IEnumerable<string> existingNames = mSim.Players.Select((p) => p.Name);
                     string name = baseName;
                     int i = 2;
                     while (existingNames.Contains(name))
@@ -104,24 +115,33 @@ namespace DominionSim
                     Player newPlayer = new Player(name);
                     newPlayer.Strategy = Activator.CreateInstance(strategyTypeHolder.Type) as Strategy.IStrategy;
                     newPlayer.Verbose = (iter.VerboseCheckbox != null ? iter.VerboseCheckbox.Checked : false);
-                    sim.Players.Add(newPlayer);
+                    mSim.Players.Add(newPlayer);
                 }
 
                 int NumGames = int.Parse(txtNumGames.Text);
-                sim.PlayNGames(NumGames, gameVerbose.Checked);
+
+                progressBar.Minimum = 0;
+                progressBar.Maximum = NumGames;
+                ProgressThread = new Thread(new ThreadStart(ProgressThreadTask));
+                ProgressThread.IsBackground = true;
+                ProgressThread.Start();
+                mSim.PlayNGames(NumGames, gameVerbose.Checked);
+                ProgressThread.Abort();
 
                 outputBox.Text = NumGames + " games played" + Environment.NewLine;
 
                 // Sort out the players so the most wins go on top
-                var sortedPlayes = sim.Players.OrderByDescending(p => sim.Wins[p] + sim.Ties[p]);
+                var sortedPlayes = mSim.Players.OrderByDescending(p => mSim.Wins[p] + mSim.Ties[p]);
                 foreach (var player in sortedPlayes)
                 {
                     string playerName = player.Name;
-                    int numWins = sim.Wins.ContainsKey(player) ? sim.Wins[player] : 0;
-                    int numTies = sim.Ties.ContainsKey(player) ? sim.Ties[player] : 0;
+                    int numWins = mSim.Wins.ContainsKey(player) ? mSim.Wins[player] : 0;
+                    int numTies = mSim.Ties.ContainsKey(player) ? mSim.Ties[player] : 0;
 
                     outputBox.Text += playerName + " - Wins: " + numWins + ", Ties: " + numTies + ", Highest Score %: " + ((numWins + numTies) * 100.0f / NumGames) + Environment.NewLine;
                 }
+
+                outputBox.Text += Environment.NewLine + Stats.Tracker.Instance.GetAllPlayCountsString();
             }
             else
             {

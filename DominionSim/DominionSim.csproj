@@ -57,6 +57,8 @@
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\RemodelCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
+    <Compile Include="Stats\Tracker.cs" />
+    <Compile Include="Stats\PlayerAction.cs" />
     <Compile Include="Strategy\BaseStrategy.cs" />
     <Compile Include="Strategy\Chapel.cs" />
     <Compile Include="Strategy\SingleCard.cs" />
