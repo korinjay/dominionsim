@@ -79,7 +79,7 @@ namespace DominionSim
             CardSupply.Add(CardList.Woodcutter, 10);
             CardSupply.Add(CardList.Smithy, 10);
             //CardSupply.Add(CardList.Remodel, 10);
-            //CardSupply.Add(CardList.Mine, 10);
+            CardSupply.Add(CardList.Mine, 10);
             CardSupply.Add(CardList.Market, 10);
             // END STARTING SET
         }

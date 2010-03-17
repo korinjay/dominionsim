@@ -55,6 +55,7 @@
     <Compile Include="Cards\MilitiaCard.cs" />
     <Compile Include="Cards\MineCard.cs" />
     <Compile Include="Cards\MoatCard.cs" />
+    <Compile Include="Cards\RemodelCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
     <Compile Include="Strategy\BaseStrategy.cs" />
     <Compile Include="Strategy\Chapel.cs" />
