@@ -19,8 +19,6 @@ namespace DominionSim
 
         private Simulator mSim;
 
-        private Thread ProgressThread;
-
         public Form1()
         {
             InitializeComponent();
@@ -78,12 +76,6 @@ namespace DominionSim
             }
         }
 
-        private void ProgressThreadTask()
-        {
-            progressBar.Value = mSim.CurrentGame;
-            Thread.Sleep(100);
-        }
-
         /// <summary>
         /// Play button was clicked
         /// </summary>
@@ -122,11 +114,7 @@ namespace DominionSim
 
                 progressBar.Minimum = 0;
                 progressBar.Maximum = NumGames;
-                ProgressThread = new Thread(new ThreadStart(ProgressThreadTask));
-                ProgressThread.IsBackground = true;
-                ProgressThread.Start();
                 mSim.PlayNGames(NumGames, gameVerbose.Checked);
-                ProgressThread.Abort();
 
                 outputBox.Text = NumGames + " games played" + Environment.NewLine;
 
