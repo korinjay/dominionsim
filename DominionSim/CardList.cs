@@ -47,8 +47,7 @@ namespace DominionSim
             var cardList = AppDomain.CurrentDomain.GetAssemblies().ToList()   // List of all loaded assemblies (this exe, dlls)
                 .SelectMany(assemblies => assemblies.GetTypes())              // Convert that list to a list of all loaded Types from each Assembly
                 .Where(type => inheritType.IsAssignableFrom(type) &&          // Only pick out subclasses of Card
-                       !type.IsAbstract &&                                    // That are not abstract
-                       type != inheritType)                                   // And ignore Card itself
+                       !type.IsAbstract)                                      // That are not abstract
                 .Select(type => Activator.CreateInstance(type) as Card);      // Now return a list of instances of each type
 
             // For each card we found add it to the big lookup table by name
