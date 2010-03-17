@@ -56,6 +56,7 @@
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
     <Compile Include="Strategy\BaseStrategy.cs" />
+    <Compile Include="Strategy\BuyOneCard.cs" />
     <Compile Include="Strategy\Chapel.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Player.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="Simulator.cs" />
     <Compile Include="Strategy\BigMoney.cs" />
     <Compile Include="Strategy\BigMoneyDuchy.cs" />
+    <Compile Include="Strategy\Militia.cs" />
+    <Compile Include="Strategy\Moat.cs" />
     <Compile Include="Strategy\PlayerFacade.cs" />
     <Compile Include="Strategy\Random.cs" />
     <Compile Include="Strategy\Smithy.cs" />

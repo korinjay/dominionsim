@@ -10,7 +10,7 @@ namespace DominionSim.Strategy
     /// </summary>
     class BigMoneyDuchy : BaseStrategy
     {
-        const int PROVINCE_THRESHOLD = 4;
+        protected const int PROVINCE_THRESHOLD = 4;
 
         public override void TurnBuy(PlayerFacade p, Supply s)
         {

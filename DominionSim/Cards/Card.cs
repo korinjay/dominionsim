@@ -56,6 +56,46 @@ namespace DominionSim
             p.Buys += Buys;
             p.Moneys += Moneys;
         }
+
+        /// <summary>
+        /// Perform a reaction
+        /// </summary>
+        /// <param name="attacker">One performing the attack</param>
+        /// <param name="victim">One getting hit by the attack</param>
+        /// <param name="supply">The supply</param>
+        /// <returns>True if the attack was successfully prevented from affecting the victim</returns>
+        public virtual bool ExecuteReaction(Player attacker, Player victim, Supply supply)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Perform this card as an attack against the given opponent
+        /// </summary>
+        /// <param name="attacker">Player attacking</param>
+        /// <param name="victim">One being attacked</param>
+        /// <param name="supply">The supply</param>
+        /// <returns>True if the victim blocked the attack</returns>
+        protected bool HandleAttackReactions(Player attacker, Player victim, Supply supply)
+        {
+            // Tell the victim's strategy to attack, and then tell the victim's player what happened so
+            // it can appropriately 
+            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply, attacker.Name, Name);
+            victim.AttackedBy(attacker.Name, Name, attackReactionCards);
+
+            // Double check that the Strategy isn't lying.
+            // I don't have an easy way to double check that he didn't list the same card a lot.
+            if (victim.Hand.Intersect(attackReactionCards).Count() != attackReactionCards.Distinct().Count())
+            {
+                throw new Exception("Victim " + victim.Name + "'s Strategy lied about the Reaction cards in his hand!");
+            }
+
+            // Get every card he reacted with combined with his duration cards.  Find only the ones of type Reaction.
+            // Attempt to react to them all, and return true if any of their ExecuteReaction functions returned true.
+            return attackReactionCards.Union(victim.DurationCards)
+                                      .Where(c => (CardList.Cards[c].Type & CardType.Reaction) != 0)
+                                      .Aggregate(false, (blocked, cardName) => blocked || CardList.Cards[cardName].ExecuteReaction(attacker, victim, supply));
+        }
     }
 
     #region No-frills cards
