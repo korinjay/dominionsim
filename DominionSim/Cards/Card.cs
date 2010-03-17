@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim
 {
-    class Card
+    abstract class Card
     {
         [FlagsAttribute] 
         public enum CardType
