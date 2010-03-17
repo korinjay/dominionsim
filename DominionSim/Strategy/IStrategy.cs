@@ -50,5 +50,15 @@ namespace DominionSim.Strategy
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>Return the kind of card you wish to gain</returns>
         string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s);
+
+        /// <summary>
+        /// Someone attacked you, and now you need to react
+        /// </summary>
+        /// <param name="victimPlayerFacade">The Player who is getting hit</param>
+        /// <param name="supply">The supply</param>
+        /// <param name="attackerName">Name of the attacking player</param>
+        /// <param name="cardName">Name of the attacking card</param>
+        /// <returns>Return the list of cards you wish to react with</returns>
+        IEnumerable<string> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, string cardName);
     }
 }

@@ -29,16 +29,16 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p">Player</param>
         /// <returns>Whether we bought one</returns>
-        protected override bool AttemptBuySmithy(PlayerFacade p)
+        protected override bool AttemptBuyCard(PlayerFacade p)
         {
-            if (CanAfford(p, CardList.Smithy))
+            if (CanAfford(p, mCardToBuy))
             {
-                int numSmithies = Utility.CountCardIn(CardList.Smithy, p.GetDeck());
+                int numSmithies = Utility.CountCardIn(mCardToBuy, p.GetDeck());
                 int numCards = p.GetDeck().Count();
                 // Attempt to maintain a healthy ratio of 1 per # cards
                 if ((numCards / 8) > numSmithies)
                 {
-                    p.BuyCard(CardList.Smithy);
+                    p.BuyCard(mCardToBuy);
                     return true;
                 }
             }
@@ -46,81 +46,10 @@ namespace DominionSim.Strategy
         }
     }
 
-    abstract class Smithy : BaseStrategy
+    abstract class Smithy : BuyOneCard
     {
-
-        private int mNumSmithysToBuy = 1;
-
-        public Smithy(int numSmithys)
+        public Smithy(int numSmithys) : base(CardList.Smithy, numSmithys)
         {
-            mNumSmithysToBuy = numSmithys;
         }
-
-        #region IStrategy Members
-        const int PROVINCE_THRESHOLD = 4;
-
-        public override void TurnAction(PlayerFacade p, Supply s)
-        {
-            if (p.GetHand().Contains(CardList.Smithy))
-            {
-                p.PlayActionCard(CardList.Smithy);
-            }
-        }
-
-        public override void TurnBuy(PlayerFacade p, Supply s)
-        {
-            // Always buy provinces
-            if (p.GetMoneys() >= 8)
-            {
-                p.BuyCard(CardList.Province);
-                return;
-            }
-
-            // If there's still a bit of time (more than 4 Provinces) buy Gold
-            if (p.GetMoneys() >= 6 && s.Quantity(CardList.Province) > PROVINCE_THRESHOLD)
-            {
-                p.BuyCard(CardList.Gold);
-                return;
-            }
-
-            // If we're close to the end of the game (fewer than 4 Provinces left) buy Duchies
-            if (p.GetMoneys() >= 5 && s.Quantity(CardList.Province) <= PROVINCE_THRESHOLD)
-            {
-                p.BuyCard(CardList.Duchy);
-                return;
-            }
-
-            if (AttemptBuySmithy(p))
-            {
-                return;
-            }
-
-            // Else buy silver
-            if (p.GetMoneys() >= 3)
-            {
-                p.BuyCard(CardList.Silver);
-                return;
-            }
-        }
-
-
-        /// <summary>
-        /// Attempt to purchase a Smithy.
-        /// </summary>
-        /// <param name="p">Player</param>
-        /// <returns>Whether we bought one</returns>
-        protected virtual bool AttemptBuySmithy(PlayerFacade p)
-        {
-            int numSmithys = Utility.CountCardIn(CardList.Smithy, p.GetDeck());
-            // If we have 4 and we didn't already buy a smithy, buy one!
-            if (CanAfford(p, CardList.Smithy) && numSmithys < mNumSmithysToBuy)
-            {
-                p.BuyCard(CardList.Smithy);
-                return true;
-            }
-            return false;
-        }
-
-        #endregion
     }
 }

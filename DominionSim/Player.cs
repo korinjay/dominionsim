@@ -16,6 +16,7 @@ namespace DominionSim
         public List<string> Deck { get; set; }
         public List<string> DrawPile { get; set; }
         public List<string> DiscardPile { get; set; }
+        public List<string> DurationCards { get; set; }
         public List<string> Hand { get; set; }
         public List<string> PlayPile { get; set; }
 
@@ -73,6 +74,7 @@ namespace DominionSim
             Deck = new List<string>();
             DrawPile = new List<string>();
             DiscardPile = new List<string>();
+            DurationCards = new List<string>();
             Hand = new List<string>();
             PlayPile = new List<string>();
             OtherPlayers = new List<Player>();
@@ -177,6 +179,10 @@ namespace DominionSim
                 MoveCard(name, Hand, PlayPile);
                 c.ExecuteCard(this, mSupply);
             }
+            else
+            {
+                throw new Exception("Card " + name + " not in hand.");
+            }
         }
 
         public void BuyCard(string name)
@@ -276,9 +282,9 @@ namespace DominionSim
             }
         }
 
-        public void AttackedBy(string player, string card)
+        public void AttackedBy(string player, string card, IEnumerable<string> reactedWith)
         {
-            Log(this.Name + " was attacked by a " + card + " from " + player + "!");
+            Log(this.Name + " was attacked by a " + card + " from " + player + (reactedWith.Count() > 0 ? ", reacted with: (" + reactedWith.Aggregate("", (s, c) => s + c + " " + ")") : "") + "!");
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AttackedBy));
         }
 
