@@ -24,19 +24,19 @@ namespace DominionSim.Cards
 
                 int numToDiscard = opponent.Hand.Count - 3;
 
-                opponent.AttackedBy(p.Name, Name);
-
-                var discards = opponent.Strategy.ChooseCardsToDiscard(opponent.GetFacade(), numToDiscard, numToDiscard, Card.CardType.Any, supply);
-
-                if (discards.Count() < numToDiscard)
+                if (!HandleAttackReactions(p, opponent, supply))
                 {
-                    throw new Exception("Player " + p.Name + " failed to discard the required number of cards!");
-                }
+                    var discards = opponent.Strategy.ChooseCardsToDiscard(opponent.GetFacade(), numToDiscard, numToDiscard, supply);
 
+                    if (discards.Count() < numToDiscard)
+                    {
+                        throw new Exception("Player " + p.Name + " failed to discard the required number of cards!");
+                    }
 
-                foreach (string card in discards)
-                {
-                    opponent.DiscardCard(card);
+                    foreach (string card in discards)
+                    {
+                        opponent.DiscardCard(card);
+                    }
                 }
             }
         }

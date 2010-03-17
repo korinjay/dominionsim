@@ -90,6 +90,20 @@ namespace DominionSim.Strategy
             return (p.GetMoneys() >= CardList.Cards[cardName].Cost);
         }
 
+        /// <summary>
+        /// Someone attacked you, and now you need to react
+        /// </summary>
+        /// <param name="victimPlayerFacade">The Player who is getting hit</param>
+        /// <param name="supply">The supply</param>
+        /// <param name="attackerName">Name of the attacking player</param>
+        /// <param name="cardName">Name of the attacking card</param>
+        /// <returns>Return the list of cards you wish to react with</returns>
+        public IEnumerable<string> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, string cardName)
+        {
+            // Naive implementation - just react with everything
+            return victimPlayerFacade.GetHand().Where(c => ((CardList.Cards[c].Type & Card.CardType.Reaction) != 0));
+        }
+
         #endregion
     }
 }
