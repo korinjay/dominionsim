@@ -53,10 +53,12 @@
     <Compile Include="Cards\ChapelCard.cs" />
     <Compile Include="Cards\FeastCard.cs" />
     <Compile Include="Cards\MilitiaCard.cs" />
+    <Compile Include="Cards\MineCard.cs" />
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
     <Compile Include="Strategy\BaseStrategy.cs" />
     <Compile Include="Strategy\Chapel.cs" />
+    <Compile Include="Strategy\SingleCard.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Form1.cs">

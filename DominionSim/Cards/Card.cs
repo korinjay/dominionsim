@@ -17,6 +17,7 @@ namespace DominionSim
             Attack = 0x10,
             Reaction = 0x20,
             Curse = 0x40,
+            Any = 0xFF,
         }
 
         public const CardType ActionAttack = CardType.Action | CardType.Attack;

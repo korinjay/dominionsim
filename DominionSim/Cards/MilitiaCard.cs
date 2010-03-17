@@ -26,7 +26,7 @@ namespace DominionSim.Cards
 
                 opponent.AttackedBy(p.Name, Name);
 
-                var discards = opponent.Strategy.ChooseCardsToDiscard(opponent.GetFacade(), numToDiscard, numToDiscard, supply);
+                var discards = opponent.Strategy.ChooseCardsToDiscard(opponent.GetFacade(), numToDiscard, numToDiscard, Card.CardType.Any, supply);
 
                 if (discards.Count() < numToDiscard)
                 {

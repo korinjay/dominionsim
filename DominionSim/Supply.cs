@@ -74,7 +74,7 @@ namespace DominionSim
             CardSupply.Add(CardList.Cellar, 10);
             //CardSupply.Add(CardList.Moat, 10);
             CardSupply.Add(CardList.Village, 10);
-            //CardSupply.Add(CardList.Militia, 10);
+            CardSupply.Add(CardList.Militia, 10);
             CardSupply.Add(CardList.Workshop, 10);
             CardSupply.Add(CardList.Woodcutter, 10);
             CardSupply.Add(CardList.Smithy, 10);

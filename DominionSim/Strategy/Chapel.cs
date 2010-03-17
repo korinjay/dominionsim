@@ -51,7 +51,7 @@ namespace DominionSim.Strategy
             base.TurnBuy(p, s);
         }
 
-        public override IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Supply s)
+        public override IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
             List<string> toTrash = new List<string>();
 

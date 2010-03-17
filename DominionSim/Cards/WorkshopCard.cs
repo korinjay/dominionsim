@@ -22,7 +22,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            string card = p.Strategy.ChooseCardToGain(p.GetFacade(), 0, 4, supply);
+            string card = p.Strategy.ChooseCardToGain(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
 
             p.GainCard(card);
         }

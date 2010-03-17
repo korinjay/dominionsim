@@ -26,6 +26,7 @@ namespace DominionSim
         public const string Festival = "Festival";
         public const string Market = "Market";
         public const string Woodcutter = "Woodcutter";
+        public const string Mine = "Mine";
 
         public const string Militia = "Militia";
         public const string Moat = "Moat";

@@ -16,7 +16,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            IEnumerable<string> cards = p.Strategy.ChooseCardsToDiscard(p.GetFacade(), 0, 4, supply);
+            IEnumerable<string> cards = p.Strategy.ChooseCardsToDiscard(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
 
             foreach (string card in cards)
             {
