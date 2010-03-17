@@ -26,7 +26,6 @@ namespace DominionSim
         public bool Verbose { get; set; }
 
         private int mTurn = 0;
-        private List<PlayerAction> mActions;
         private Supply mSupply;
 
         private Strategy.PlayerFacade mFacade;
@@ -70,7 +69,6 @@ namespace DominionSim
 
         public void StartNewGame()
         {
-            mActions = new List<PlayerAction>();
             mTurn = 0;
             Deck = new List<string>();
             DrawPile = new List<string>();
@@ -173,7 +171,7 @@ namespace DominionSim
                 Card c = CardList.Cards[name];
                 Log("    Playing a " + name + "!");
 
-                mActions.Add(new PlayerAction(mTurn, name, PlayerAction.Play));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Play));
 
                 Actions--;
                 MoveCard(name, Hand, PlayPile);
@@ -202,7 +200,7 @@ namespace DominionSim
                     Deck.Add(name);
                     Moneys -= c.Cost;
                     Buys--;
-                    mActions.Add(new PlayerAction(mTurn, name, PlayerAction.Buy));
+                    Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Buy));
                 }
                 else
                 {
@@ -227,7 +225,7 @@ namespace DominionSim
             if (Hand.Contains(s))
             {
                 Log("    Trashing "+s+"!");
-                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Trash));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
 
 
                 Hand.Remove(s);
@@ -237,7 +235,7 @@ namespace DominionSim
             {
                 // Some cards trash when you play them (like Feast)
                 Log("    Trashing " + s + "!");
-                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Trash));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
 
                 PlayPile.Remove(s);
                 Deck.Remove(s);
@@ -254,7 +252,7 @@ namespace DominionSim
             if (Hand.Contains(s))
             {
                 Log("    Discarding " + s + "!");
-                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Discard));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Discard));
 
                 Hand.Remove(s);
                 DiscardPile.Add(s);
@@ -271,7 +269,7 @@ namespace DominionSim
             if (mSupply.GainCard(s))
             {
                 Log("  Gained a " + s);
-                mActions.Add(new PlayerAction(mTurn, s, PlayerAction.Gain));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
 
                 DiscardPile.Add(s);
                 Deck.Add(s);
@@ -281,7 +279,7 @@ namespace DominionSim
         public void AttackedBy(string player, string card)
         {
             Log(this.Name + " was attacked by a " + card + " from " + player + "!");
-            mActions.Add(new PlayerAction(mTurn, card, PlayerAction.AttackedBy));
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AttackedBy));
         }
 
 
@@ -307,33 +305,8 @@ namespace DominionSim
             return vps;
         }
 
-        public String ActivityString()
-        {
-            string str = "";
 
-            var grouped = mActions
-                .GroupBy((a) => a.Turn)
-                .OrderBy((a) => a.Key);
 
-            foreach (var group in grouped)
-            {
-                str += "[Turn " + group.Key + "] ";
-                foreach (var action in group)
-                {
-                    str += action.Action + " " + action.Card + "  ";
-                }
-                str += "\n";
-            }
-
-            return str;
-        }
-
-        public String PurchaseString()
-        {
-            // Loop through all purchases and output a string in the format:
-            //    "1:Silver 2:Silver 3:Gold"
-            return mActions.Where( (a) => (a.Action == PlayerAction.Buy)).Aggregate("", (s, a) => s + a.Turn + ":" + a.Card + " ");
-        }
 
         public String StringFromList(IEnumerable<string> list)
         {
@@ -388,25 +361,6 @@ namespace DominionSim
 
     }
 
-    class PlayerAction
-    {
-        public const string Buy = "Buy";
-        public const string Gain = "Gain";
-        public const string Trash = "Trash";
-        public const string Play = "Play";
-        public const string Discard = "Discard";
-        public const string AttackedBy = "Attacked by";
 
-        public int Turn;
-        public string Action;
-        public string Card;
-
-        public PlayerAction(int turn, string card, string action)
-        {
-            Turn = turn;
-            Card = card;
-            Action = action;
-        }
-    }
 
 }

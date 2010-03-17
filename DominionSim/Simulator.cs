@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace DominionSim
 {
@@ -19,6 +20,7 @@ namespace DominionSim
         public Dictionary<Player, int> Wins {get ; set;}
         public Dictionary<Player, int> Ties { get; set; }
 
+        public int CurrentGame { get; set; }
 
         public Simulator()
         {
@@ -39,6 +41,7 @@ namespace DominionSim
 
             for(int i=0; i < n; i++)
             {
+                CurrentGame = n;
                 GameStats results = PlayOneGame(verbose);
 
                 var listToAddTo = (results.Winners.Count() > 1 ? Ties : Wins);
@@ -53,6 +56,8 @@ namespace DominionSim
                         listToAddTo[winner] = 1;
                     }
                 }
+
+                Thread.Sleep(0);
             }
         }
 
@@ -118,9 +123,9 @@ namespace DominionSim
                 {
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
                     Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck) + ")");
-                    Console.WriteLine("  Purchases: ( " + player.PurchaseString() + ")");
+                    Console.WriteLine("  Purchases: ( " + Stats.Tracker.Instance.PurchaseString(player) + ")");
                     Console.WriteLine(player.Name+" Activity:");
-                    Console.WriteLine(player.ActivityString());
+                    Console.WriteLine(Stats.Tracker.Instance.ActivityString(player));
                 }
             }
 

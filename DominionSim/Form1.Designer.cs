@@ -45,6 +45,7 @@
             this.txtNumGames = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gameVerbose = new System.Windows.Forms.CheckBox();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // playerCombo0
@@ -122,7 +123,7 @@
             this.outputBox.Multiline = true;
             this.outputBox.Name = "outputBox";
             this.outputBox.ReadOnly = true;
-            this.outputBox.Size = new System.Drawing.Size(437, 212);
+            this.outputBox.Size = new System.Drawing.Size(437, 210);
             this.outputBox.TabIndex = 7;
             this.outputBox.WordWrap = false;
             // 
@@ -209,11 +210,22 @@
             this.gameVerbose.UseVisualStyleBackColor = true;
             this.gameVerbose.CheckedChanged += new System.EventHandler(this.gameVerbose_CheckedChanged);
             // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(12, 408);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(437, 23);
+            this.progressBar.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 416);
+            this.ClientSize = new System.Drawing.Size(462, 443);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.gameVerbose);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtNumGames);
@@ -257,6 +269,7 @@
         private System.Windows.Forms.TextBox txtNumGames;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox gameVerbose;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 
