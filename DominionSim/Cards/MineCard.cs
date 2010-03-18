@@ -27,7 +27,7 @@ namespace DominionSim.Cards
 
                 string gaining = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, trashCard.Cost + 3, CardType.Treasure, supply);
 
-                p.GainCardFromSupply(gaining);
+                p.GainCardFromSupply(gaining, p.Hand);
             }
             else
             {

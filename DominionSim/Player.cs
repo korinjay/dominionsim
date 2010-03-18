@@ -274,21 +274,31 @@ namespace DominionSim
         }
 
 
-        public void GainCard(string s)
+        public void GainCard(string s, List<string> destination)
         {
             Log("  Gained a " + s);
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
 
-            DiscardPile.Add(s);
+            destination.Add(s);
             Deck.Add(s);
+        }
+
+        public void GainCard(string s)
+        {
+            GainCard(s, DiscardPile);
+        }
+
+        public void GainCardFromSupply(string s, List<string> destination)
+        {
+            if (mSupply.GainCard(s))
+            {
+                GainCard(s, destination);
+            }
         }
 
         public void GainCardFromSupply(string s)
         {
-            if (mSupply.GainCard(s))
-            {
-                GainCard(s);
-            }
+            GainCardFromSupply(s, DiscardPile);
         }
 
         public void AttackedBy(string player, string card, IEnumerable<string> reactedWith)
