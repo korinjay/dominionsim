@@ -16,26 +16,34 @@ namespace DominionSim
         public const string Province = "Province";
         public const string Curse = "Curse";
 
+        // Original Dominion
         public const string Adventurer = "Adventurer";
+        public const string Bureaucrat = "Bureaucrat";      // Not implemented
         public const string Cellar = "Cellar";
+        public const string Chancellor = "Chancellor";      // Not implemented
         public const string Chapel = "Chapel";
         public const string CouncilRoom = "CouncilRoom";
         public const string Feast = "Feast";
         public const string Festival = "Festival";
+        public const string Gardens = "Gardens";            // Not implemented
         public const string Laboratory = "Laboratory";
+        public const string Library = "Library";            // Not implemented
         public const string Market = "Market";
         public const string Militia = "Militia";
         public const string Mine = "Mine";
         public const string Moat = "Moat";
+        public const string Moneylender = "Moneylender"     // Not implemented
         public const string Remodel = "Remodel";
         public const string Smithy = "Smithy";
-        public const string Spy = "Spy";
+        public const string Spy = "Spy";                    // Not implemented
         public const string Thief = "Thief";
+        public const string ThroneRoom = "ThroneRoom";      // Not implemented
         public const string Village = "Village";
+        public const string Witch = "Witch";
         public const string Woodcutter = "Woodcutter";
         public const string Workshop = "Workshop";
 
-
+        // Intrigue
         public const string Harem = "Harem";
 
 

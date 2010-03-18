@@ -164,6 +164,22 @@ namespace DominionSim
             return drawnCards;
         }
 
+        /// <summary>
+        /// Add a collection of cards to a player's hand in a trackable, logged way.
+        /// This should be used when a card makes a player draw.
+        /// If you don't want the stats to record "Drew X", then just manipulate Hand directly.
+        /// </summary>
+        /// <param name="cards"></param>
+        public void AddCardsToHand(IEnumerable<string> cards)
+        {
+            Hand.AddRange(cards);
+
+            foreach (string c in cards)
+            {
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, c, Stats.PlayerAction.AddToHand));
+            }
+        }
+
         public void PlayActionCard(string name)
         {
             if (name == null)

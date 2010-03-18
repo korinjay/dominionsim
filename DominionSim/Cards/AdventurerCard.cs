@@ -43,7 +43,7 @@ namespace DominionSim.Cards
                 }
             }
 
-            p.Hand.AddRange(treasureCards);
+            p.AddCardsToHand(treasureCards);
 
             foreach (string c in discards)
             {

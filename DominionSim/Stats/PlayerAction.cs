@@ -8,6 +8,7 @@ namespace DominionSim.Stats
     class PlayerAction
     {
         public const string Buy = "Buy";
+        public const string AddToHand = "Drew";
         public const string Gain = "Gain";
         public const string Trash = "Trash";
         public const string Play = "Play";
