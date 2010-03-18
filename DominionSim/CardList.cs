@@ -16,8 +16,10 @@ namespace DominionSim
         public const string Province = "Province";
         public const string Curse = "Curse";
 
+        public const string Adventurer = "Adventurer";
         public const string Cellar = "Cellar";
         public const string Chapel = "Chapel";
+        public const string CouncilRoom = "CouncilRoom";
         public const string Feast = "Feast";
         public const string Festival = "Festival";
         public const string Laboratory = "Laboratory";
@@ -27,6 +29,8 @@ namespace DominionSim
         public const string Moat = "Moat";
         public const string Remodel = "Remodel";
         public const string Smithy = "Smithy";
+        public const string Spy = "Spy";
+        public const string Thief = "Thief";
         public const string Village = "Village";
         public const string Woodcutter = "Woodcutter";
         public const string Workshop = "Workshop";

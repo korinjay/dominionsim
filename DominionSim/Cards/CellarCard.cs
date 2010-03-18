@@ -21,7 +21,7 @@ namespace DominionSim.Cards
             foreach (string card in cards)
             {
                 p.DiscardCard(card);
-                p.DrawCards(1);
+                p.Hand.AddRange(p.DrawCards(1));
             }
         }
 	}
