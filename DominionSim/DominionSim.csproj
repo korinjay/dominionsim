@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cards\AdventurerCard.cs" />
     <Compile Include="Cards\Card.cs" />
     <Compile Include="CardList.cs" />
     <Compile Include="Cards\ChapelCard.cs" />
