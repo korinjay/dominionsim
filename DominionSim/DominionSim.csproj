@@ -56,6 +56,7 @@
     <Compile Include="Cards\MineCard.cs" />
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\RemodelCard.cs" />
+    <Compile Include="Cards\ThiefCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
     <Compile Include="Stats\Tracker.cs" />
     <Compile Include="Stats\PlayerAction.cs" />

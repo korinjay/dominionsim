@@ -51,7 +51,7 @@ namespace DominionSim
         {
             if (Draws > 0)
             {
-                p.DrawCards(Draws);
+                p.Hand.AddRange(p.DrawCards(Draws));
             }
             p.Actions += Actions;
             p.Buys += Buys;

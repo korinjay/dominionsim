@@ -53,7 +53,7 @@ namespace DominionSim
         private void DrawNewHand()
         {
             Log("  Drawing a new hand...");
-            DrawCards(5);
+            Hand.AddRange(DrawCards(5));
         }
 
         public void MoveCards<T>(List<T> from, List<T> to)
@@ -126,9 +126,11 @@ namespace DominionSim
             mTurn++;
         }
 
-        public void DrawCards(int num)
+        public IEnumerable<string> DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
+            List<string> drawnCards = new List<string>();
+
             string draws = "Drew ";
             for (int i = 0; i < num; i++ )
             {
@@ -144,7 +146,7 @@ namespace DominionSim
                 {
                     draw = DrawPile[0];
                     DrawPile.RemoveAt(0);
-                    Hand.Add(draw);
+                    drawnCards.Add(draw);
                 }
                 else
                 {
@@ -158,6 +160,8 @@ namespace DominionSim
                 }
             }
             Log("    " + draws);
+
+            return drawnCards;
         }
 
         public void PlayActionCard(string name)
