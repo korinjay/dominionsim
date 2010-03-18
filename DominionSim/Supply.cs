@@ -72,7 +72,7 @@ namespace DominionSim
 
             // STARTING SET
             CardSupply.Add(CardList.Cellar, 10);
-            //CardSupply.Add(CardList.Moat, 10);
+            CardSupply.Add(CardList.Moat, 10);
             CardSupply.Add(CardList.Village, 10);
             CardSupply.Add(CardList.Militia, 10);
             CardSupply.Add(CardList.Workshop, 10);

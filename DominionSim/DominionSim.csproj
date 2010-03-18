@@ -52,12 +52,14 @@
     <Compile Include="Cards\Card.cs" />
     <Compile Include="CardList.cs" />
     <Compile Include="Cards\ChapelCard.cs" />
+    <Compile Include="Cards\CouncilRoomCard.cs" />
     <Compile Include="Cards\FeastCard.cs" />
     <Compile Include="Cards\MilitiaCard.cs" />
     <Compile Include="Cards\MineCard.cs" />
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\RemodelCard.cs" />
     <Compile Include="Cards\ThiefCard.cs" />
+    <Compile Include="Cards\WitchCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
     <Compile Include="Stats\Tracker.cs" />
     <Compile Include="Stats\PlayerAction.cs" />

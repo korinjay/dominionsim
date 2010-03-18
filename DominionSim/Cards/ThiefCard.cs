@@ -29,10 +29,9 @@ namespace DominionSim.Cards
 
                     // So that it ends up logged as a discard, put the non-treasure in his hand
                     opponent.Hand.AddRange(nonTreasure);
-
-                    // Then tell him to discard the non-treasure
                     foreach (string name in nonTreasure)
                     {
+                        // Then tell him to discard the non-treasure
                         opponent.DiscardCard(name);
                     }
 
