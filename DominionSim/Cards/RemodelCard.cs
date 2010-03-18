@@ -25,9 +25,9 @@ namespace DominionSim.Cards
                     string card = toTrash.ElementAt(0);
                     p.TrashCard(card);
 
-                    string toGain = p.Strategy.ChooseCardToGain(p.GetFacade(), 0, CardList.Cards[card].Cost + 2, CardType.Any, supply);
+                    string toGain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, CardList.Cards[card].Cost + 2, CardType.Any, supply);
 
-                    p.GainCard(toGain);
+                    p.GainCardFromSupply(toGain);
                 }
                 else
                 {

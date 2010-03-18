@@ -276,13 +276,18 @@ namespace DominionSim
 
         public void GainCard(string s)
         {
+            Log("  Gained a " + s);
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
+
+            DiscardPile.Add(s);
+            Deck.Add(s);
+        }
+
+        public void GainCardFromSupply(string s)
+        {
             if (mSupply.GainCard(s))
             {
-                Log("  Gained a " + s);
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
-
-                DiscardPile.Add(s);
-                Deck.Add(s);
+                GainCard(s);
             }
         }
 

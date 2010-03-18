@@ -32,6 +32,18 @@ namespace DominionSim.Strategy
         IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
+        /// An Action (perhaps one you played) is asking you to trash some of your opponent's cards!
+        /// From the collection provided, choose which to trash
+        /// </summary>
+        /// <param name="p">The Player who is using this Strategy</param>
+        /// <param name="min">Minimum number of cards you must trash</param>
+        /// <param name="max">Maximum number of cards you may trash</param>
+        /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
+        /// <param name="cards">Collection of cards to choose from</param>
+        /// <returns>An enumeration of cards from the provided collection to trash</returns>
+        IEnumerable<string> ChooseOpponentCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards);
+
+        /// <summary>
         /// An Action (perhaps one you played) is forcing you to discard some cards!
         /// Choose which cards from your hand you would like to discard.
         /// </summary>
@@ -49,7 +61,20 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s);
+        string ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s);
+
+        /// <summary>
+        /// An Action (perhaps one you played) is allowing you to
+        /// gain a card from your opponent.
+        /// </summary>
+        /// <param name="p">The Player who is using this Strategy</param>
+        /// <param name="min">Minimum number of cards you must gain from the collection</param>
+        /// <param name="max">Maximum number of cards you may gain from the collection</param>
+        /// <param name="opponent">Name of the opponent you're gaining cards from</param>
+        /// <param name="cards">Collection of cards to gain from</param>
+        /// <returns>All cards you wish to gain from the collection</returns>
+        IEnumerable<string> ChooseOpponentCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards);
+
 
         /// <summary>
         /// Someone attacked you, and now you need to react

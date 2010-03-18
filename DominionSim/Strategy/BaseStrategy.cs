@@ -46,6 +46,24 @@ namespace DominionSim.Strategy
         }
 
         /// <summary>
+        /// An Action (perhaps one you played) is asking you to trash some of your opponent's cards!
+        /// From the collection provided, choose which to trash
+        /// </summary>
+        /// <param name="p">The Player who is using this Strategy</param>
+        /// <param name="min">Minimum number of cards you must trash</param>
+        /// <param name="max">Maximum number of cards you may trash</param>
+        /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
+        /// <param name="cards">Collection of cards to choose from</param>
+        /// <returns>An enumeration of cards from the provided collection to trash</returns>
+        public virtual IEnumerable<string> ChooseOpponentCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        {
+            // Choose to trash the maximum we can, the most expensive cards he has
+            return cards.OrderByDescending(c => CardList.Cards[c].Cost)
+                        .Take(max);
+        }
+
+
+        /// <summary>
         /// Base implementation of the ChooseCardsToDiscard function.
         /// Default to naively choosing the most victory-point-heavy cards in hand.
         /// </summary>
@@ -70,7 +88,7 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>The kind of card you wish to gain</returns>
-        public string ChooseCardToGain(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s)
+        public string ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s)
         {
             return s.CardSupply                                             // From the supply, find
                     .Where((k) => (CardList.Cards[k.Key].Type & type) != 0) // cards of the correct type
@@ -79,6 +97,23 @@ namespace DominionSim.Strategy
                     .Select((k) => k.Key)                                   // return just their names
                     .ElementAt(0);                                          // and pick the first one
         }
+
+        /// <summary>
+        /// An Action (perhaps one you played) is allowing you to
+        /// gain a card from your opponent.
+        /// </summary>
+        /// <param name="p">The Player who is using this Strategy</param>
+        /// <param name="min">Minimum number of cards you must gain from the collection</param>
+        /// <param name="max">Maximum number of cards you may gain from the collection</param>
+        /// <param name="opponent">Name of the opponent you're gaining cards from</param>
+        /// <param name="cards">Collection of cards to gain from</param>
+        /// <returns>Return the kind of card you wish to gain</returns>
+        public virtual IEnumerable<string> ChooseOpponentCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        {
+            // Always gain any non-copper treasure, nothing else
+            return cards.Where(c => c == CardList.Silver || c == CardList.Gold).Take(max);
+        }
+
 
         /// <summary>
         /// Return whether, given the current hand and amount of Money, the Strategy can buy the given card name
