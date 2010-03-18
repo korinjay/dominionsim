@@ -19,10 +19,10 @@ namespace DominionSim.Cards
             p.TrashCard(Name);
 
             // Now choose what to gain
-            string gain = p.Strategy.ChooseCardToGain(p.GetFacade(), 0, 5, Card.CardType.Any, supply);
+            string gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, Card.CardType.Any, supply);
 
             // Now gain it!
-            p.GainCard(gain);
+            p.GainCardFromSupply(gain);
         }
 
     }
