@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Stats
 {
-    using CardIdentifier = String;
+    
 
     class PlayerAction
     {

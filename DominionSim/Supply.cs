@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim
 {
-    using CardIdentifier = String;
+    
 
     class Supply
     {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    using CardIdentifier = String;
+    
 
     /// <summary>
     /// Buys and plays cards completely at random

@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace DominionSim
 {
-    using CardIdentifier = String;
+    
 
     class GameStats
     {

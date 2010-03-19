@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim
 {
-    using CardIdentifier = String;
+    
 
 
     abstract class Card
@@ -33,7 +33,7 @@ namespace DominionSim
         /// The Name of this card.
         /// Currently just returns the CardId
         /// </summary>
-        public String Name { get { return CardId; } }
+        public String Name { get { return CardId.ToString(); } }
 
         /// <summary>
         /// Identifier for the kind of card this is
