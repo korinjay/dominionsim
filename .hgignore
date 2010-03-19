@@ -6,3 +6,4 @@ bin/*
 *.suo
 *.csproj.user
 *.exe.manifest
+*.orig

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace DominionSim
 {
+    using CardIdentifier = String;
+
+
     abstract class Card
     {
         [FlagsAttribute] 
@@ -26,7 +29,17 @@ namespace DominionSim
         public const CardType VictoryAction = CardType.Victory | CardType.Action;
         public const CardType ReactionAction = CardType.Reaction | CardType.Action;
 
-        public string Name { get; set; }
+        /// <summary>
+        /// The Name of this card.
+        /// Currently just returns the CardId
+        /// </summary>
+        public String Name { get { return CardId; } }
+
+        /// <summary>
+        /// Identifier for the kind of card this is
+        /// </summary>
+        public CardIdentifier CardId { get; set; }
+
         public CardType Type { get; set; }
         public int Cost { get; set; }
         public int Buys { get; set; }
@@ -35,9 +48,9 @@ namespace DominionSim
         public int Moneys { get; set; }
         public int VictoryPoints { get; set; }
 
-        public Card(string name, CardType type, int cost, int draws, int actions, int moneys, int buys, int vps)
+        public Card(CardIdentifier cardId, CardType type, int cost, int draws, int actions, int moneys, int buys, int vps)
         {
-            Name = name;
+            CardId = cardId;
             Type = type;
             Cost = cost;
             Draws = draws;
@@ -81,8 +94,8 @@ namespace DominionSim
         {
             // Tell the victim's strategy to attack, and then tell the victim's player what happened so
             // it can appropriately 
-            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply, attacker.Name, Name);
-            victim.AttackedBy(attacker.Name, Name, attackReactionCards);
+            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply, attacker.Name, CardId);
+            victim.AttackedBy(attacker.Name, CardId, attackReactionCards);
 
             // Double check that the Strategy isn't lying.
             // I don't have an easy way to double check that he didn't list the same card a lot.
@@ -95,7 +108,7 @@ namespace DominionSim
             // Attempt to react to them all, and return true if any of their ExecuteReaction functions returned true.
             return attackReactionCards.Union(victim.DurationCards)
                                       .Where(c => (CardList.Cards[c].Type & CardType.Reaction) != 0)
-                                      .Aggregate(false, (blocked, cardName) => blocked || CardList.Cards[cardName].ExecuteReaction(attacker, victim, supply));
+                                      .Aggregate(false, (blocked, cardId) => blocked || CardList.Cards[cardId].ExecuteReaction(attacker, victim, supply));
         }
     }
 

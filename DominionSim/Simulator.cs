@@ -6,6 +6,8 @@ using System.Threading;
 
 namespace DominionSim
 {
+    using CardIdentifier = String;
+
     class GameStats
     {
         public IEnumerable<Player> Winners;
@@ -118,7 +120,7 @@ namespace DominionSim
                 Player player = Players[i];
                 int vps = player.GetNumVictoryPoints();
 
-                IEnumerable<string> vpCards = Utility.FilterCardListByType(player.Deck, Card.CardType.Victory);
+                IEnumerable<CardIdentifier> vpCards = Utility.FilterCardListByType(player.Deck, Card.CardType.Victory);
                 if (verbose)
                 {
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");

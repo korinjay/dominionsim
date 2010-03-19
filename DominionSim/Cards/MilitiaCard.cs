@@ -5,6 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
+    using CardIdentifier = String;
+
+
     class MilitiaCard : Card
     {
         public MilitiaCard() : base(CardList.Militia, Card.ActionAttack, 4, 0, 0, 2, 0, 0)
@@ -33,7 +36,7 @@ namespace DominionSim.Cards
                         throw new Exception("Player " + p.Name + " failed to discard the required number of cards!");
                     }
 
-                    foreach (string card in discards)
+                    foreach (CardIdentifier card in discards)
                     {
                         opponent.DiscardCard(card);
                     }

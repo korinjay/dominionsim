@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
+    using CardIdentifier = String;
+
     /// <summary>
     /// Wrapper class exposing only certain functionality of a Player to a Strategy
     /// This is the only object that Strategies can manipulate in order to make stuff happen in the game.
@@ -30,9 +32,9 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="original"></param>
         /// <returns></returns>
-        private List<string> CopyList(List<string> original)
+        private List<CardIdentifier> CopyList(List<CardIdentifier> original)
         {
-            List<string> copy = new List<string>();
+            List<CardIdentifier> copy = new List<CardIdentifier>();
             for (int i = 0; i < original.Count; i++)
             {
                 copy.Add(original[i]);
@@ -44,7 +46,7 @@ namespace DominionSim.Strategy
         /// Return a copy of the Player's Hand, so that there's no chance the actual Hand can be manipulated
         /// </summary>
         /// <returns>Cards in hand</returns>
-        public IEnumerable<string> GetHand()
+        public IEnumerable<CardIdentifier> GetHand()
         {
             return CopyList(mPlayer.Hand);
         }
@@ -53,7 +55,7 @@ namespace DominionSim.Strategy
         /// Return a copy of the Player's Deck, so that there's no chance the actual Deck can by manipulated
         /// </summary>
         /// <returns>Cards in deck</returns>
-        public IEnumerable<string> GetDeck()
+        public IEnumerable<CardIdentifier> GetDeck()
         {
             return CopyList(mPlayer.Deck);
         }
@@ -85,12 +87,12 @@ namespace DominionSim.Strategy
             return mPlayer.Buys;
         }
 
-        public void PlayActionCard(string name)
+        public void PlayActionCard(CardIdentifier name)
         {
             mPlayer.PlayActionCard(name);
         }
 
-        public void BuyCard(string name)
+        public void BuyCard(CardIdentifier name)
         {
             mPlayer.BuyCard(name);
         }

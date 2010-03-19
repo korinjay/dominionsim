@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
+    using CardIdentifier = String;
+
     class Chapel1 : Chapel
     {
         public Chapel1() : base(1) {}
@@ -51,9 +53,9 @@ namespace DominionSim.Strategy
             base.TurnBuy(p, s);
         }
 
-        public override IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public override IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
-            List<string> toTrash = new List<string>();
+            List<CardIdentifier> toTrash = new List<CardIdentifier>();
 
             int turn = p.GetTurn();
 
@@ -62,7 +64,7 @@ namespace DominionSim.Strategy
 
             var allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
-            foreach (string t in allTreasure)
+            foreach (CardIdentifier t in allTreasure)
             {
                 Card c = CardList.Cards[t];
                 totalMoney += c.Moneys;
