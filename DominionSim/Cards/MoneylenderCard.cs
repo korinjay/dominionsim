@@ -18,7 +18,8 @@ namespace DominionSim.Cards
 
             if (p.Hand.Contains(CardList.Copper))
             {
-                p.TrashCard(CardList.Copper);
+                // TODO Isn't this a player choice?
+                p.TrashCardFromHand(CardList.Copper);
 
                 p.Moneys += 3;
             }

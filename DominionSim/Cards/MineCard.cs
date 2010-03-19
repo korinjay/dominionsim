@@ -25,7 +25,7 @@ namespace DominionSim.Cards
                 CardIdentifier trashing = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 1, 1, CardType.Treasure, supply).ElementAt(0);
                 Card trashCard = CardList.Cards[trashing];
 
-                p.TrashCard(trashing);
+                p.TrashCardFromHand(trashing);
 
                 CardIdentifier gaining = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, trashCard.Cost + 3, CardType.Treasure, supply);
 
