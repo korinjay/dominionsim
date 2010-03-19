@@ -32,10 +32,10 @@ namespace DominionSim
         public const string Militia = "Militia";
         public const string Mine = "Mine";
         public const string Moat = "Moat";
-        public const string Moneylender = "Moneylender";    // Not implemented
+        public const string Moneylender = "Moneylender";
         public const string Remodel = "Remodel";
         public const string Smithy = "Smithy";
-        public const string Spy = "Spy";                    // Not implemented
+        public const string Spy = "Spy";
         public const string Thief = "Thief";
         public const string ThroneRoom = "ThroneRoom";      // Not implemented
         public const string Village = "Village";
