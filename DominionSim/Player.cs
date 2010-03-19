@@ -259,7 +259,7 @@ namespace DominionSim
             }
         }
 
-        public void TrashCard(CardIdentifier s)
+        public void TrashCardFromHand(CardIdentifier s)
         {
             if (Hand.Contains(s))
             {
@@ -270,7 +270,15 @@ namespace DominionSim
                 Hand.Remove(s);
                 Deck.Remove(s);
             }
-            else if (PlayPile.Contains(s))
+            else
+            {
+                throw new Exception("Told to trash " + s + " but I'm not holding that!");
+            }
+        }
+
+        public void TrashCardFromPlay(CardIdentifier s)
+        {
+            if (PlayPile.Contains(s))
             {
                 // Some cards trash when you play them (like Feast)
                 Log("    Trashing " + s + "!");
@@ -281,10 +289,9 @@ namespace DominionSim
             }
             else
             {
-                throw new Exception("Told to trash " + s + " but I'm not holding that!");
+                throw new Exception("Told to trash " + s + " but it's not in play!");
             }
         }
-
 
         public void DiscardCard(CardIdentifier s)
         {

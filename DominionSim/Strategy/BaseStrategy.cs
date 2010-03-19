@@ -121,6 +121,7 @@ namespace DominionSim.Strategy
             return s.CardSupply                                             // From the supply, find
                     .Where((k) => (CardList.Cards[k.Key].Type & type) != 0) // cards of the correct type
                     .Where((k) => CardList.Cards[k.Key].Cost <= maxCost)    // that are less than the max cost
+                    .Where((k) => s.CardSupply[k.Key] > 0)                  // there are actually cards left
                     .OrderByDescending((k) => CardList.Cards[k.Key].Cost)   // in order from most expensive to least
                     .Select((k) => k.Key)                                   // return just their names
                     .ElementAt(0);                                          // and pick the first one

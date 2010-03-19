@@ -25,7 +25,7 @@ namespace DominionSim.Cards
                 if (toTrash.Count() == 1)
                 {
                     CardIdentifier card = toTrash.ElementAt(0);
-                    p.TrashCard(card);
+                    p.TrashCardFromHand(card);
 
                     CardIdentifier toGain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, CardList.Cards[card].Cost + 2, CardType.Any, supply);
 

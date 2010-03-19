@@ -22,7 +22,7 @@ namespace DominionSim.Cards
             var toTrash = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
             foreach (CardIdentifier card in toTrash)
             {
-                p.TrashCard(card);
+                p.TrashCardFromHand(card);
             }
         }
     }

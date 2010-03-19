@@ -48,7 +48,7 @@ namespace DominionSim.Cards
                         // Add it to his hand
                         opponent.Hand.Add(toTrash);
                         // Now tell him to trash it
-                        opponent.TrashCard(toTrash);
+                        opponent.TrashCardFromHand(toTrash);
 
                         // Choose whether to gain this card
                         List<CardIdentifier> choices = new List<CardIdentifier>();

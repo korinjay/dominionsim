@@ -51,6 +51,9 @@ namespace DominionSim
             var cardsToAdd = CardList.Cards.Where((kvp) => !CardSupply.ContainsKey(kvp.Key))
                                            .Select((kvp) => kvp.Key);
 
+            CardSupply.Add(CardList.Feast, 10);
+            CardSupply.Add(CardList.ThroneRoom, 10);
+
             foreach (CardIdentifier name in cardsToAdd)
             {
                 Card.CardType type = CardList.Cards[name].Type;

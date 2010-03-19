@@ -15,16 +15,40 @@ namespace DominionSim.Cards
 
         public override void ExecuteCard(Player p, Supply supply)
         {
+            // First trash ourselves!
+            p.TrashCardFromPlay(CardId);
+            
+            // Then gain!
+            GainACard(p, supply);
+
+            base.ExecuteCard(p, supply);
+        }
+
+        private static void GainACard(Player p, Supply supply)
+        {
+            CardIdentifier gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, Card.CardType.Any, supply);
+            if (null != gain)
+            {
+                p.GainCardFromSupply(gain);
+            }
+        }
+
+
+        /// <summary>
+        /// Feast has special logic when executing with Throne Room
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="supply">Supply</param>
+        public override void ExecuteCardTwice(Player p, Supply supply)
+        {
+            // Trash once, gain twice
+            p.TrashCardFromPlay(CardId);
+
+            GainACard(p, supply);
             base.ExecuteCard(p, supply);
 
-            // First trash ourselves!
-            p.TrashCard(CardId);
-
-            // Now choose what to gain
-            CardIdentifier gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, Card.CardType.Any, supply);
-
-            // Now gain it!
-            p.GainCardFromSupply(gain);
+            GainACard(p, supply);
+            base.ExecuteCard(p, supply);
         }
 
     }
