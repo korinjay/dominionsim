@@ -5,53 +5,59 @@ using System.Text;
 
 namespace DominionSim
 {
+    // Stopgap - pretty much everywhere in the universe we are using "string" as the type
+    // for cards identifiers.  That's bad; we should basically be using *anything else* but
+    // a hard primitive.  Putting this here in the hope that we can slowly migrate to a more
+    // sensible type.  This will probably be in a few more places as well, without the comment.
+    using CardIdentifier = String;
+
     class CardList
     {
-        public const string Copper = "Copper";
-        public const string Silver = "Silver";
-        public const string Gold = "Gold";
+        public const CardIdentifier Copper = "Copper";
+        public const CardIdentifier Silver = "Silver";
+        public const CardIdentifier Gold = "Gold";
 
-        public const string Estate = "Estate";
-        public const string Duchy = "Duchy";
-        public const string Province = "Province";
-        public const string Curse = "Curse";
+        public const CardIdentifier Estate = "Estate";
+        public const CardIdentifier Duchy = "Duchy";
+        public const CardIdentifier Province = "Province";
+        public const CardIdentifier Curse = "Curse";
 
         // Original Dominion
-        public const string Adventurer = "Adventurer";
-        public const string Bureaucrat = "Bureaucrat";      // Not implemented
-        public const string Cellar = "Cellar";
-        public const string Chancellor = "Chancellor";      // Not implemented
-        public const string Chapel = "Chapel";
-        public const string CouncilRoom = "CouncilRoom";
-        public const string Feast = "Feast";
-        public const string Festival = "Festival";
-        public const string Gardens = "Gardens";            // Not implemented
-        public const string Laboratory = "Laboratory";
-        public const string Library = "Library";
-        public const string Market = "Market";
-        public const string Militia = "Militia";
-        public const string Mine = "Mine";
-        public const string Moat = "Moat";
-        public const string Moneylender = "Moneylender";
-        public const string Remodel = "Remodel";
-        public const string Smithy = "Smithy";
-        public const string Spy = "Spy";
-        public const string Thief = "Thief";
-        public const string ThroneRoom = "ThroneRoom";      // Not implemented
-        public const string Village = "Village";
-        public const string Witch = "Witch";
-        public const string Woodcutter = "Woodcutter";
-        public const string Workshop = "Workshop";
+        public const CardIdentifier Adventurer = "Adventurer";
+        public const CardIdentifier Bureaucrat = "Bureaucrat";      // Not implemented
+        public const CardIdentifier Cellar = "Cellar";
+        public const CardIdentifier Chancellor = "Chancellor";      // Not implemented
+        public const CardIdentifier Chapel = "Chapel";
+        public const CardIdentifier CouncilRoom = "CouncilRoom";
+        public const CardIdentifier Feast = "Feast";
+        public const CardIdentifier Festival = "Festival";
+        public const CardIdentifier Gardens = "Gardens";            // Not implemented
+        public const CardIdentifier Laboratory = "Laboratory";
+        public const CardIdentifier Library = "Library";
+        public const CardIdentifier Market = "Market";
+        public const CardIdentifier Militia = "Militia";
+        public const CardIdentifier Mine = "Mine";
+        public const CardIdentifier Moat = "Moat";
+        public const CardIdentifier Moneylender = "Moneylender";
+        public const CardIdentifier Remodel = "Remodel";
+        public const CardIdentifier Smithy = "Smithy";
+        public const CardIdentifier Spy = "Spy";
+        public const CardIdentifier Thief = "Thief";
+        public const CardIdentifier ThroneRoom = "ThroneRoom";      // Not implemented
+        public const CardIdentifier Village = "Village";
+        public const CardIdentifier Witch = "Witch";
+        public const CardIdentifier Woodcutter = "Woodcutter";
+        public const CardIdentifier Workshop = "Workshop";
 
         // Intrigue
-        public const string Harem = "Harem";
+        public const CardIdentifier Harem = "Harem";
 
 
-        public static Dictionary<string, Card> Cards;
+        public static Dictionary<CardIdentifier, Card> Cards;
 
         public static void SetupCardList()
         {
-            Cards = new Dictionary<string,Card>();
+            Cards = new Dictionary<CardIdentifier,Card>();
 
             // Use cool C# runtime type info and reflection stuff to find all non-abstract classes in all loaded
             // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
@@ -67,7 +73,7 @@ namespace DominionSim
             // For each card we found add it to the big lookup table by name
             foreach (Card c in cardList)
             {
-                Cards.Add(c.Name, c);
+                Cards.Add(c.CardId, c);
             }
 
         } 

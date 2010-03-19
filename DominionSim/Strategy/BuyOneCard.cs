@@ -5,12 +5,14 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
+    using CardIdentifier = String;
+
     abstract class BuyOneCard : BigMoneyDuchy
     {
         /// <summary>
         /// The card we are attempting to buy
         /// </summary>
-        protected string mCardToBuy;
+        protected CardIdentifier mCardToBuy;
 
         /// <summary>
         /// The number of that card we want to have in the deck
@@ -20,19 +22,19 @@ namespace DominionSim.Strategy
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="cardName">Card to buy</param>
-        public BuyOneCard(string cardName) : this(cardName, 1)
+        /// <param name="cardId">Card to buy</param>
+        public BuyOneCard(CardIdentifier cardId) : this(cardId, 1)
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="cardName">Card to buy</param>
+        /// <param name="cardId">Card to buy</param>
         /// <param name="numCardsOfThatType">Num to buy</param>
-        public BuyOneCard(string cardName, int numCardsOfThatType)
+        public BuyOneCard(CardIdentifier cardId, int numCardsOfThatType)
         {
-            mCardToBuy = cardName;
+            mCardToBuy = cardId;
             mNumCardsToHave = numCardsOfThatType;
         }
 

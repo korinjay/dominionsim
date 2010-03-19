@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
+    using CardIdentifier = String;
+
     class WorkshopCard : Card
     {
         /// <summary>
@@ -22,7 +24,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            string card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
+            CardIdentifier card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
 
             p.GainCardFromSupply(card);
         }

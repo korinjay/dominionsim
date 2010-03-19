@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
+    using CardIdentifier = String;
 
     /// <summary>
     /// Buys and plays cards completely at random
@@ -22,7 +23,7 @@ namespace DominionSim.Strategy
         {
             while (p.GetActions() > 0)
             {
-                IEnumerable<string> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
+                IEnumerable<CardIdentifier> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
 
                 if (actionCards.Count() == 0)
                 {
@@ -41,8 +42,8 @@ namespace DominionSim.Strategy
         public override void TurnBuy(PlayerFacade p, Supply s)
         {
             int moneys = p.GetMoneys();
-            
-            IEnumerable<string> possibleCards = new List<string>();
+
+            IEnumerable<CardIdentifier> possibleCards = new List<CardIdentifier>();
 
             while(possibleCards.Count() == 0)
             {

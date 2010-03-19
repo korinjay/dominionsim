@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim
 {
+    using CardIdentifier = String;
+
     class Utility
     {
         private static Random sRandom;
@@ -33,7 +35,7 @@ namespace DominionSim
             return shuffled;
         }
 
-        public static int CountCardIn(string card, IEnumerable<string> inThis)
+        public static int CountCardIn(CardIdentifier card, IEnumerable<CardIdentifier> inThis)
         {
             int numCard = 0;
             var g = inThis.GroupBy(name => name);
@@ -49,7 +51,7 @@ namespace DominionSim
             return numCard;
         }
 
-        public static IEnumerable<string> FilterCardListByType(IEnumerable<string> toFilter, Card.CardType type)
+        public static IEnumerable<CardIdentifier> FilterCardListByType(IEnumerable<CardIdentifier> toFilter, Card.CardType type)
         {
             return toFilter.Where(c => (CardList.Cards[c].Type & type) != 0);
         }

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
+    using CardIdentifier = String;
+
     class LibraryCard : Card
     {
         public LibraryCard() : base(CardList.Library, CardType.Action, 5, 0, 0, 0, 0, 0)
@@ -16,10 +18,10 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            List<string> setAside = new List<string>();
+            List<CardIdentifier> setAside = new List<CardIdentifier>();
             while (p.Hand.Count < 7)
             {
-                string nextCard = p.DrawCard();
+                CardIdentifier nextCard = p.DrawCard();
 
                 // If it's an action card, ask the strategy what to do with it
                 if ((CardList.Cards[nextCard].Type & CardType.Action) != 0)
@@ -42,7 +44,7 @@ namespace DominionSim.Cards
             }
 
             p.Hand.AddRange(setAside);
-            foreach (string card in setAside)
+            foreach (CardIdentifier card in setAside)
             {
                 p.DiscardCard(card);
             }

@@ -5,10 +5,12 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
+    using CardIdentifier = String;
+
     class SingleCard : BigMoneyDuchy
     {
         private int mNumDesiredCard = 0;
-        private string mCard = "";
+        private CardIdentifier mCard = "";
 
         /// <summary>
         /// We should change this strategy so it can take params for which card and how many, 

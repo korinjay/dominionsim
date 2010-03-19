@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
+    using CardIdentifier = String;
+
     abstract class BaseStrategy : IStrategy
     {
         #region IStrategy Members
@@ -39,7 +41,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum cards to trash</param>
         /// <param name="max">Maximum cards to trash</param>
         /// <returns>Set of cards out of hand to trash</returns>
-        public virtual IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public virtual IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
             return p.GetHand().Where( c => (CardList.Cards[c].Type & type) != 0)
                               .OrderBy(c => CardList.Cards[c].Cost).Take(min);
@@ -55,7 +57,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>An enumeration of cards from the provided collection to trash</returns>
-        public virtual IEnumerable<string> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        public virtual IEnumerable<CardIdentifier> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
         {
             // Choose to trash the maximum we can, the most expensive cards he has
             return cards.OrderByDescending(c => CardList.Cards[c].Cost)
@@ -72,7 +74,7 @@ namespace DominionSim.Strategy
         /// <param name="max"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        public virtual IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public virtual IEnumerable<CardIdentifier> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
             var orderedCards = p.GetHand().Where( c => (CardList.Cards[c].Type & type) != 0 )
                                           .OrderBy( c => (CardList.Cards[c].Cost) )
@@ -90,7 +92,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent"></param>
         /// <param name="cards"></param>
         /// <returns></returns>
-        public virtual IEnumerable<string> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        public virtual IEnumerable<CardIdentifier> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
         {
             // If this our own attack hitting ourselves, mitigate the damage
             if (p.GetName() == opponent)
@@ -114,7 +116,7 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>The kind of card you wish to gain</returns>
-        public string ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s)
+        public CardIdentifier ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s)
         {
             return s.CardSupply                                             // From the supply, find
                     .Where((k) => (CardList.Cards[k.Key].Type & type) != 0) // cards of the correct type
@@ -134,7 +136,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        public virtual IEnumerable<string> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        public virtual IEnumerable<CardIdentifier> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
         {
             // Always gain any non-copper treasure, nothing else
             return cards.Where(c => c == CardList.Silver || c == CardList.Gold).Take(max);
@@ -144,11 +146,11 @@ namespace DominionSim.Strategy
         /// <summary>
         /// Return whether, given the current hand and amount of Money, the Strategy can buy the given card name
         /// </summary>
-        /// <param name="cardName"></param>
+        /// <param name="cardId"></param>
         /// <returns></returns>
-        protected bool CanAfford(PlayerFacade p, string cardName)
+        protected bool CanAfford(PlayerFacade p, CardIdentifier cardId)
         {
-            return (p.GetMoneys() >= CardList.Cards[cardName].Cost);
+            return (p.GetMoneys() >= CardList.Cards[cardId].Cost);
         }
 
         /// <summary>
@@ -157,9 +159,9 @@ namespace DominionSim.Strategy
         /// <param name="victimPlayerFacade">The Player who is getting hit</param>
         /// <param name="supply">The supply</param>
         /// <param name="attackerName">Name of the attacking player</param>
-        /// <param name="cardName">Name of the attacking card</param>
+        /// <param name="cardId">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
-        public IEnumerable<string> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, string cardName)
+        public IEnumerable<CardIdentifier> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId)
         {
             // Naive implementation - just react with everything
             return victimPlayerFacade.GetHand().Where(c => ((CardList.Cards[c].Type & Card.CardType.Reaction) != 0));
@@ -172,7 +174,7 @@ namespace DominionSim.Strategy
         /// <param name="p"></param>
         /// <param name="card"></param>
         /// <returns>TRUE to set the card aside, FALSE to draw it</returns>
-        public bool ChooseToSetAsideCard(PlayerFacade p, string card)
+        public bool ChooseToSetAsideCard(PlayerFacade p, CardIdentifier card)
         {
             // Base strategy naively hopes to get money and sets aside everything else
             if ((CardList.Cards[card].Type & Card.CardType.Treasure) != 0)

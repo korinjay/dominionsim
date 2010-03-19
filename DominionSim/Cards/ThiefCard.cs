@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
+    using CardIdentifier = String;
+
     class ThiefCard : Card
     {
         public ThiefCard() : base(CardList.Thief, Card.ActionAttack, 4, 0, 0, 0, 0, 0)
@@ -21,15 +23,15 @@ namespace DominionSim.Cards
                 if (!HandleAttackReactions(p, opponent, supply))
                 {
                     // Draw two cards from this player
-                    IEnumerable<string> twoCards = opponent.DrawCards(2);
+                    IEnumerable<CardIdentifier> twoCards = opponent.DrawCards(2);
 
                     // Divide them into treasure and non-treasure
-                    List<string> treasure = new List<string>( twoCards.Where(c => (CardList.Cards[c].Type & CardType.Treasure) != 0) );
-                    List<string> nonTreasure = new List<string>( twoCards.Where(c => (CardList.Cards[c].Type & CardType.Treasure) == 0) );
+                    List<CardIdentifier> treasure = new List<CardIdentifier>(twoCards.Where(c => (CardList.Cards[c].Type & CardType.Treasure) != 0));
+                    List<CardIdentifier> nonTreasure = new List<CardIdentifier>(twoCards.Where(c => (CardList.Cards[c].Type & CardType.Treasure) == 0));
 
                     // So that it ends up logged as a discard, put the non-treasure in his hand
                     opponent.Hand.AddRange(nonTreasure);
-                    foreach (string name in nonTreasure)
+                    foreach (CardIdentifier name in nonTreasure)
                     {
                         // Then tell him to discard the non-treasure
                         opponent.DiscardCard(name);
@@ -38,7 +40,7 @@ namespace DominionSim.Cards
                     if (treasure.Count() > 0)
                     {
                         // Choose one treasure card to trash
-                        string toTrash = p.Strategy.ChoosePlayerCardsToTrash(p.GetFacade(), 1, 1, opponent.Name, treasure).ElementAt(0);
+                        CardIdentifier toTrash = p.Strategy.ChoosePlayerCardsToTrash(p.GetFacade(), 1, 1, opponent.Name, treasure).ElementAt(0);
 
                         // Remove it from our treasure list
                         treasure.Remove(toTrash);
@@ -49,23 +51,22 @@ namespace DominionSim.Cards
                         opponent.TrashCard(toTrash);
 
                         // Choose whether to gain this card
-                        List<string> choices = new List<string>();
+                        List<CardIdentifier> choices = new List<CardIdentifier>();
                         choices.Add(toTrash);
-                        IEnumerable<string> gains = p.Strategy.ChoosePlayerCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
+                        IEnumerable<CardIdentifier> gains = p.Strategy.ChoosePlayerCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
 
                         // Gain it if needed
-                        foreach (string name in gains)
+                        foreach (CardIdentifier name in gains)
                         {
                             p.GainCard(name);
                         }
 
                         // Discard any other treasure
-                        foreach (string name in treasure)
+                        foreach (CardIdentifier name in treasure)
                         {
                             opponent.Hand.Add(name);
                             opponent.DiscardCard(name);
                         }
-
                     }
                 }
             }

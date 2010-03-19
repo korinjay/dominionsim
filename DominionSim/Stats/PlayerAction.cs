@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Stats
 {
+    using CardIdentifier = String;
+
     class PlayerAction
     {
         public const string Buy = "Buy";
@@ -17,9 +19,9 @@ namespace DominionSim.Stats
 
         public int Turn;
         public string Action;
-        public string Card;
+        public CardIdentifier Card;
 
-        public PlayerAction(int turn, string card, string action)
+        public PlayerAction(int turn, CardIdentifier card, string action)
         {
             Turn = turn;
             Card = card;

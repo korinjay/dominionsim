@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim
 {
+    using CardIdentifier = String;
+
     class Supply
     {
         public enum GameState
@@ -14,13 +16,13 @@ namespace DominionSim
             EndViaSupply
         }
 
-        public Dictionary<string, int> CardSupply { get; set; }
+        public Dictionary<CardIdentifier, int> CardSupply { get; set; }
 
         private int mNumPlayers;
 
         public Supply()
         {
-            CardSupply = new Dictionary<string, int>();
+            CardSupply = new Dictionary<CardIdentifier, int>();
         }
 
         private void SetupTreasureAndVictory(int numPlayers)
@@ -49,7 +51,7 @@ namespace DominionSim
             var cardsToAdd = CardList.Cards.Where((kvp) => !CardSupply.ContainsKey(kvp.Key))
                                            .Select((kvp) => kvp.Key);
 
-            foreach (string name in cardsToAdd)
+            foreach (CardIdentifier name in cardsToAdd)
             {
                 Card.CardType type = CardList.Cards[name].Type;
 
@@ -89,16 +91,16 @@ namespace DominionSim
         /// </summary>
         /// <param name="c">Card you would like to gain</param>
         /// <returns>TRUE if there were enough left for you to gain one</returns>
-        public bool GainCard(string cardName)
+        public bool GainCard(CardIdentifier cardId)
         {
-            if (!CardSupply.ContainsKey(cardName))
+            if (!CardSupply.ContainsKey(cardId))
             {
-                throw new Exception("Card "+cardName+" is not in the supply for this game!");
+                throw new Exception("Card "+cardId+" is not in the supply for this game!");
             }
 
-            if (CardSupply[cardName] > 0)
+            if (CardSupply[cardId] > 0)
             {
-                CardSupply[cardName]--;
+                CardSupply[cardId]--;
                 return true;
             }
             else
@@ -107,17 +109,17 @@ namespace DominionSim
             }
         }
 
-        public int Quantity(string cardName)
+        public int Quantity(CardIdentifier cardId)
         {
-            return CardSupply[cardName];
+            return CardSupply[cardId];
         }
 
-        public IEnumerable<string> GetAllCardsAtCost(int cost)
+        public IEnumerable<CardIdentifier> GetAllCardsAtCost(int cost)
         {
             return GetAllCardsInCostRange(cost, cost);
         }
 
-        public IEnumerable<string> GetAllCardsInCostRange(int min, int max)
+        public IEnumerable<CardIdentifier> GetAllCardsInCostRange(int min, int max)
         {
             return CardSupply.Where( (kvp) => CardList.Cards[kvp.Key].Cost >= min && CardList.Cards[kvp.Key].Cost <= max)
                              .OrderByDescending( (kvp) => CardList.Cards[kvp.Key].Cost)

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
+    using CardIdentifier = String;
+
     class SpyCard : Card
     {
         public SpyCard() : base( CardList.Spy, Card.ActionAttack, 4, 1, 1, 0, 0, 0)
@@ -14,19 +16,19 @@ namespace DominionSim.Cards
 
         protected void ExecuteAttackOnPlayer(Player me, Player them, Supply supply)
         {
-            IEnumerable<string> topOfTheirDeck = them.DrawCards(1);
+            IEnumerable<CardIdentifier> topOfTheirDeck = them.DrawCards(1);
 
-            IEnumerable<string> toDiscard = me.Strategy.ChoosePlayerCardsToDiscard(me.GetFacade(), 0, 1, them.Name, topOfTheirDeck);
+            IEnumerable<CardIdentifier> toDiscard = me.Strategy.ChoosePlayerCardsToDiscard(me.GetFacade(), 0, 1, them.Name, topOfTheirDeck);
 
-            IEnumerable<string> toPutBack = topOfTheirDeck.Except(toDiscard);
+            IEnumerable<CardIdentifier> toPutBack = topOfTheirDeck.Except(toDiscard);
 
-            foreach (string card in toDiscard)
+            foreach (CardIdentifier card in toDiscard)
             {
                 them.Hand.Add(card);
                 them.DiscardCard(card);
             }
 
-            foreach (string card in toPutBack)
+            foreach (CardIdentifier card in toPutBack)
             {
                 them.DrawPile.Insert(0, card);
             }
