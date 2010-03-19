@@ -17,32 +17,32 @@ namespace DominionSim.Strategy
             // Always buy provinces
             if (p.GetMoneys() >= 8)
             {
-                p.BuyCard(Card.Province);
+                p.BuyCard(CardList.Province);
                 return;
             }
 
             // If there's still a bit of time (more than 4 Provinces) buy Gold
-            if (p.GetMoneys() >= 6 && s.Quantity(Card.Province) > PROVINCE_THRESHOLD)
+            if (p.GetMoneys() >= 6 && s.Quantity(CardList.Province) > PROVINCE_THRESHOLD)
             {
-                p.BuyCard(Card.Gold);
+                p.BuyCard(CardList.Gold);
                 return;
             }
 
             // If we're close to the end of the game (fewer than 4 Provinces left) buy Duchies
-            if (p.GetMoneys() >= 5 && s.Quantity(Card.Province) <= PROVINCE_THRESHOLD)
+            if (p.GetMoneys() >= 5 && s.Quantity(CardList.Province) <= PROVINCE_THRESHOLD)
             {
-                p.BuyCard(Card.Duchy);
+                p.BuyCard(CardList.Duchy);
                 return;
             }
 
             // Else buy silver
             if (p.GetMoneys() >= 3)
             {
-                p.BuyCard(Card.Silver);
+                p.BuyCard(CardList.Silver);
                 return;
             }
 
-            p.BuyCard(Card.None);
+            p.BuyCard(null);
         }
     }
 }

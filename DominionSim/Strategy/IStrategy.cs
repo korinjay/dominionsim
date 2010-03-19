@@ -29,7 +29,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum number of cards you must trash</param>
         /// <param name="max">Maximum number of cards you may trash</param>
         /// <returns>An enumeration of cards in hand to trash</returns>
-        IEnumerable<Card> ChooseCardsToTrash(PlayerFacade p, int min, int max, CardType type, Supply s);
+        IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is asking you to trash some of your opponent's cards!
@@ -41,7 +41,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>An enumeration of cards from the provided collection to trash</returns>
-        IEnumerable<Card> ChooseOpponentCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<Card> cards);
+        IEnumerable<string> ChooseOpponentCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to discard some cards!
@@ -52,7 +52,7 @@ namespace DominionSim.Strategy
         /// <param name="max">Maximum number of cards you may discard</param>
         /// <param name="s">An enumeration of cards in hand to discard</param>
         /// <returns></returns>
-        IEnumerable<Card> ChooseCardsToDiscard(PlayerFacade p, int min, int max, CardType type, Supply s);
+        IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to gain a card.
@@ -61,7 +61,7 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        Card ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, CardType type, Supply s);
+        string ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is allowing you to
@@ -73,7 +73,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>All cards you wish to gain from the collection</returns>
-        IEnumerable<Card> ChooseOpponentCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<Card> cards);
+        IEnumerable<string> ChooseOpponentCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards);
 
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace DominionSim.Strategy
         /// <param name="victimPlayerFacade">The Player who is getting hit</param>
         /// <param name="supply">The supply</param>
         /// <param name="attackerName">Name of the attacking player</param>
-        /// <param name="card">Name of the attacking card</param>
+        /// <param name="cardName">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
-        IEnumerable<Card> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, Card card);
+        IEnumerable<string> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, string cardName);
     }
 }

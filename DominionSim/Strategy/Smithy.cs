@@ -48,7 +48,7 @@ namespace DominionSim.Strategy
 
     abstract class Smithy : BuyOneCard
     {
-        public Smithy(int numSmithys) : base(Card.Smithy, numSmithys)
+        public Smithy(int numSmithys) : base(CardList.Smithy, numSmithys)
         {
         }
     }

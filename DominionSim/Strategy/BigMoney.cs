@@ -12,19 +12,19 @@ namespace DominionSim.Strategy
         {
             if (p.GetMoneys() >= 8)
             {
-                p.BuyCard(Card.Province);
+                p.BuyCard(CardList.Province);
             }
             else if (p.GetMoneys() >= 6)
             {
-                p.BuyCard(Card.Gold);
+                p.BuyCard(CardList.Gold);
             }
             else if (p.GetMoneys() >= 3)
             {
-                p.BuyCard(Card.Silver);
+                p.BuyCard(CardList.Silver);
             }
             else
             {
-                p.BuyCard(Card.None);
+                p.BuyCard(null);
             }
         }
     }

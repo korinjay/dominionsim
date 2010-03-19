@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class MineCard : CardBase
+    class MineCard : Card
     {
-        public MineCard() : base("Mine", Card.Mine, CardType.Action, 5, 0, 0, 0, 0, 0)
+        public MineCard() : base(CardList.Mine, CardType.Action, 5, 0, 0, 0, 0, 0)
         {
 
         }
@@ -20,12 +20,12 @@ namespace DominionSim.Cards
                      .Where((t) => (t & CardType.Treasure) != 0)   // Filter only Treasure
                      .Count() > 0)                                  // And see if we ended up with any
             {
-                var trashing = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 1, 1, CardType.Treasure, supply).ElementAt(0);
-                var trashCard = CardList.Cards[trashing];
+                string trashing = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 1, 1, CardType.Treasure, supply).ElementAt(0);
+                Card trashCard = CardList.Cards[trashing];
 
                 p.TrashCard(trashing);
 
-                var gaining = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, trashCard.Cost + 3, CardType.Treasure, supply);
+                string gaining = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, trashCard.Cost + 3, CardType.Treasure, supply);
 
                 p.GainCardFromSupply(gaining, p.Hand);
             }

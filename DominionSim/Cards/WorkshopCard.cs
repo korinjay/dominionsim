@@ -5,13 +5,13 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class WorkshopCard : CardBase
+    class WorkshopCard : Card
     {
         /// <summary>
         /// Workshop - Action
         /// "Gain a card costing up to (4)"
         /// </summary>
-        public WorkshopCard() : base("Workshop", Card.Workshop, CardType.Action, 3, 0, 0, 0, 0, 0) {}
+        public WorkshopCard() : base(CardList.Workshop, CardType.Action, 3, 0, 0, 0, 0, 0) {}
 
         /// <summary>
         /// Override of Execute to tell the Strategy to please gain a card
@@ -22,7 +22,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            var card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, CardType.Any, supply);
+            string card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
 
             p.GainCardFromSupply(card);
         }

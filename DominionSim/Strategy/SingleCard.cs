@@ -8,7 +8,7 @@ namespace DominionSim.Strategy
     class SingleCard : BigMoneyDuchy
     {
         private int mNumDesiredCard = 0;
-        private Card mCard = Card.None;
+        private string mCard = "";
 
         /// <summary>
         /// We should change this strategy so it can take params for which card and how many, 
@@ -17,7 +17,7 @@ namespace DominionSim.Strategy
         public SingleCard()
         {
             mNumDesiredCard = 3;
-            mCard = Card.CouncilRoom;
+            mCard = CardList.CouncilRoom;
         }
 
         public override void TurnAction(PlayerFacade p, Supply s)

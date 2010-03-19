@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class AdventurerCard : CardBase
+    class AdventurerCard : Card
     {
-        public AdventurerCard() : base("Adventurer", Card.Adventurer, CardType.Action, 6, 0, 0, 0, 0, 0)
+        public AdventurerCard() : base( CardList.Adventurer, CardType.Action, 6, 0, 0, 0, 0, 0)
         {
 
         }
@@ -16,17 +16,17 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            var treasureCards = new List<Card>();
-            var discards = new List<Card>();
+            List<string> treasureCards = new List<string>();
+            List<string> discards = new List<string>();
 
             bool outOfCards = false;
             while (treasureCards.Count < 2 && outOfCards == false)
             {
-                var nextCards = p.DrawCards(1);
+                IEnumerable<string> nextCards = p.DrawCards(1);
 
                 if (nextCards.Count() > 0)
                 {
-                    var nextCard = nextCards.ElementAt(0);
+                    string nextCard = nextCards.ElementAt(0);
                     if ((CardList.Cards[nextCard].Type & CardType.Treasure) != 0)
                     {
                         // Hey, it's treasure!
@@ -45,7 +45,7 @@ namespace DominionSim.Cards
 
             p.AddCardsToHand(treasureCards);
 
-            foreach (var c in discards)
+            foreach (string c in discards)
             {
                 p.Hand.Add(c);
                 p.DiscardCard(c);

@@ -14,13 +14,13 @@ namespace DominionSim
             EndViaSupply
         }
 
-        public Dictionary<Card, int> CardSupply { get; set; }
+        public Dictionary<string, int> CardSupply { get; set; }
 
         private int mNumPlayers;
 
         public Supply()
         {
-            CardSupply = new Dictionary<Card, int>();
+            CardSupply = new Dictionary<string, int>();
         }
 
         private void SetupTreasureAndVictory(int numPlayers)
@@ -29,13 +29,13 @@ namespace DominionSim
 
             CardSupply.Clear();
 
-            CardSupply.Add(Card.Copper, 100);
-            CardSupply.Add(Card.Silver, 100);
-            CardSupply.Add(Card.Gold, 100);
+            CardSupply.Add(CardList.Copper, 100);
+            CardSupply.Add(CardList.Silver, 100);
+            CardSupply.Add(CardList.Gold, 100);
 
-            CardSupply.Add(Card.Estate, 12);
-            CardSupply.Add(Card.Duchy, 12);
-            CardSupply.Add(Card.Province, 12 + ((mNumPlayers - 4) * 3));
+            CardSupply.Add(CardList.Estate, 12);
+            CardSupply.Add(CardList.Duchy, 12);
+            CardSupply.Add(CardList.Province, 12 + ((mNumPlayers - 4) * 3));
         }
 
         /// <summary>
@@ -49,19 +49,19 @@ namespace DominionSim
             var cardsToAdd = CardList.Cards.Where((kvp) => !CardSupply.ContainsKey(kvp.Key))
                                            .Select((kvp) => kvp.Key);
 
-            foreach (var c in cardsToAdd)
+            foreach (string name in cardsToAdd)
             {
-                CardType type = CardList.Cards[c].Type;
+                Card.CardType type = CardList.Cards[name].Type;
 
-                if ((type & CardType.Victory) != 0)
+                if ((type & Card.CardType.Victory) != 0)
                 {
                     // Add 12 copies of Victory cards
-                    CardSupply.Add(c, 12);
+                    CardSupply.Add(name, 12);
                 }
                 else
                 {
                     // Add 10 copies of all other cards
-                    CardSupply.Add(c, 10);
+                    CardSupply.Add(name, 10);
                 }
             }
         }
@@ -71,16 +71,16 @@ namespace DominionSim
             SetupTreasureAndVictory(numPlayers);
 
             // STARTING SET
-            CardSupply.Add(Card.Cellar, 10);
-            CardSupply.Add(Card.Moat, 10);
-            CardSupply.Add(Card.Village, 10);
-            CardSupply.Add(Card.Militia, 10);
-            CardSupply.Add(Card.Workshop, 10);
-            CardSupply.Add(Card.Woodcutter, 10);
-            CardSupply.Add(Card.Smithy, 10);
-            CardSupply.Add(Card.Remodel, 10);
-            CardSupply.Add(Card.Mine, 10);
-            CardSupply.Add(Card.Market, 10);
+            CardSupply.Add(CardList.Cellar, 10);
+            CardSupply.Add(CardList.Moat, 10);
+            CardSupply.Add(CardList.Village, 10);
+            CardSupply.Add(CardList.Militia, 10);
+            CardSupply.Add(CardList.Workshop, 10);
+            CardSupply.Add(CardList.Woodcutter, 10);
+            CardSupply.Add(CardList.Smithy, 10);
+            CardSupply.Add(CardList.Remodel, 10);
+            CardSupply.Add(CardList.Mine, 10);
+            CardSupply.Add(CardList.Market, 10);
             // END STARTING SET
         }
 
@@ -89,16 +89,16 @@ namespace DominionSim
         /// </summary>
         /// <param name="c">Card you would like to gain</param>
         /// <returns>TRUE if there were enough left for you to gain one</returns>
-        public bool GainCard(Card card)
+        public bool GainCard(string cardName)
         {
-            if (!CardSupply.ContainsKey(card))
+            if (!CardSupply.ContainsKey(cardName))
             {
-                throw new Exception("Card "+card.ToString()+" is not in the supply for this game!");
+                throw new Exception("Card "+cardName+" is not in the supply for this game!");
             }
 
-            if (CardSupply[card] > 0)
+            if (CardSupply[cardName] > 0)
             {
-                CardSupply[card]--;
+                CardSupply[cardName]--;
                 return true;
             }
             else
@@ -107,17 +107,17 @@ namespace DominionSim
             }
         }
 
-        public int Quantity(Card card)
+        public int Quantity(string cardName)
         {
-            return CardSupply[card];
+            return CardSupply[cardName];
         }
 
-        public IEnumerable<Card> GetAllCardsAtCost(int cost)
+        public IEnumerable<string> GetAllCardsAtCost(int cost)
         {
             return GetAllCardsInCostRange(cost, cost);
         }
 
-        public IEnumerable<Card> GetAllCardsInCostRange(int min, int max)
+        public IEnumerable<string> GetAllCardsInCostRange(int min, int max)
         {
             return CardSupply.Where( (kvp) => CardList.Cards[kvp.Key].Cost >= min && CardList.Cards[kvp.Key].Cost <= max)
                              .OrderByDescending( (kvp) => CardList.Cards[kvp.Key].Cost)
@@ -126,7 +126,7 @@ namespace DominionSim
 
         public GameState GetGameState()
         {
-            if(CardSupply[Card.Province] == 0)
+            if(CardSupply[CardList.Province] == 0)
             {
                 return GameState.EndViaProvinces;
             }

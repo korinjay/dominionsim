@@ -17,9 +17,9 @@ namespace DominionSim.Stats
 
         public int Turn;
         public string Action;
-        public Card Card;
+        public string Card;
 
-        public PlayerAction(int turn, Card card, string action)
+        public PlayerAction(int turn, string card, string action)
         {
             Turn = turn;
             Card = card;

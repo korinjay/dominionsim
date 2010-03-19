@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class WitchCard : CardBase
+    class WitchCard : Card
     {
-        public WitchCard() : base("Witch", Card.Witch, ActionAttack, 5, 2, 0, 0, 0, 0)
+        public WitchCard() : base( CardList.Witch, Card.ActionAttack, 5, 2, 0, 0, 0, 0)
         {
 
         }
@@ -18,7 +18,7 @@ namespace DominionSim.Cards
 
             foreach (Player opponent in p.OtherPlayers)
             {
-                opponent.GainCardFromSupply(Card.Curse);
+                opponent.GainCardFromSupply(CardList.Curse);
             }
         }
     }

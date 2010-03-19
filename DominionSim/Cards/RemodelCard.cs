@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class RemodelCard : CardBase
+    class RemodelCard : Card
     {
-        public RemodelCard() : base("Remodel", Card.Remodel, CardType.Action, 4, 0, 0, 0, 0, 0)
+        public RemodelCard() : base(CardList.Remodel, CardType.Action, 4, 0, 0, 0, 0, 0)
         {
 
         }
@@ -22,10 +22,10 @@ namespace DominionSim.Cards
 
                 if (toTrash.Count() == 1)
                 {
-                    var card = toTrash.ElementAt(0);
+                    string card = toTrash.ElementAt(0);
                     p.TrashCard(card);
 
-                    var toGain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, CardList.Cards[card].Cost + 2, CardType.Any, supply);
+                    string toGain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, CardList.Cards[card].Cost + 2, CardType.Any, supply);
 
                     p.GainCardFromSupply(toGain);
                 }

@@ -28,21 +28,21 @@ namespace DominionSim.Strategy
 
         public override void TurnAction(PlayerFacade p, Supply s)
         {
-            if (p.GetHand().Contains(Card.Chapel))
+            if (p.GetHand().Contains(CardList.Chapel))
             {
-                p.PlayActionCard(Card.Chapel);
+                p.PlayActionCard(CardList.Chapel);
             }
         }
 
         public override void TurnBuy(PlayerFacade p, Supply s)
         {
             // Grab our chapels as early as possible
-            int chapelCount = Utility.CountCardIn(Card.Chapel, p.GetDeck());
+            int chapelCount = Utility.CountCardIn(CardList.Chapel, p.GetDeck());
             if (chapelCount < mNumChapels)
             {
-                if (p.GetMoneys() < 4 && CanAfford(p, Card.Chapel))
+                if (p.GetMoneys() < 4 && CanAfford(p, CardList.Chapel))
                 {
-                    p.BuyCard(Card.Chapel);
+                    p.BuyCard(CardList.Chapel);
                     return;
                 }
             }
@@ -51,20 +51,20 @@ namespace DominionSim.Strategy
             base.TurnBuy(p, s);
         }
 
-        public override IEnumerable<Card> ChooseCardsToTrash(PlayerFacade p, int min, int max, CardType type, Supply s)
+        public override IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
-            var toTrash = new List<Card>();
+            List<string> toTrash = new List<string>();
 
             int turn = p.GetTurn();
 
-            int numEstates = Utility.CountCardIn(Card.Estate, p.GetHand());
-            int numCopper = Utility.CountCardIn(Card.Copper, p.GetHand());
+            int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
+            int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
 
-            var allTreasure = Utility.FilterCardListByType(p.GetDeck(), CardType.Treasure);
+            var allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
-            foreach (var t in allTreasure)
+            foreach (string t in allTreasure)
             {
-                CardBase c = CardList.Cards[t];
+                Card c = CardList.Cards[t];
                 totalMoney += c.Moneys;
             }
 
@@ -76,13 +76,13 @@ namespace DominionSim.Strategy
                 // Trash all the estates we can
                 for (int i = 0; i < numEstates && toTrash.Count < max; i++)
                 {
-                    toTrash.Add(Card.Estate);
+                    toTrash.Add(CardList.Estate);
                 }
             }
             // After that trash all the copper we can
             for (int i = 0; i < numCopper && toTrash.Count < max; i++)
             {
-                toTrash.Add(Card.Copper);
+                toTrash.Add(CardList.Copper);
             }
 
             return toTrash;
