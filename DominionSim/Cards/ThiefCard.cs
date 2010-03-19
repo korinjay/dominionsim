@@ -7,7 +7,7 @@ namespace DominionSim.Cards
 {
     class ThiefCard : CardBase
     {
-        public ThiefCard() : base("Thief", Card.Thief, CardType.ActionAttack, 4, 0, 0, 0, 0, 0)
+        public ThiefCard() : base("Thief", Card.Thief, ActionAttack, 4, 0, 0, 0, 0, 0)
         {
 
         }
