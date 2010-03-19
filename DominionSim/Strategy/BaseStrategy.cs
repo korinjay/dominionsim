@@ -55,7 +55,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>An enumeration of cards from the provided collection to trash</returns>
-        public virtual IEnumerable<string> ChooseOpponentCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        public virtual IEnumerable<string> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
         {
             // Choose to trash the maximum we can, the most expensive cards he has
             return cards.OrderByDescending(c => CardList.Cards[c].Cost)
@@ -79,6 +79,32 @@ namespace DominionSim.Strategy
                                           .OrderByDescending(c => (CardList.Cards[c].Type & (Card.CardType.Curse | Card.CardType.Victory)) != 0);
 
             return orderedCards.Take(min);
+        }
+
+        /// <summary>
+        /// Base implementation of the ChoosePlayerCardsToDiscard function
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="opponent"></param>
+        /// <param name="cards"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<string> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        {
+            // If this our own attack hitting ourselves, mitigate the damage
+            if (p.GetName() == opponent)
+            {
+                var deadCards = cards.Where(c => (CardList.Cards[c].Type & (Card.CardType.Curse | Card.CardType.Victory)) != 0);
+
+                deadCards = deadCards.Take(max);
+
+                return deadCards;
+            }
+            else
+            {
+                return cards.Where(c => (CardList.Cards[c].Type & (Card.CardType.Curse | Card.CardType.Victory)) == 0).Take(max);
+            }
         }
 
         /// <summary>
@@ -108,7 +134,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        public virtual IEnumerable<string> ChooseOpponentCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
+        public virtual IEnumerable<string> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards)
         {
             // Always gain any non-copper treasure, nothing else
             return cards.Where(c => c == CardList.Silver || c == CardList.Gold).Take(max);

@@ -60,6 +60,11 @@ namespace DominionSim.Strategy
 
         #region Passthrough Functions
 
+        public string GetName()
+        {
+            return mPlayer.Name;
+        }
+
         public int GetTurn()
         {
             return mPlayer.GetTurn();

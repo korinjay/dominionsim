@@ -50,7 +50,8 @@
   <ItemGroup>
     <Compile Include="Cards\AdventurerCard.cs" />
     <Compile Include="Cards\Card.cs" />
-    <Compile Include="CardList.cs" />
+    <Compile Include="Cards\SpyCard.cs" />
+    <Compile Include="Strategy\CardList.cs" />
     <Compile Include="Cards\ChapelCard.cs" />
     <Compile Include="Cards\CouncilRoomCard.cs" />
     <Compile Include="Cards\FeastCard.cs" />
