@@ -29,11 +29,11 @@ namespace DominionSim
         }
 
         /// <summary>
-        /// Implicit cast from a string to a CardIdentifier, 
+        /// Explicit cast from a string to a CardIdentifier, 
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static implicit operator CardIdentifier(string s)
+        /// <param name="s">a string</param>
+        /// <returns>CardIdentifier for that string</returns>
+        public static explicit operator CardIdentifier(string s)
         {
             return new CardIdentifier(s);
         }
@@ -73,44 +73,44 @@ namespace DominionSim
 
     class CardList
     {
-        public static readonly CardIdentifier Copper = "Copper";
-        public static readonly CardIdentifier Silver = "Silver";
-        public static readonly CardIdentifier Gold = "Gold";
+        public static readonly CardIdentifier Copper = (CardIdentifier)"Copper";
+        public static readonly CardIdentifier Silver = (CardIdentifier)"Silver";
+        public static readonly CardIdentifier Gold = (CardIdentifier)"Gold";
 
-        public static readonly CardIdentifier Estate = "Estate";
-        public static readonly CardIdentifier Duchy = "Duchy";
-        public static readonly CardIdentifier Province = "Province";
-        public static readonly CardIdentifier Curse = "Curse";
+        public static readonly CardIdentifier Estate = (CardIdentifier)"Estate";
+        public static readonly CardIdentifier Duchy = (CardIdentifier)"Duchy";
+        public static readonly CardIdentifier Province = (CardIdentifier)"Province";
+        public static readonly CardIdentifier Curse = (CardIdentifier)"Curse";
 
         // Original Dominion
-        public static readonly CardIdentifier Adventurer = "Adventurer";
-        public static readonly CardIdentifier Bureaucrat = "Bureaucrat";      // Not implemented
-        public static readonly CardIdentifier Cellar = "Cellar";
-        public static readonly CardIdentifier Chancellor = "Chancellor";      // Not implemented
-        public static readonly CardIdentifier Chapel = "Chapel";
-        public static readonly CardIdentifier CouncilRoom = "CouncilRoom";
-        public static readonly CardIdentifier Feast = "Feast";
-        public static readonly CardIdentifier Festival = "Festival";
-        public static readonly CardIdentifier Gardens = "Gardens";            // Not implemented
-        public static readonly CardIdentifier Laboratory = "Laboratory";
-        public static readonly CardIdentifier Library = "Library";
-        public static readonly CardIdentifier Market = "Market";
-        public static readonly CardIdentifier Militia = "Militia";
-        public static readonly CardIdentifier Mine = "Mine";
-        public static readonly CardIdentifier Moat = "Moat";
-        public static readonly CardIdentifier Moneylender = "Moneylender";
-        public static readonly CardIdentifier Remodel = "Remodel";
-        public static readonly CardIdentifier Smithy = "Smithy";
-        public static readonly CardIdentifier Spy = "Spy";
-        public static readonly CardIdentifier Thief = "Thief";
-        public static readonly CardIdentifier ThroneRoom = "ThroneRoom";      // Not implemented
-        public static readonly CardIdentifier Village = "Village";
-        public static readonly CardIdentifier Witch = "Witch";
-        public static readonly CardIdentifier Woodcutter = "Woodcutter";
-        public static readonly CardIdentifier Workshop = "Workshop";
+        public static readonly CardIdentifier Adventurer = (CardIdentifier)"Adventurer";
+        public static readonly CardIdentifier Bureaucrat = (CardIdentifier)"Bureaucrat";      // Not implemented
+        public static readonly CardIdentifier Cellar = (CardIdentifier)"Cellar";
+        public static readonly CardIdentifier Chancellor = (CardIdentifier)"Chancellor";      // Not implemented
+        public static readonly CardIdentifier Chapel = (CardIdentifier)"Chapel";
+        public static readonly CardIdentifier CouncilRoom = (CardIdentifier)"CouncilRoom";
+        public static readonly CardIdentifier Feast = (CardIdentifier)"Feast";
+        public static readonly CardIdentifier Festival = (CardIdentifier)"Festival";
+        public static readonly CardIdentifier Gardens = (CardIdentifier)"Gardens";            // Not implemented
+        public static readonly CardIdentifier Laboratory = (CardIdentifier)"Laboratory";
+        public static readonly CardIdentifier Library = (CardIdentifier)"Library";
+        public static readonly CardIdentifier Market = (CardIdentifier)"Market";
+        public static readonly CardIdentifier Militia = (CardIdentifier)"Militia";
+        public static readonly CardIdentifier Mine = (CardIdentifier)"Mine";
+        public static readonly CardIdentifier Moat = (CardIdentifier)"Moat";
+        public static readonly CardIdentifier Moneylender = (CardIdentifier)"Moneylender";
+        public static readonly CardIdentifier Remodel = (CardIdentifier)"Remodel";
+        public static readonly CardIdentifier Smithy = (CardIdentifier)"Smithy";
+        public static readonly CardIdentifier Spy = (CardIdentifier)"Spy";
+        public static readonly CardIdentifier Thief = (CardIdentifier)"Thief";
+        public static readonly CardIdentifier ThroneRoom = (CardIdentifier)"ThroneRoom";      // Not implemented
+        public static readonly CardIdentifier Village = (CardIdentifier)"Village";
+        public static readonly CardIdentifier Witch = (CardIdentifier)"Witch";
+        public static readonly CardIdentifier Woodcutter = (CardIdentifier)"Woodcutter";
+        public static readonly CardIdentifier Workshop = (CardIdentifier)"Workshop";
 
         // Intrigue
-        public static readonly CardIdentifier Harem = "Harem";
+        public static readonly CardIdentifier Harem = (CardIdentifier)"Harem";
 
 
         public static Dictionary<CardIdentifier, Card> Cards;

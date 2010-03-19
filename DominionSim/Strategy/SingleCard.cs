@@ -10,7 +10,7 @@ namespace DominionSim.Strategy
     class SingleCard : BigMoneyDuchy
     {
         private int mNumDesiredCard = 0;
-        private CardIdentifier mCard = "";
+        private CardIdentifier mCard = null;
 
         /// <summary>
         /// We should change this strategy so it can take params for which card and how many, 
