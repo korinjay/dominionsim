@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace DominionSim.Cards
+{
+    class WorkshopCard : CardBase
+    {
+        /// <summary>
+        /// Workshop - Action
+        /// "Gain a card costing up to (4)"
+        /// </summary>
+        public WorkshopCard() : base("Workshop", Card.Workshop, CardType.Action, 3, 0, 0, 0, 0, 0) {}
+
+        /// <summary>
+        /// Override of Execute to tell the Strategy to please gain a card
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="s">Strategy</param>
+        public override void ExecuteCard(Player p, Supply supply)
+        {
+            base.ExecuteCard(p, supply);
+
+            var card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, CardType.Any, supply);
+
+            p.GainCardFromSupply(card);
+        }
+    }
+}
