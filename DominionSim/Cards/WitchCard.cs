@@ -7,7 +7,7 @@ namespace DominionSim.Cards
 {
     class WitchCard : CardBase
     {
-        public WitchCard() : base("Witch", Card.Witch, ActionAttack, 5, 2, 0, 0, 0, 0)
+        public WitchCard() : base("Witch", Card.Witch, CardType.ActionAttack, 5, 2, 0, 0, 0, 0)
         {
 
         }
