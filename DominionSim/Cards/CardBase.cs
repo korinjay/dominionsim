@@ -16,16 +16,16 @@ namespace DominionSim
         Reaction = 0x20,
         Curse = 0x40,
         Any = 0xFF,
-        ActionAttack = CardType.Action | CardType.Attack,
-        TreasureAction = CardType.Treasure | CardType.Action,
-        TreasureVictory = CardType.Treasure | CardType.Victory,
-        VictoryAction = CardType.Victory | CardType.Action,
-        ReactionAction = CardType.Reaction | CardType.Action,
-
     }
 
     abstract class CardBase
     {
+        public const CardType ActionAttack = CardType.Action | CardType.Attack;
+        public const CardType TreasureAction = CardType.Treasure | CardType.Action;
+        public const CardType TreasureVictory = CardType.Treasure | CardType.Victory;
+        public const CardType VictoryAction = CardType.Victory | CardType.Action;
+        public const CardType ReactionAction = CardType.Reaction | CardType.Action;
+
         public string Name { get; set; }
         public Card Card { get; set; }
         public CardType Type { get; set; }
@@ -102,13 +102,13 @@ namespace DominionSim
     }
 
     #region No-frills cards
-    class CopperCard    : CardBase { public CopperCard()    : base("Copper", Card.Copper,     CardType.Treasure,        0, 0, 0, 1, 0, 0) {} }
-    class SilverCard    : CardBase { public SilverCard()    : base("Silver", Card.Silver,     CardType.Treasure,        3, 0, 0, 2, 0, 0) {} }
-    class GoldCard      : CardBase { public GoldCard()      : base("Gold", Card.Gold,         CardType.Treasure,        6, 0, 0, 3, 0, 0) {} }
-    class EstateCard    : CardBase { public EstateCard()    : base("Estate", Card.Estate,     CardType.Victory,         2, 0, 0, 0, 0, 1) {} }
-    class DuchyCard     : CardBase { public DuchyCard()     : base("Duchy", Card.Duchy,       CardType.Victory,         5, 0, 0, 0, 0, 3) {} }
-    class ProvinceCard  : CardBase { public ProvinceCard()  : base("Province", Card.Province, CardType.Victory,         8, 0, 0, 0, 0, 6) {} }
-    class CurseCard     : CardBase { public CurseCard()     : base("Curse", Card.Curse,       CardType.Curse,           0, 0, 0, 0, 0, -1) {} }
+    class CopperCard    : CardBase { public CopperCard()    : base("Copper", Card.Copper,     CardType.Treasure, 0, 0, 0, 1, 0, 0) {} }
+    class SilverCard    : CardBase { public SilverCard()    : base("Silver", Card.Silver,     CardType.Treasure, 3, 0, 0, 2, 0, 0) {} }
+    class GoldCard      : CardBase { public GoldCard()      : base("Gold", Card.Gold,       CardType.Treasure, 6, 0, 0, 3, 0, 0) {} }
+    class EstateCard    : CardBase { public EstateCard()    : base("Estate", Card.Estate,     CardType.Victory,  2, 0, 0, 0, 0, 1) {} }
+    class DuchyCard     : CardBase { public DuchyCard()     : base("Duchy", Card.Duchy,      CardType.Victory,  5, 0, 0, 0, 0, 3) {} }
+    class ProvinceCard  : CardBase { public ProvinceCard()  : base("Province", Card.Province,   CardType.Victory,  8, 0, 0, 0, 0, 6) {} }
+    class CurseCard     : CardBase { public CurseCard()     : base("Curse", Card.Curse,      CardType.Curse,    0, 0, 0, 0, 0, -1) {} }
 
     #region Dominion
     class SmithyCard    : CardBase { public SmithyCard()    : base("Smithy", Card.Smithy,     CardType.Action,   4, 3, 0, 0, 0, 0) {} }
@@ -120,7 +120,7 @@ namespace DominionSim
     #endregion
 
     #region Intrigue
-    class HaremCard     : CardBase { public HaremCard()     : base("Harem", Card.Harem,       CardType.TreasureVictory, 6, 0, 0, 2, 0, 2) {} }
+    class HaremCard     : CardBase { public HaremCard()     : base("Harem", Card.Harem,      TreasureVictory,        6, 0, 0, 2, 0, 2) {} }
     #endregion
 
     #region Seaside
