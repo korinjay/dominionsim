@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class CouncilRoomCard : Card
+    class CouncilRoomCard : CardBase
     {
-        public CouncilRoomCard() : base( CardList.CouncilRoom, CardType.Action, 5, 4, 0, 0, 1, 0)
+        public CouncilRoomCard() : base("Council Room", Card.CouncilRoom, CardType.Action, 5, 4, 0, 0, 1, 0)
         {
 
         }

@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cards\AdventurerCard.cs" />
-    <Compile Include="Cards\Card.cs" />
+    <Compile Include="Cards\CardBase.cs" />
     <Compile Include="CardList.cs" />
     <Compile Include="Cards\ChapelCard.cs" />
     <Compile Include="Cards\CouncilRoomCard.cs" />
