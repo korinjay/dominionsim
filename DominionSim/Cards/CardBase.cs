@@ -5,21 +5,21 @@ using System.Text;
 
 namespace DominionSim
 {
-    abstract class Card
+    [FlagsAttribute] 
+    public enum CardType
     {
-        [FlagsAttribute] 
-        public enum CardType
-        {
-            Treasure = 0x01,
-            Action = 0x02,
-            Victory = 0x04,
-            Duration = 0x08,
-            Attack = 0x10,
-            Reaction = 0x20,
-            Curse = 0x40,
-            Any = 0xFF,
-        }
+        Treasure = 0x01,
+        Action = 0x02,
+        Victory = 0x04,
+        Duration = 0x08,
+        Attack = 0x10,
+        Reaction = 0x20,
+        Curse = 0x40,
+        Any = 0xFF,
+    }
 
+    abstract class CardBase
+    {
         public const CardType ActionAttack = CardType.Action | CardType.Attack;
         public const CardType TreasureAction = CardType.Treasure | CardType.Action;
         public const CardType TreasureVictory = CardType.Treasure | CardType.Victory;
@@ -27,6 +27,7 @@ namespace DominionSim
         public const CardType ReactionAction = CardType.Reaction | CardType.Action;
 
         public string Name { get; set; }
+        public Card Card { get; set; }
         public CardType Type { get; set; }
         public int Cost { get; set; }
         public int Buys { get; set; }
@@ -35,9 +36,10 @@ namespace DominionSim
         public int Moneys { get; set; }
         public int VictoryPoints { get; set; }
 
-        public Card(string name, CardType type, int cost, int draws, int actions, int moneys, int buys, int vps)
+        public CardBase(string name, Card card, CardType type, int cost, int draws, int actions, int moneys, int buys, int vps)
         {
             Name = name;
+            Card = card;
             Type = type;
             Cost = cost;
             Draws = draws;
@@ -81,8 +83,8 @@ namespace DominionSim
         {
             // Tell the victim's strategy to attack, and then tell the victim's player what happened so
             // it can appropriately 
-            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply, attacker.Name, Name);
-            victim.AttackedBy(attacker.Name, Name, attackReactionCards);
+            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply, attacker.Name, Card);
+            victim.AttackedBy(attacker.Name, Card, attackReactionCards);
 
             // Double check that the Strategy isn't lying.
             // I don't have an easy way to double check that he didn't list the same card a lot.
@@ -95,30 +97,30 @@ namespace DominionSim
             // Attempt to react to them all, and return true if any of their ExecuteReaction functions returned true.
             return attackReactionCards.Union(victim.DurationCards)
                                       .Where(c => (CardList.Cards[c].Type & CardType.Reaction) != 0)
-                                      .Aggregate(false, (blocked, cardName) => blocked || CardList.Cards[cardName].ExecuteReaction(attacker, victim, supply));
+                                      .Aggregate(false, (blocked, card) => blocked || CardList.Cards[card].ExecuteReaction(attacker, victim, supply));
         }
     }
 
     #region No-frills cards
-    class CopperCard    : Card { public CopperCard()    : base(CardList.Copper,     Card.CardType.Treasure, 0, 0, 0, 1, 0, 0) {} }
-    class SilverCard    : Card { public SilverCard()    : base(CardList.Silver,     Card.CardType.Treasure, 3, 0, 0, 2, 0, 0) {} }
-    class GoldCard      : Card { public GoldCard()      : base(CardList.Gold,       Card.CardType.Treasure, 6, 0, 0, 3, 0, 0) {} }
-    class EstateCard    : Card { public EstateCard()    : base(CardList.Estate,     Card.CardType.Victory,  2, 0, 0, 0, 0, 1) {} }
-    class DuchyCard     : Card { public DuchyCard()     : base(CardList.Duchy,      Card.CardType.Victory,  5, 0, 0, 0, 0, 3) {} }
-    class ProvinceCard  : Card { public ProvinceCard()  : base(CardList.Province,   Card.CardType.Victory,  8, 0, 0, 0, 0, 6) {} }
-    class CurseCard     : Card { public CurseCard()     : base(CardList.Curse,      Card.CardType.Curse,    0, 0, 0, 0, 0, -1) {} }
+    class CopperCard    : CardBase { public CopperCard()    : base("Copper", Card.Copper,     CardType.Treasure, 0, 0, 0, 1, 0, 0) {} }
+    class SilverCard    : CardBase { public SilverCard()    : base("Silver", Card.Silver,     CardType.Treasure, 3, 0, 0, 2, 0, 0) {} }
+    class GoldCard      : CardBase { public GoldCard()      : base("Gold", Card.Gold,       CardType.Treasure, 6, 0, 0, 3, 0, 0) {} }
+    class EstateCard    : CardBase { public EstateCard()    : base("Estate", Card.Estate,     CardType.Victory,  2, 0, 0, 0, 0, 1) {} }
+    class DuchyCard     : CardBase { public DuchyCard()     : base("Duchy", Card.Duchy,      CardType.Victory,  5, 0, 0, 0, 0, 3) {} }
+    class ProvinceCard  : CardBase { public ProvinceCard()  : base("Province", Card.Province,   CardType.Victory,  8, 0, 0, 0, 0, 6) {} }
+    class CurseCard     : CardBase { public CurseCard()     : base("Curse", Card.Curse,      CardType.Curse,    0, 0, 0, 0, 0, -1) {} }
 
     #region Dominion
-    class SmithyCard    : Card { public SmithyCard()    : base(CardList.Smithy,     Card.CardType.Action,   4, 3, 0, 0, 0, 0) {} }
-    class VillageCard   : Card { public VillageCard()   : base(CardList.Village,    Card.CardType.Action,   3, 1, 2, 0, 0, 0) {} }
-    class LaboratoryCard : Card { public LaboratoryCard() : base(CardList.Laboratory, Card.CardType.Action, 5, 2, 1, 0, 0, 0) {} }
-    class FestivalCard  : Card { public FestivalCard()  : base(CardList.Festival,   Card.CardType.Action,   5, 0, 2, 2, 1, 0) {} }
-    class MarketCard    : Card { public MarketCard()    : base(CardList.Market,     Card.CardType.Action,   5, 1, 1, 1, 1, 0) {} }
-    class WoodcutterCard : Card { public WoodcutterCard() : base(CardList.Woodcutter, CardType.Action,      3, 0, 0, 2, 1, 0) {} }
+    class SmithyCard    : CardBase { public SmithyCard()    : base("Smithy", Card.Smithy,     CardType.Action,   4, 3, 0, 0, 0, 0) {} }
+    class VillageCard   : CardBase { public VillageCard()   : base("Village", Card.Village,    CardType.Action,   3, 1, 2, 0, 0, 0) {} }
+    class LaboratoryCard : CardBase { public LaboratoryCard() : base("Laboratory", Card.Laboratory, CardType.Action, 5, 2, 1, 0, 0, 0) {} }
+    class FestivalCard  : CardBase { public FestivalCard()  : base("Festival", Card.Festival,   CardType.Action,   5, 0, 2, 2, 1, 0) {} }
+    class MarketCard    : CardBase { public MarketCard()    : base("Market", Card.Market,     CardType.Action,   5, 1, 1, 1, 1, 0) {} }
+    class WoodcutterCard : CardBase { public WoodcutterCard() : base("Woodcutter", Card.Woodcutter, CardType.Action,      3, 0, 0, 2, 1, 0) {} }
     #endregion
 
     #region Intrigue
-    class HaremCard     : Card { public HaremCard()     : base(CardList.Harem,      TreasureVictory,        6, 0, 0, 2, 0, 2) {} }
+    class HaremCard     : CardBase { public HaremCard()     : base("Harem", Card.Harem,      TreasureVictory,        6, 0, 0, 2, 0, 2) {} }
     #endregion
 
     #region Seaside
