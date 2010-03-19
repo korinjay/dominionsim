@@ -10,7 +10,7 @@ namespace DominionSim.Strategy
         /// <summary>
         /// The card we are attempting to buy
         /// </summary>
-        protected string mCardToBuy;
+        protected Card mCardToBuy;
 
         /// <summary>
         /// The number of that card we want to have in the deck
@@ -20,19 +20,19 @@ namespace DominionSim.Strategy
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="cardName">Card to buy</param>
-        public BuyOneCard(string cardName) : this(cardName, 1)
+        /// <param name="card">Card to buy</param>
+        public BuyOneCard(Card card) : this(card, 1)
         {
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="cardName">Card to buy</param>
+        /// <param name="card">Card to buy</param>
         /// <param name="numCardsOfThatType">Num to buy</param>
-        public BuyOneCard(string cardName, int numCardsOfThatType)
+        public BuyOneCard(Card card, int numCardsOfThatType)
         {
-            mCardToBuy = cardName;
+            mCardToBuy = card;
             mNumCardsToHave = numCardsOfThatType;
         }
 
@@ -44,9 +44,9 @@ namespace DominionSim.Strategy
         /// <param name="s">Supply</param>
         public override void TurnAction(PlayerFacade p, Supply s)
         {
-            if (mCardToBuy != null)
+            if (mCardToBuy != Card.None)
             {
-                if ((CardList.Cards[mCardToBuy].Type & Card.CardType.Action) != 0)
+                if ((CardList.Cards[mCardToBuy].Type & CardType.Action) != 0)
                 {
                     while (p.GetActions() > 0 && p.GetHand().Contains(mCardToBuy))
                     {
@@ -66,21 +66,21 @@ namespace DominionSim.Strategy
             // Always buy provinces
             if (p.GetMoneys() >= 8)
             {
-                p.BuyCard(CardList.Province);
+                p.BuyCard(Card.Province);
                 return;
             }
 
             // If there's still a bit of time (more than 4 Provinces) buy Gold
-            if (p.GetMoneys() >= 6 && s.Quantity(CardList.Province) > PROVINCE_THRESHOLD)
+            if (p.GetMoneys() >= 6 && s.Quantity(Card.Province) > PROVINCE_THRESHOLD)
             {
-                p.BuyCard(CardList.Gold);
+                p.BuyCard(Card.Gold);
                 return;
             }
 
             // If we're close to the end of the game (fewer than 4 Provinces left) buy Duchies
-            if (p.GetMoneys() >= 5 && s.Quantity(CardList.Province) <= PROVINCE_THRESHOLD)
+            if (p.GetMoneys() >= 5 && s.Quantity(Card.Province) <= PROVINCE_THRESHOLD)
             {
-                p.BuyCard(CardList.Duchy);
+                p.BuyCard(Card.Duchy);
                 return;
             }
 
@@ -92,7 +92,7 @@ namespace DominionSim.Strategy
             // Else buy silver
             if (p.GetMoneys() >= 3)
             {
-                p.BuyCard(CardList.Silver);
+                p.BuyCard(Card.Silver);
                 return;
             }
         }

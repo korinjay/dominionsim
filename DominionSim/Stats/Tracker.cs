@@ -92,7 +92,7 @@ namespace DominionSim.Stats
             return str;            
         }
 
-        private IEnumerable<IGrouping<string, PlayerAction>> GetActionsByCard(IEnumerable<PlayerAction> actions, string whichKind)
+        private IEnumerable<IGrouping<Card, PlayerAction>> GetActionsByCard(IEnumerable<PlayerAction> actions, string whichKind)
         {
             var grouped = actions.Where(act => act.Action == whichKind)
                                  .GroupBy(act => act.Card)

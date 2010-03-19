@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    class FeastCard : Card
+    class FeastCard : CardBase
     {
-        public FeastCard() : base(CardList.Feast, CardType.Action, 4, 0, 0, 0, 0, 0)
+        public FeastCard() : base("Feast", Card.Feast, CardType.Action, 4, 0, 0, 0, 0, 0)
         {
         }
 
@@ -16,10 +16,10 @@ namespace DominionSim.Cards
             base.ExecuteCard(p, supply);
 
             // First trash ourselves!
-            p.TrashCard(Name);
+            p.TrashCard(Card);
 
             // Now choose what to gain
-            string gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, Card.CardType.Any, supply);
+            var gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, CardType.Any, supply);
 
             // Now gain it!
             p.GainCardFromSupply(gain);

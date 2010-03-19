@@ -22,11 +22,11 @@ namespace DominionSim.Strategy
         {
             while (p.GetActions() > 0)
             {
-                IEnumerable<string> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
+                var actionCards = Utility.FilterCardListByType(p.GetHand(), CardType.Action);
 
                 if (actionCards.Count() == 0)
                 {
-                    p.PlayActionCard(null);
+                    p.PlayActionCard(Card.None);
                 }
                 else
                 {
@@ -41,14 +41,15 @@ namespace DominionSim.Strategy
         public override void TurnBuy(PlayerFacade p, Supply s)
         {
             int moneys = p.GetMoneys();
-            
-            IEnumerable<string> possibleCards = new List<string>();
 
-            while(possibleCards.Count() == 0)
+            IEnumerable<Card> possibleCards;
+
+            do
             {
                 possibleCards = s.GetAllCardsAtCost(moneys);
                 moneys--;
             }
+            while (possibleCards.Count() == 0);
 
             int card = mRandomizer.Next(possibleCards.Count());
 

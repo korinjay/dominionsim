@@ -30,9 +30,9 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="original"></param>
         /// <returns></returns>
-        private List<string> CopyList(List<string> original)
+        private List<Card> CopyList(List<Card> original)
         {
-            List<string> copy = new List<string>();
+            var copy = new List<Card>();
             for (int i = 0; i < original.Count; i++)
             {
                 copy.Add(original[i]);
@@ -44,7 +44,7 @@ namespace DominionSim.Strategy
         /// Return a copy of the Player's Hand, so that there's no chance the actual Hand can be manipulated
         /// </summary>
         /// <returns>Cards in hand</returns>
-        public IEnumerable<string> GetHand()
+        public IEnumerable<Card> GetHand()
         {
             return CopyList(mPlayer.Hand);
         }
@@ -53,7 +53,7 @@ namespace DominionSim.Strategy
         /// Return a copy of the Player's Deck, so that there's no chance the actual Deck can by manipulated
         /// </summary>
         /// <returns>Cards in deck</returns>
-        public IEnumerable<string> GetDeck()
+        public IEnumerable<Card> GetDeck()
         {
             return CopyList(mPlayer.Deck);
         }
@@ -80,14 +80,14 @@ namespace DominionSim.Strategy
             return mPlayer.Buys;
         }
 
-        public void PlayActionCard(string name)
+        public void PlayActionCard(Card card)
         {
-            mPlayer.PlayActionCard(name);
+            mPlayer.PlayActionCard(card);
         }
 
-        public void BuyCard(string name)
+        public void BuyCard(Card card)
         {
-            mPlayer.BuyCard(name);
+            mPlayer.BuyCard(card);
         }
 
         public void Log(string msg)
