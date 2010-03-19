@@ -7,7 +7,7 @@ namespace DominionSim.Cards
 {
     class MoatCard : CardBase
     {
-        public MoatCard() : base("Moat", Card.Moat, ReactionAction, 2, 2, 0, 0, 0, 0)
+        public MoatCard() : base("Moat", Card.Moat, CardType.ReactionAction, 2, 2, 0, 0, 0, 0)
         {
         }
 
