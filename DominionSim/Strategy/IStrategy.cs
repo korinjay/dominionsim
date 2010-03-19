@@ -32,16 +32,16 @@ namespace DominionSim.Strategy
         IEnumerable<string> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
-        /// An Action (perhaps one you played) is asking you to trash some of your opponent's cards!
+        /// An Action (perhaps one you played) is asking you to trash some of your victim's cards!
         /// From the collection provided, choose which to trash
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
         /// <param name="min">Minimum number of cards you must trash</param>
         /// <param name="max">Maximum number of cards you may trash</param>
-        /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
+        /// <param name="victim">Name of the victim whose cards you are trashing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>An enumeration of cards from the provided collection to trash</returns>
-        IEnumerable<string> ChooseOpponentCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards);
+        IEnumerable<string> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string victim, IEnumerable<string> cards);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to discard some cards!
@@ -55,6 +55,18 @@ namespace DominionSim.Strategy
         IEnumerable<string> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
+        /// An Action (perhaps one you played) is letting you make an victim discard some cards!
+        /// Choose which ones from the collection you would like them to discard.
+        /// </summary>
+        /// <param name="p">Player who is using this strategy</param>
+        /// <param name="min">Minimum number of cards you must make them discard</param>
+        /// <param name="max">Maximum number of cards you may make them discard</param>
+        /// <param name="victim">Name of the victim you're screwing</param>
+        /// <param name="cards">Collection of cards to choose from</param>
+        /// <returns>Collection of cards to discard</returns>
+        IEnumerable<string> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string victim, IEnumerable<string> cards);
+
+        /// <summary>
         /// An Action (perhaps one you played) is forcing you to gain a card.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
@@ -65,15 +77,15 @@ namespace DominionSim.Strategy
 
         /// <summary>
         /// An Action (perhaps one you played) is allowing you to
-        /// gain a card from your opponent.
+        /// gain a card from your victim.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
         /// <param name="min">Minimum number of cards you must gain from the collection</param>
         /// <param name="max">Maximum number of cards you may gain from the collection</param>
-        /// <param name="opponent">Name of the opponent you're gaining cards from</param>
+        /// <param name="victim">Name of the victim you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>All cards you wish to gain from the collection</returns>
-        IEnumerable<string> ChooseOpponentCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<string> cards);
+        IEnumerable<string> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string victim, IEnumerable<string> cards);
 
 
         /// <summary>

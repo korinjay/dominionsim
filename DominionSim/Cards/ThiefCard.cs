@@ -38,7 +38,7 @@ namespace DominionSim.Cards
                     if (treasure.Count() > 0)
                     {
                         // Choose one treasure card to trash
-                        string toTrash = p.Strategy.ChooseOpponentCardsToTrash(p.GetFacade(), 1, 1, opponent.Name, treasure).ElementAt(0);
+                        string toTrash = p.Strategy.ChoosePlayerCardsToTrash(p.GetFacade(), 1, 1, opponent.Name, treasure).ElementAt(0);
 
                         // Remove it from our treasure list
                         treasure.Remove(toTrash);
@@ -51,7 +51,7 @@ namespace DominionSim.Cards
                         // Choose whether to gain this card
                         List<string> choices = new List<string>();
                         choices.Add(toTrash);
-                        IEnumerable<string> gains = p.Strategy.ChooseOpponentCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
+                        IEnumerable<string> gains = p.Strategy.ChoosePlayerCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
 
                         // Gain it if needed
                         foreach (string name in gains)
