@@ -126,6 +126,11 @@ namespace DominionSim
             mTurn++;
         }
 
+        public string DrawCard()
+        {
+            return DrawCards(1).ElementAt(0);
+        }
+
         public IEnumerable<string> DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
@@ -178,6 +183,13 @@ namespace DominionSim
             {
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, c, Stats.PlayerAction.AddToHand));
             }
+        }
+
+        public void AddCardToHand(string card)
+        {
+            List<string> list = new List<string>();
+            list.Add(card);
+            AddCardsToHand(list);
         }
 
         public void PlayActionCard(string name)

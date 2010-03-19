@@ -97,5 +97,14 @@ namespace DominionSim.Strategy
         /// <param name="cardName">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
         IEnumerable<string> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, string cardName);
+
+        /// <summary>
+        /// You have the opportunity to either draw a card or set it aside (i.e. from Library)
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="card"></param>
+        /// <returns>TRUE to set the card aside, FALSE to draw it</returns>
+        bool ChooseToSetAsideCard(PlayerFacade p, string card);
+
     }
 }

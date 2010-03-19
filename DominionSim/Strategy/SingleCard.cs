@@ -16,8 +16,8 @@ namespace DominionSim.Strategy
         /// </summary>
         public SingleCard()
         {
-            mNumDesiredCard = 3;
-            mCard = CardList.CouncilRoom;
+            mNumDesiredCard = 2;
+            mCard = CardList.Library;
         }
 
         public override void TurnAction(PlayerFacade p, Supply s)

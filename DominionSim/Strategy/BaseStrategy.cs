@@ -165,6 +165,27 @@ namespace DominionSim.Strategy
             return victimPlayerFacade.GetHand().Where(c => ((CardList.Cards[c].Type & Card.CardType.Reaction) != 0));
         }
 
+
+        /// <summary>
+        /// You have the opportunity to either draw a card or set it aside (i.e. from Library)
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="card"></param>
+        /// <returns>TRUE to set the card aside, FALSE to draw it</returns>
+        public bool ChooseToSetAsideCard(PlayerFacade p, string card)
+        {
+            // Base strategy naively hopes to get money and sets aside everything else
+            if ((CardList.Cards[card].Type & Card.CardType.Treasure) != 0)
+            {
+                // This is some kind of treasure!
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         #endregion
     }
 }
