@@ -108,5 +108,12 @@ namespace DominionSim.Strategy
         /// <returns>TRUE to set the card aside, FALSE to draw it</returns>
         bool ChooseToSetAsideCard(PlayerFacade p, CardIdentifier card);
 
+        /// <summary>
+        /// You have the opportunity to play an Action card twice (i.e. due to Throne Room)
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="supply">The supply</param>
+        /// <returns>Card from your hand to play twice</returns>
+        CardIdentifier ChooseCardToPlayTwice(PlayerFacade p, Supply s);
     }
 }
