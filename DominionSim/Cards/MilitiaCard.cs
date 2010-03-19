@@ -7,7 +7,7 @@ namespace DominionSim.Cards
 {
     class MilitiaCard : CardBase
     {
-        public MilitiaCard() : base("Militia", Card.Militia, ActionAttack, 4, 0, 0, 2, 0, 0)
+        public MilitiaCard() : base("Militia", Card.Militia, CardType.ActionAttack, 4, 0, 0, 2, 0, 0)
         {
         }
 
