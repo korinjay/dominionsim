@@ -62,6 +62,7 @@
     <Compile Include="Cards\MoatCard.cs" />
     <Compile Include="Cards\RemodelCard.cs" />
     <Compile Include="Cards\ThiefCard.cs" />
+    <Compile Include="Cards\ThroneRoomCard.cs" />
     <Compile Include="Cards\WitchCard.cs" />
     <Compile Include="Cards\WorkshopCard.cs" />
     <Compile Include="Stats\Tracker.cs" />

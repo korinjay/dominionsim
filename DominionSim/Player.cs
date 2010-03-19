@@ -119,7 +119,7 @@ namespace DominionSim
                     Moneys += c.Moneys;
                 }
             }
-            Log("  I have "+Moneys+" moneys");
+            Log("  I have "+Moneys+" moneys and " + Buys + " buys.");
 
             Log("  Choosing Buys...");
             Strategy.TurnBuy(mFacade, supply);
@@ -193,28 +193,28 @@ namespace DominionSim
             AddCardsToHand(list);
         }
 
-        public void PlayActionCard(CardIdentifier name)
+        public void PlayActionCard(CardIdentifier cardId)
         {
-            if (name == null)
+            if (cardId == null)
             {
                 Log("    Playing no actions!");
                 Actions--;
                 return;
             }
-            else if(Hand.Contains(name))
+            else if(Hand.Contains(cardId))
             {
-                Card c = CardList.Cards[name];
-                Log("    Playing a " + name + "!");
+                Card c = CardList.Cards[cardId];
+                Log("    Playing a " + cardId + "!");
 
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Play));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.Play));
 
                 Actions--;
-                MoveCard(name, Hand, PlayPile);
+                MoveCard(cardId, Hand, PlayPile);
                 c.ExecuteCard(this, mSupply);
             }
             else
             {
-                throw new Exception("Card " + name + " not in hand.");
+                throw new Exception("Card " + cardId + " not in hand.");
             }
         }
 

@@ -72,6 +72,23 @@ namespace DominionSim
         }
 
         /// <summary>
+        /// When playing the Throne Room card, another card can be executed twice.  While usually
+        /// this simply means executing... twice.  But in some cases there might be some weirdness
+        /// going on, especially because we don't *actually* have Card objects anywhere to track
+        /// the current state of cards (notable example: you can't trash a Card twice).
+        /// 
+        /// Note also: We could have made this ExecuteCard(numTimes), but this is so rare (1 card of
+        /// 76 has this capability) that I don't want to generalize.
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="supply">Supply</param>
+        public virtual void ExecuteCardTwice(Player p, Supply supply)
+        {
+            ExecuteCard(p, supply);
+            ExecuteCard(p, supply);
+        }
+
+        /// <summary>
         /// Perform a reaction
         /// </summary>
         /// <param name="attacker">One performing the attack</param>

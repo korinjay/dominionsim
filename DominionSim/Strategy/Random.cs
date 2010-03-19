@@ -25,14 +25,14 @@ namespace DominionSim.Strategy
             {
                 IEnumerable<CardIdentifier> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
 
-                if (actionCards.Count() == 0)
+                var numCards = actionCards.Count();
+                if (numCards == 0)
                 {
                     p.PlayActionCard(null);
                 }
                 else
                 {
-                    int card = mRandomizer.Next(actionCards.Count());
-
+                    int card = mRandomizer.Next(numCards);
                     p.PlayActionCard(actionCards.ElementAt(card));
                 }
             }
@@ -54,6 +54,27 @@ namespace DominionSim.Strategy
             int card = mRandomizer.Next(possibleCards.Count());
 
             p.BuyCard(possibleCards.ElementAt(card));
+        }
+
+
+        /// <summary>
+        /// You have the opportunity to play an Action card twice (i.e. due to Throne Room)
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="supply">The supply</param>
+        /// <returns>Card from your hand to play twice</returns>
+        public override CardIdentifier ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
+        {
+            IEnumerable<CardIdentifier> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
+            var numCards = actionCards.Count();
+            if (numCards == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return actionCards.ElementAt(mRandomizer.Next(numCards));
+            }
         }
     }
 }

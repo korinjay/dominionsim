@@ -103,7 +103,7 @@ namespace DominionSim
         public static readonly CardIdentifier Smithy = (CardIdentifier)"Smithy";
         public static readonly CardIdentifier Spy = (CardIdentifier)"Spy";
         public static readonly CardIdentifier Thief = (CardIdentifier)"Thief";
-        public static readonly CardIdentifier ThroneRoom = (CardIdentifier)"ThroneRoom";      // Not implemented
+        public static readonly CardIdentifier ThroneRoom = (CardIdentifier)"ThroneRoom";
         public static readonly CardIdentifier Village = (CardIdentifier)"Village";
         public static readonly CardIdentifier Witch = (CardIdentifier)"Witch";
         public static readonly CardIdentifier Woodcutter = (CardIdentifier)"Woodcutter";
