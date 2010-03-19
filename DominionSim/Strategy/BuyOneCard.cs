@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    using CardIdentifier = String;
+    
 
     abstract class BuyOneCard : BigMoneyDuchy
     {

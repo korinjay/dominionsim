@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    using CardIdentifier = String;
+    
 
     class SingleCard : BigMoneyDuchy
     {

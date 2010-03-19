@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Cards
 {
-    using CardIdentifier = String;
+    
 
     class RemodelCard : Card
     {

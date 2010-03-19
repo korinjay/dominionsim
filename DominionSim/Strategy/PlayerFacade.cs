@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DominionSim.Strategy
 {
-    using CardIdentifier = String;
+    
 
     /// <summary>
     /// Wrapper class exposing only certain functionality of a Player to a Strategy

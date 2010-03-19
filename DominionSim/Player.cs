@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace DominionSim
 {
-    using CardIdentifier = String;
+    
 
     class Player
     {
@@ -138,7 +138,7 @@ namespace DominionSim
             Log("  Drawing " + num + " cards.");
             List<CardIdentifier> drawnCards = new List<CardIdentifier>();
 
-            CardIdentifier draws = "Drew ";
+            string draws = "Drew ";
             for (int i = 0; i < num; i++ )
             {
                 if (DrawPile.Count == 0)
@@ -148,19 +148,18 @@ namespace DominionSim
                     DrawPile = Utility.Shuffle(DrawPile);
                 }
 
-                CardIdentifier draw;
                 if (DrawPile.Count > 0)
                 {
-                    draw = DrawPile[0];
+                    CardIdentifier draw = DrawPile[0];
                     DrawPile.RemoveAt(0);
                     drawnCards.Add(draw);
+                    draws += draw;
                 }
                 else
                 {
-                    draw = "<nothing>";
+                    draws += "<nothing>";
                 }
 
-                draws += draw;
                 if (i != num - 1)
                 {
                     draws += ", ";

@@ -5,52 +5,112 @@ using System.Text;
 
 namespace DominionSim
 {
-    // Stopgap - pretty much everywhere in the universe we are using "string" as the type
-    // for cards identifiers.  That's bad; we should basically be using *anything else* but
-    // a hard primitive.  Putting this here in the hope that we can slowly migrate to a more
-    // sensible type.  This will probably be in a few more places as well, without the comment.
-    using CardIdentifier = String;
+    /// <summary>
+    /// Class to identify a Card.  Example CardIdentifier: "Estate", "Moat", or "Shanty Town".
+    /// This class is part of a stepwise conversion to get type safety around Card Ids, rather
+    /// than using "string" everywhere.
+    /// 
+    /// Actually, I think I like this better than an enum.  This might be enough for me!
+    /// </summary>
+    class CardIdentifier
+    {
+        /// <summary>
+        /// Internal storage of the name of the Card, eg "Militia"
+        /// </summary>
+        private String mId;
+
+        /// <summary>
+        /// Constructor, must pass a String identifier
+        /// </summary>
+        /// <param name="id"></param>
+        public CardIdentifier(String id)
+        {
+            mId = id;
+        }
+
+        /// <summary>
+        /// Implicit cast from a string to a CardIdentifier, 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static implicit operator CardIdentifier(string s)
+        {
+            return new CardIdentifier(s);
+        }
+
+        /// <summary>
+        /// Overriding ToString
+        /// </summary>
+        /// <returns>String for this CardIdentifier</returns>
+        public override string ToString()
+        {
+            return mId;
+        }
+
+        /// <summary>
+        /// Overriding equality
+        /// </summary>
+        /// <param name="obj">Comparison</param>
+        /// <returns>true if equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is CardIdentifier)
+            {
+                return (obj as CardIdentifier).mId.Equals(mId);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// OVerriding HashCodes
+        /// </summary>
+        /// <returns>HashCode</returns>
+        public override int GetHashCode()
+        {
+            return mId.GetHashCode();
+        }
+    };
 
     class CardList
     {
-        public const CardIdentifier Copper = "Copper";
-        public const CardIdentifier Silver = "Silver";
-        public const CardIdentifier Gold = "Gold";
+        public static readonly CardIdentifier Copper = "Copper";
+        public static readonly CardIdentifier Silver = "Silver";
+        public static readonly CardIdentifier Gold = "Gold";
 
-        public const CardIdentifier Estate = "Estate";
-        public const CardIdentifier Duchy = "Duchy";
-        public const CardIdentifier Province = "Province";
-        public const CardIdentifier Curse = "Curse";
+        public static readonly CardIdentifier Estate = "Estate";
+        public static readonly CardIdentifier Duchy = "Duchy";
+        public static readonly CardIdentifier Province = "Province";
+        public static readonly CardIdentifier Curse = "Curse";
 
         // Original Dominion
-        public const CardIdentifier Adventurer = "Adventurer";
-        public const CardIdentifier Bureaucrat = "Bureaucrat";      // Not implemented
-        public const CardIdentifier Cellar = "Cellar";
-        public const CardIdentifier Chancellor = "Chancellor";      // Not implemented
-        public const CardIdentifier Chapel = "Chapel";
-        public const CardIdentifier CouncilRoom = "CouncilRoom";
-        public const CardIdentifier Feast = "Feast";
-        public const CardIdentifier Festival = "Festival";
-        public const CardIdentifier Gardens = "Gardens";            // Not implemented
-        public const CardIdentifier Laboratory = "Laboratory";
-        public const CardIdentifier Library = "Library";
-        public const CardIdentifier Market = "Market";
-        public const CardIdentifier Militia = "Militia";
-        public const CardIdentifier Mine = "Mine";
-        public const CardIdentifier Moat = "Moat";
-        public const CardIdentifier Moneylender = "Moneylender";
-        public const CardIdentifier Remodel = "Remodel";
-        public const CardIdentifier Smithy = "Smithy";
-        public const CardIdentifier Spy = "Spy";
-        public const CardIdentifier Thief = "Thief";
-        public const CardIdentifier ThroneRoom = "ThroneRoom";      // Not implemented
-        public const CardIdentifier Village = "Village";
-        public const CardIdentifier Witch = "Witch";
-        public const CardIdentifier Woodcutter = "Woodcutter";
-        public const CardIdentifier Workshop = "Workshop";
+        public static readonly CardIdentifier Adventurer = "Adventurer";
+        public static readonly CardIdentifier Bureaucrat = "Bureaucrat";      // Not implemented
+        public static readonly CardIdentifier Cellar = "Cellar";
+        public static readonly CardIdentifier Chancellor = "Chancellor";      // Not implemented
+        public static readonly CardIdentifier Chapel = "Chapel";
+        public static readonly CardIdentifier CouncilRoom = "CouncilRoom";
+        public static readonly CardIdentifier Feast = "Feast";
+        public static readonly CardIdentifier Festival = "Festival";
+        public static readonly CardIdentifier Gardens = "Gardens";            // Not implemented
+        public static readonly CardIdentifier Laboratory = "Laboratory";
+        public static readonly CardIdentifier Library = "Library";
+        public static readonly CardIdentifier Market = "Market";
+        public static readonly CardIdentifier Militia = "Militia";
+        public static readonly CardIdentifier Mine = "Mine";
+        public static readonly CardIdentifier Moat = "Moat";
+        public static readonly CardIdentifier Moneylender = "Moneylender";
+        public static readonly CardIdentifier Remodel = "Remodel";
+        public static readonly CardIdentifier Smithy = "Smithy";
+        public static readonly CardIdentifier Spy = "Spy";
+        public static readonly CardIdentifier Thief = "Thief";
+        public static readonly CardIdentifier ThroneRoom = "ThroneRoom";      // Not implemented
+        public static readonly CardIdentifier Village = "Village";
+        public static readonly CardIdentifier Witch = "Witch";
+        public static readonly CardIdentifier Woodcutter = "Woodcutter";
+        public static readonly CardIdentifier Workshop = "Workshop";
 
         // Intrigue
-        public const CardIdentifier Harem = "Harem";
+        public static readonly CardIdentifier Harem = "Harem";
 
 
         public static Dictionary<CardIdentifier, Card> Cards;
