@@ -26,8 +26,8 @@ namespace DominionSim.Cards
                     IEnumerable<CardIdentifier> twoCards = opponent.DrawCards(2);
 
                     // Divide them into treasure and non-treasure
-                    List<CardIdentifier> treasure = new List<CardIdentifier>(twoCards.Where(c => (CardList.Cards[c].Type & CardType.Treasure) != 0));
-                    List<CardIdentifier> nonTreasure = new List<CardIdentifier>(twoCards.Where(c => (CardList.Cards[c].Type & CardType.Treasure) == 0));
+                    List<CardIdentifier> treasure = new List<CardIdentifier>(twoCards.Where(c => (c.Logic.Type & CardType.Treasure) != 0));
+                    List<CardIdentifier> nonTreasure = new List<CardIdentifier>(twoCards.Where(c => (c.Logic.Type & CardType.Treasure) == 0));
 
                     // So that it ends up logged as a discard, put the non-treasure in his hand
                     opponent.Hand.AddRange(nonTreasure);

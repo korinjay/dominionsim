@@ -29,7 +29,7 @@ namespace DominionSim.Cards
                 if (nextCards.Count() > 0)
                 {
                     CardIdentifier nextCard = nextCards.ElementAt(0);
-                    if ((CardList.Cards[nextCard].Type & CardType.Treasure) != 0)
+                    if ((nextCard.Logic.Type & CardType.Treasure) != 0)
                     {
                         // Hey, it's treasure!
                         treasureCards.Add(nextCard);

@@ -113,7 +113,7 @@ namespace DominionSim
             // Cash in Treasure
             foreach (CardIdentifier name in Hand)
             {
-                Card c = CardList.Cards[name];
+                Card c = name.Logic;
                 if ( (c.Type & Card.CardType.Treasure) != 0)
                 {
                     Moneys += c.Moneys;
@@ -203,7 +203,7 @@ namespace DominionSim
             }
             else if(Hand.Contains(cardId))
             {
-                Card c = CardList.Cards[cardId];
+                Card c = cardId.Logic;
                 Log("    Playing a " + cardId + "!");
 
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.Play));
@@ -228,7 +228,7 @@ namespace DominionSim
                 return;
             }
 
-            Card c = CardList.Cards[name];
+            Card c = name.Logic;
 
             Log("    Buying a "+name);
             if (Moneys >= c.Cost && Buys > 0)
@@ -359,7 +359,7 @@ namespace DominionSim
             int vps = 0;
             foreach (CardIdentifier name in Deck)
             {
-                Card c = CardList.Cards[name];
+                Card c = name.Logic;
                 vps += c.VictoryPoints;
             }
 

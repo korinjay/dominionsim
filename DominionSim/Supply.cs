@@ -48,15 +48,13 @@ namespace DominionSim
         {
             SetupTreasureAndVictory(numPlayers);
 
-            var cardsToAdd = CardList.Cards.Where((kvp) => !CardSupply.ContainsKey(kvp.Key))
-                                           .Select((kvp) => kvp.Key);
+            // Find all the Card classes that exist but we haven't put in the supply yet
 
-            CardSupply.Add(CardList.Feast, 10);
-            CardSupply.Add(CardList.ThroneRoom, 10);
+            var cardsToAdd = CardList.GetAllCardIds().Where(cardId => !CardSupply.ContainsKey(cardId));
 
             foreach (CardIdentifier name in cardsToAdd)
             {
-                Card.CardType type = CardList.Cards[name].Type;
+                Card.CardType type = name.Logic.Type;
 
                 if ((type & Card.CardType.Victory) != 0)
                 {
@@ -124,8 +122,8 @@ namespace DominionSim
 
         public IEnumerable<CardIdentifier> GetAllCardsInCostRange(int min, int max)
         {
-            return CardSupply.Where( (kvp) => CardList.Cards[kvp.Key].Cost >= min && CardList.Cards[kvp.Key].Cost <= max)
-                             .OrderByDescending( (kvp) => CardList.Cards[kvp.Key].Cost)
+            return CardSupply.Where( (kvp) => kvp.Key.Logic.Cost >= min && kvp.Key.Logic.Cost <= max)
+                             .OrderByDescending( (kvp) => kvp.Key.Logic.Cost)
                              .Select((kvp) => kvp.Key);
         }
 

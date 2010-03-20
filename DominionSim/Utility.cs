@@ -53,7 +53,7 @@ namespace DominionSim
 
         public static IEnumerable<CardIdentifier> FilterCardListByType(IEnumerable<CardIdentifier> toFilter, Card.CardType type)
         {
-            return toFilter.Where(c => (CardList.Cards[c].Type & type) != 0);
+            return toFilter.Where(c => (c.Logic.Type & type) != 0);
         }
     }
 }

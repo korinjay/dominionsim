@@ -48,7 +48,7 @@ namespace DominionSim.Strategy
         {
             if (mCardToBuy != null)
             {
-                if ((CardList.Cards[mCardToBuy].Type & Card.CardType.Action) != 0)
+                if ((mCardToBuy.Logic.Type & Card.CardType.Action) != 0)
                 {
                     while (p.GetActions() > 0 && p.GetHand().Contains(mCardToBuy))
                     {

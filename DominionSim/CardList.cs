@@ -20,6 +20,14 @@ namespace DominionSim
         private String mId;
 
         /// <summary>
+        /// Get at the Card logic assocaited with this instance
+        /// </summary>
+        public Card Logic
+        {
+            get { return CardList.GetCardLogic(this); }
+        }
+
+        /// <summary>
         /// Constructor, must pass a String identifier
         /// </summary>
         /// <param name="id"></param>
@@ -113,7 +121,7 @@ namespace DominionSim
         public static readonly CardIdentifier Harem = (CardIdentifier)"Harem";
 
 
-        public static Dictionary<CardIdentifier, Card> Cards;
+        private static Dictionary<CardIdentifier, Card> Cards;
 
         public static void SetupCardList()
         {
@@ -125,7 +133,7 @@ namespace DominionSim
             var inheritType = typeof(Card);
 
             var cardList = AppDomain.CurrentDomain.GetAssemblies().ToList()   // List of all loaded assemblies (this exe, dlls)
-                .SelectMany(assemblies => assemblies.GetTypes())              // Convert that list to a list of all loaded Types from each Assembly
+                .SelectMany(assembly => assembly.GetTypes())              // Convert that list to a list of all loaded Types from each Assembly
                 .Where(type => inheritType.IsAssignableFrom(type) &&          // Only pick out subclasses of Card
                        !type.IsAbstract)                                      // That are not abstract
                 .Select(type => Activator.CreateInstance(type) as Card);      // Now return a list of instances of each type
@@ -135,7 +143,26 @@ namespace DominionSim
             {
                 Cards.Add(c.CardId, c);
             }
+        }
 
-        } 
+        /// <summary>
+        /// Simple wrapper for Cards so I can really quickly find all Compiler errors and fix them.
+        /// We should go through CardIdentifier to get at the card logic.
+        /// </summary>
+        /// <param name="cardId">Card identifier</param>
+        /// <returns>Actual Card logic associated with that CardIdentifier</returns>
+        public static Card GetCardLogic(CardIdentifier cardId)
+        {
+            return Cards[cardId];
+        }
+
+        /// <summary>
+        /// Return a list of all the CardIdentifiers we have registered
+        /// </summary>
+        /// <returns>A bunch of CardIdentifiers</returns>
+        public static IEnumerable<CardIdentifier> GetAllCardIds()
+        {
+            return Cards.Select(kvp => kvp.Key);
+        }
     }
 }

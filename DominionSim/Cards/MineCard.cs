@@ -18,12 +18,12 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            if (p.Hand.Select((c) => CardList.Cards[c].Type)       // Get our hand as Types
+            if (p.Hand.Select((c) => c.Logic.Type)       // Get our hand as Types
                      .Where((t) => (t & CardType.Treasure) != 0)   // Filter only Treasure
                      .Count() > 0)                                  // And see if we ended up with any
             {
                 CardIdentifier trashing = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 1, 1, CardType.Treasure, supply).ElementAt(0);
-                Card trashCard = CardList.Cards[trashing];
+                Card trashCard = trashing.Logic;
 
                 p.TrashCardFromHand(trashing);
 

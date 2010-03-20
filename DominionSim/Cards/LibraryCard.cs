@@ -24,7 +24,7 @@ namespace DominionSim.Cards
                 CardIdentifier nextCard = p.DrawCard();
 
                 // If it's an action card, ask the strategy what to do with it
-                if ((CardList.Cards[nextCard].Type & CardType.Action) != 0)
+                if ((nextCard.Logic.Type & CardType.Action) != 0)
                 {
                     bool setThisAside = p.Strategy.ChooseToSetAsideCard(p.GetFacade(), nextCard);
 

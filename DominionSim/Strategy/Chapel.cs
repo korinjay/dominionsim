@@ -66,7 +66,7 @@ namespace DominionSim.Strategy
             int totalMoney = 0;
             foreach (CardIdentifier t in allTreasure)
             {
-                Card c = CardList.Cards[t];
+                Card c = t.Logic;
                 totalMoney += c.Moneys;
             }
 

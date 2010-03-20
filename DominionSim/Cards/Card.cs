@@ -124,8 +124,8 @@ namespace DominionSim
             // Get every card he reacted with combined with his duration cards.  Find only the ones of type Reaction.
             // Attempt to react to them all, and return true if any of their ExecuteReaction functions returned true.
             return attackReactionCards.Union(victim.DurationCards)
-                                      .Where(c => (CardList.Cards[c].Type & CardType.Reaction) != 0)
-                                      .Aggregate(false, (blocked, cardId) => blocked || CardList.Cards[cardId].ExecuteReaction(attacker, victim, supply));
+                                      .Where(c => (c.Logic.Type & CardType.Reaction) != 0)
+                                      .Aggregate(false, (blocked, cardId) => blocked || cardId.Logic.ExecuteReaction(attacker, victim, supply));
         }
     }
 
