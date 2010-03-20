@@ -120,11 +120,11 @@ namespace DominionSim
                 Player player = Players[i];
                 int vps = player.GetNumVictoryPoints();
 
-                IEnumerable<CardIdentifier> vpCards = Utility.FilterCardListByType(player.Deck, Card.CardType.Victory);
                 if (verbose)
                 {
+                    var vpCards = Utility.FilterCardsByType(player.Deck, Card.CardType.Victory).Select(vc => vc.CardId);
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
-                    Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck) + ")");
+                    Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck.GetCardIds()) + ")");
                     Console.WriteLine("  Purchases: ( " + Stats.Tracker.Instance.PurchaseString(player) + ")");
                     Console.WriteLine(player.Name+" Activity:");
                     Console.WriteLine(Stats.Tracker.Instance.ActivityString(player));

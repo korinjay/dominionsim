@@ -45,6 +45,15 @@ namespace DominionSim.VirtualCards
             return mVirtualCardList.AsReadOnly();
         }
 
+        /// <summary>
+        /// Return the CardIds in this List
+        /// </summary>
+        /// <returns>Enumerable through card Ids</returns>
+        public IEnumerable<CardIdentifier> GetCardIds()
+        {
+            return mVirtualCardList.Select(vc => vc.CardId);
+        }
+
         #region IList<VirtualCard> Members
 
         public int IndexOf(VirtualCard item)
