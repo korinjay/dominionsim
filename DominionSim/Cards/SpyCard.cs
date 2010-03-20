@@ -16,13 +16,11 @@ namespace DominionSim.Cards
 
         protected void ExecuteAttackOnPlayer(Player me, Player them, Supply supply)
         {
-            IEnumerable<CardIdentifier> topOfTheirDeck = them.DrawCards(1);
+            var topOfTheirDeck = them.DrawCards(1);
+            var toDiscard = me.Strategy.ChoosePlayerCardsToDiscard(me.GetFacade(), 0, 1, them.Name, topOfTheirDeck);
+            var toPutBack = topOfTheirDeck.Except(toDiscard);
 
-            IEnumerable<CardIdentifier> toDiscard = me.Strategy.ChoosePlayerCardsToDiscard(me.GetFacade(), 0, 1, them.Name, topOfTheirDeck);
-
-            IEnumerable<CardIdentifier> toPutBack = topOfTheirDeck.Except(toDiscard);
-
-            foreach (CardIdentifier card in toDiscard)
+            foreach (var card in toDiscard)
             {
                 them.Hand.Add(card);
                 them.DiscardCard(card);

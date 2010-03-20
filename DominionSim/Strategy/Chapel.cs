@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
@@ -25,7 +26,7 @@ namespace DominionSim.Strategy
         {
         }
 
-        public override IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public override IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
             List<CardIdentifier> toTrash = new List<CardIdentifier>();
 

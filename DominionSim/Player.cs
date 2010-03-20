@@ -264,20 +264,32 @@ namespace DominionSim
             }
         }
 
-        public void TrashCardFromHand(CardIdentifier s)
+        /// <summary>
+        /// Trash a particular card Id from the hand
+        /// </summary>
+        /// <param name="cardId">Card Id to trash</param>
+        public void TrashCardFromHand(CardIdentifier cardId)
         {
-            if (Hand.Contains(s))
+            TrashCardFromHand(Hand.First(cardId));
+        }
+
+        /// <summary>
+        /// Trash a parcticular card from the hand
+        /// </summary>
+        /// <param name="card">Card to trash</param>
+        public void TrashCardFromHand(VirtualCard card)
+        {
+            if (Hand.Contains(card))
             {
-                Log("    Trashing "+s+"!");
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
+                Log("    Trashing "+card+"!");
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Trash));
 
-
-                Hand.Remove(s);
-                Deck.Remove(Deck.First(vi => vi.CardId == s));  // TODO Should not be First, should be the actual instance
+                Hand.Remove(card);
+                Deck.Remove(card);
             }
             else
             {
-                throw new Exception("Told to trash " + s + " but I'm not holding that!");
+                throw new Exception("Told to trash " + card + " but I'm not holding that!");
             }
         }
 
@@ -298,19 +310,23 @@ namespace DominionSim
             }
         }
 
-        public void DiscardCard(CardIdentifier s)
+        /// <summary>
+        /// Discard the given card.  Must be in the Hand
+        /// </summary>
+        /// <param name="s">Card to discard</param>
+        public void DiscardCard(VirtualCard card)
         {
-            if (Hand.Contains(s))
+            if (Hand.Contains(card))
             {
-                Log("    Discarding " + s + "!");
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Discard));
+                Log("    Discarding " + card + "!");
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Discard));
 
-                Hand.Remove(s);
-                DiscardPile.Add(s);
+                Hand.Remove(card);
+                DiscardPile.Add(card);
             }
             else
             {
-                throw new Exception("Told to discard " + s + " but I'm not holding that!");
+                throw new InvalidOperationException("Told to discard " + card + " but I'm not holding that!");
             }
         }
 

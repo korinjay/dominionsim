@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     abstract class BaseStrategy : IStrategy
     {
         #region IStrategy Members
@@ -41,7 +40,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum cards to trash</param>
         /// <param name="max">Maximum cards to trash</param>
         /// <returns>Set of cards out of hand to trash</returns>
-        public virtual IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public virtual IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
             return p.GetHand().Where( c => (c.Logic.Type & type) != 0)
                               .OrderBy(c => c.Logic.Cost).Take(min);
@@ -57,7 +56,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent whose cards you are trashing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>An enumeration of cards from the provided collection to trash</returns>
-        public virtual IEnumerable<CardIdentifier> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
+        public virtual IEnumerable<VirtualCard> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string opponent, IEnumerable<VirtualCard> cards)
         {
             // Choose to trash the maximum we can, the most expensive cards he has
             return cards.OrderByDescending(c => c.Logic.Cost)
@@ -74,7 +73,7 @@ namespace DominionSim.Strategy
         /// <param name="max"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        public virtual IEnumerable<CardIdentifier> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public virtual IEnumerable<VirtualCard> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
             var orderedCards = p.GetHand().Where( c => (c.Logic.Type & type) != 0 )
                                           .OrderBy( c => (c.Logic.Cost) )
@@ -92,7 +91,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent"></param>
         /// <param name="cards"></param>
         /// <returns></returns>
-        public virtual IEnumerable<CardIdentifier> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
+        public virtual IEnumerable<VirtualCard> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string opponent, IEnumerable<VirtualCard> cards)
         {
             // If this our own attack hitting ourselves, mitigate the damage
             if (p.GetName() == opponent)
@@ -137,7 +136,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        public virtual IEnumerable<CardIdentifier> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
+        public virtual IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
         {
             // Always gain any non-copper treasure, nothing else
             return cards.Where(c => c == CardList.Silver || c == CardList.Gold).Take(max);
@@ -162,7 +161,7 @@ namespace DominionSim.Strategy
         /// <param name="attackerName">Name of the attacking player</param>
         /// <param name="cardId">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
-        public IEnumerable<CardIdentifier> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId)
+        public IEnumerable<VirtualCard> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId)
         {
             // Naive implementation - just react with everything
             return victimPlayerFacade.GetHand().Where(c => ((c.Logic.Type & Card.CardType.Reaction) != 0));
@@ -196,7 +195,7 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
-        public virtual CardIdentifier ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
+        public virtual VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
         {
             return null;
         }
