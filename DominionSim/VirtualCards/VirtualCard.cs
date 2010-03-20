@@ -35,5 +35,14 @@ namespace DominionSim.VirtualCards
         {
             CardId = cardId;
         }
+
+        /// <summary>
+        /// Override ToString
+        /// </summary>
+        /// <returns>Name of the card</returns>
+        public override string ToString()
+        {
+            return CardId.ToString();
+        }
     }
 }
