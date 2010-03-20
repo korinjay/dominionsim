@@ -19,38 +19,10 @@ namespace DominionSim.Strategy
     }
 
 
-    abstract class Chapel : BigMoneyDuchy
+    abstract class Chapel : BuyOneCard
     {
-        private int mNumChapels = 0;
-
-        public Chapel(int numChapels)
+        public Chapel(int numChapels) : base(CardList.Chapel, numChapels)
         {
-            mNumChapels = numChapels;
-        }
-
-        public override void TurnAction(PlayerFacade p, Supply s)
-        {
-            if (p.GetHand().Contains(CardList.Chapel))
-            {
-                p.PlayActionCard(CardList.Chapel);
-            }
-        }
-
-        public override void TurnBuy(PlayerFacade p, Supply s)
-        {
-            // Grab our chapels as early as possible
-            int chapelCount = Utility.CountCardIn(CardList.Chapel, p.GetDeck());
-            if (chapelCount < mNumChapels)
-            {
-                if (p.GetMoneys() < 4 && CanAfford(p, CardList.Chapel))
-                {
-                    p.BuyCard(CardList.Chapel);
-                    return;
-                }
-            }
-
-            // Otherwise play like BMD
-            base.TurnBuy(p, s);
         }
 
         public override IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)

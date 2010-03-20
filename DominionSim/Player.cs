@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-    
-
     class Player
     {
         public string Name { get; set; }
@@ -15,7 +14,7 @@ namespace DominionSim
         public List<Player> OtherPlayers { get; set; }
 
         public Strategy.IStrategy Strategy { get; set; }
-        public List<CardIdentifier> Deck { get; set; }
+        public VirtualCardList Deck { get; set; }
         public List<CardIdentifier> DrawPile { get; set; }
         public List<CardIdentifier> DiscardPile { get; set; }
         public List<CardIdentifier> DurationCards { get; set; }
@@ -73,7 +72,7 @@ namespace DominionSim
         public void StartNewGame()
         {
             mTurn = 0;
-            Deck = new List<CardIdentifier>();
+            Deck = new VirtualCardList();
             DrawPile = new List<CardIdentifier>();
             DiscardPile = new List<CardIdentifier>();
             DurationCards = new List<CardIdentifier>();
@@ -83,13 +82,13 @@ namespace DominionSim
 
             for (int i = 0; i < 7; i++)
             {
-                Deck.Add(CardList.Copper);
+                Deck.Add(new VirtualCard(CardList.Copper));
                 DrawPile.Add(CardList.Copper);
             }
 
             for (int i = 0; i < 3; i++)
             {
-                Deck.Add(CardList.Estate);
+                Deck.Add(new VirtualCard(CardList.Estate));
                 DrawPile.Add(CardList.Estate);
             }
 
@@ -233,10 +232,11 @@ namespace DominionSim
             Log("    Buying a "+name);
             if (Moneys >= c.Cost && Buys > 0)
             {
-                if (mSupply.GainCard(name))
+                var card = mSupply.GainCard(name);
+                if (null != card)
                 {
-                    DiscardPile.Add(name);
-                    Deck.Add(name);
+                    DiscardPile.Add(card.CardId);
+                    Deck.Add(card);
                     Moneys -= c.Cost;
                     Buys--;
                     Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Buy));
@@ -268,7 +268,7 @@ namespace DominionSim
 
 
                 Hand.Remove(s);
-                Deck.Remove(s);
+                Deck.Remove(Deck.First(vi => vi.CardId == s));  // TODO Should not be First, should be the actual instance
             }
             else
             {
@@ -326,7 +326,8 @@ namespace DominionSim
 
         public void GainCardFromSupply(CardIdentifier s, List<CardIdentifier> destination)
         {
-            if (mSupply.GainCard(s))
+            var card = mSupply.GainCard(s);
+            if (null != card)
             {
                 GainCard(s, destination);
             }
