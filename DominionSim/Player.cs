@@ -285,7 +285,7 @@ namespace DominionSim
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
 
                 PlayPile.Remove(s);
-                Deck.Remove(s);
+                Deck.Remove(Deck.First(vi => vi.CardId == s));  // TODO Should not be First, should be the actual instance
             }
             else
             {
@@ -316,7 +316,7 @@ namespace DominionSim
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
 
             destination.Add(s);
-            Deck.Add(s);
+            Deck.Add(new VirtualCard(s)); // TODO Should be getting an actual instance, not newing one
         }
 
         public void GainCard(CardIdentifier s)
@@ -358,9 +358,9 @@ namespace DominionSim
         public int GetNumVictoryPoints()
         {
             int vps = 0;
-            foreach (CardIdentifier name in Deck)
+            foreach (var card in Deck)
             {
-                Card c = name.Logic;
+                Card c = card.Logic;
                 vps += c.VictoryPoints;
             }
 
@@ -410,7 +410,7 @@ namespace DominionSim
         {
             Log("== Deck for " + Name + " ==");
 
-            Log(StatStringFromList(Deck));
+            Log(StatStringFromList(Deck.GetCardIds()));
         }
 
         public void Log(string str)

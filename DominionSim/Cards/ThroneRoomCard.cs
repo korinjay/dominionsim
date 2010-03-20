@@ -28,8 +28,8 @@ namespace DominionSim.Cards
                 {
                     throw new Exception("Player " + p.Name + "'s Strategy lied about a card in his hand he wanted to Throne Room!");
                 }
-                var cardLogic = playThisTwice.Logic;
-                if ((cardLogic.Type & CardType.Action) == 0)
+                var Logic = playThisTwice.Logic;
+                if ((Logic.Type & CardType.Action) == 0)
                 {
                     throw new Exception("Player " + p.Name + "'s Strategy provided a non-action card to Throne Room!");
                 }

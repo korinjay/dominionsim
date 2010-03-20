@@ -24,7 +24,7 @@ namespace DominionSim
         /// </summary>
         public Card Logic
         {
-            get { return CardList.GetCardLogic(this); }
+            get { return CardList.GetLogic(this); }
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace DominionSim
         /// </summary>
         /// <param name="cardId">Card identifier</param>
         /// <returns>Actual Card logic associated with that CardIdentifier</returns>
-        public static Card GetCardLogic(CardIdentifier cardId)
+        public static Card GetLogic(CardIdentifier cardId)
         {
             return Cards[cardId];
         }

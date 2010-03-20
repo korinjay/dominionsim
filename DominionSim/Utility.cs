@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
@@ -49,6 +50,11 @@ namespace DominionSim
             }
 
             return numCard;
+        }
+
+        public static IEnumerable<VirtualCard> FilterCardsByType(IEnumerable<VirtualCard> toFilter, Card.CardType type)
+        {
+            return toFilter.Where(c => (c.Logic.Type & type) != 0);
         }
 
         public static IEnumerable<CardIdentifier> FilterCardListByType(IEnumerable<CardIdentifier> toFilter, Card.CardType type)

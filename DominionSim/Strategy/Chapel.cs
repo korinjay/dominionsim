@@ -34,9 +34,9 @@ namespace DominionSim.Strategy
             int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
             int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
 
-            var allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
+            var allTreasure = Utility.FilterCardsByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
-            foreach (CardIdentifier t in allTreasure)
+            foreach (var t in allTreasure)
             {
                 Card c = t.Logic;
                 totalMoney += c.Moneys;

@@ -9,7 +9,7 @@ namespace DominionSim.VirtualCards
     /// Class to create actual Instances of Cards in our various Lists (Supplies, Hands, etc.).
     /// Currently, all our Card logic are in Card classes, each of which is a singletone.
     /// VirtualCards are simply barebones class instance that wrap the singletone Card class (accessible
-    /// via the CardLogic property).  This makes it so I can, bit by bit, move toward having Cards
+    /// via the Logic property).  This makes it so I can, bit by bit, move toward having Cards
     /// as actual honest-to-goodness OO classes rather than (basically) bags of global functions.
     /// </summary>
     class VirtualCard
@@ -22,7 +22,7 @@ namespace DominionSim.VirtualCards
         /// <summary>
         /// Logic associated with this Card
         /// </summary>
-        public Card CardLogic
+        public Card Logic
         {
             get { return CardId.Logic; }
         }
