@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
@@ -55,9 +56,9 @@ namespace DominionSim.Strategy
         /// Return a copy of the Player's Deck, so that there's no chance the actual Deck can by manipulated
         /// </summary>
         /// <returns>Cards in deck</returns>
-        public IEnumerable<CardIdentifier> GetDeck()
+        public System.Collections.ObjectModel.ReadOnlyCollection<VirtualCard> GetDeck()
         {
-            return CopyList(mPlayer.Deck);
+            return mPlayer.Deck.AsReadOnly();
         }
 
         #region Passthrough Functions

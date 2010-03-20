@@ -33,7 +33,7 @@ namespace DominionSim.Strategy
         public override void TurnBuy(PlayerFacade p, Supply s)
         {
             // Grab our cards as early as possible
-            int cardCount = Utility.CountCardIn(mCard, p.GetDeck());
+            int cardCount = p.GetDeck().Where(vi => vi.CardId == mCard).Count();
             if (cardCount < mNumDesiredCard)
             {
                 if (CanAfford(p, mCard))
