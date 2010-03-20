@@ -19,6 +19,8 @@ namespace DominionSim
 
         private Simulator mSim;
 
+        private IEnumerable<StrategyTypeHolder> mTypes;
+
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +37,7 @@ namespace DominionSim
             // assemblies that inherit from IStrategy, and dump them into my simple StrategyTypeHolder class that
             // we can throw into a ComboBox
             var inheritType = typeof(Strategy.IStrategy);
-            var types = AppDomain.CurrentDomain.GetAssemblies().ToList()                // List of all loaded assemblies (this exe, dlls)
+            mTypes = AppDomain.CurrentDomain.GetAssemblies().ToList()                // List of all loaded assemblies (this exe, dlls)
                 .SelectMany(assemblies => assemblies.GetTypes())                        // Convert that list to a list of all loaded Types from each Assembly
                 .Where(type => inheritType.IsAssignableFrom(type) && !type.IsAbstract)  // Only pick out the bits that implement the given type (IStrategy) and are not abstract
                 .Select(type => new StrategyTypeHolder(type.Name, type))                // Throw each of those into my little StrategyTypeHolder class
@@ -45,7 +47,7 @@ namespace DominionSim
             foreach (ComboBox comboBox in AIUIComponents.Select(aiui=>aiui.AISelection))
             {
                 comboBox.Items.Add(new StrategyTypeHolder("None", null));
-                comboBox.Items.AddRange(types.ToArray());
+                comboBox.Items.AddRange(mTypes.ToArray());
                 comboBox.SelectedIndex = 0;
             }
 
@@ -56,13 +58,18 @@ namespace DominionSim
                 checkBox.CheckedChanged += new EventHandler(checkBox_CheckedChanged);
             }
 
+            RandomizePlayers();
+        }
+
+        void RandomizePlayers()
+        {
             // Default to something playable immediately
             var rand = new Random();
-            int numTypes = types.Count();
-            playerCombo0.SelectedIndex = (rand.Next() % numTypes) +1;
-            playerCombo1.SelectedIndex = (rand.Next() % numTypes) +1;
-            playerCombo2.SelectedIndex = (rand.Next() % numTypes) +1;
-            playerCombo3.SelectedIndex = (rand.Next() % numTypes) +1;
+            int numTypes = mTypes.Count();
+            playerCombo0.SelectedIndex = (rand.Next() % numTypes) + 1;
+            playerCombo1.SelectedIndex = (rand.Next() % numTypes) + 1;
+            playerCombo2.SelectedIndex = (rand.Next() % numTypes) + 1;
+            playerCombo3.SelectedIndex = (rand.Next() % numTypes) + 1;
         }
 
         void checkBox_CheckedChanged(object sender, EventArgs e)
@@ -140,6 +147,39 @@ namespace DominionSim
         private void gameVerbose_CheckedChanged(object sender, EventArgs e)
         {
             txtNumGames.Text = "1";
+        }
+
+        private void tourneyChosenButton_Click(object sender, EventArgs e)
+        {
+            outputBox.Text = "";
+            // Get a list of all the AIs to use
+            var aisToUse = AIUIComponents.Where(aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type != null)
+                                         .Select( aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type );
+
+            Tourney t = new Tourney(aisToUse);
+            int numMatchups = t.Run();
+            outputBox.Text += numMatchups + " different matchups..." + Environment.NewLine;
+
+            var stats = t.GetStats();
+
+            var sortedDict = stats.OrderByDescending((kvp) => kvp.Value.Wins + kvp.Value.Ties);
+
+            foreach (var kvp in sortedDict)
+            {
+                string name = kvp.Key.ToString();
+                int wins = kvp.Value.Wins;
+                int ties = kvp.Value.Ties;
+                int games = kvp.Value.Games;
+                float percentWins = 100.0f * wins / games;
+                float percentTies = 100.0f * ties / games;
+                outputBox.Text += name + " - Wins: " + wins + " (" + percentWins + "%), Ties: " + ties + " (" + percentTies + "%), Highest Score %: " + ((wins + ties) * 100.0f / games) + Environment.NewLine;
+            }
+            
+        }
+
+        private void randomizeButton_Click(object sender, EventArgs e)
+        {
+            RandomizePlayers();
         }
     }
 

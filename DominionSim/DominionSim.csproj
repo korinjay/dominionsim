@@ -112,6 +112,7 @@
     <Compile Include="Strategy\Random.cs" />
     <Compile Include="Strategy\Smithy.cs" />
     <Compile Include="Supply.cs" />
+    <Compile Include="Tourney.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

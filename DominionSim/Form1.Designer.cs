@@ -46,6 +46,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.gameVerbose = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.tourneyChosenButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.randomizeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // playerCombo0
@@ -62,7 +65,7 @@
             this.playButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.playButton.Location = new System.Drawing.Point(12, 134);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(438, 52);
+            this.playButton.Size = new System.Drawing.Size(327, 52);
             this.playButton.TabIndex = 6;
             this.playButton.Text = "Play!";
             this.playButton.UseVisualStyleBackColor = true;
@@ -220,11 +223,44 @@
             this.progressBar.Size = new System.Drawing.Size(437, 23);
             this.progressBar.TabIndex = 18;
             // 
+            // tourneyChosenButton
+            // 
+            this.tourneyChosenButton.Location = new System.Drawing.Point(346, 134);
+            this.tourneyChosenButton.Name = "tourneyChosenButton";
+            this.tourneyChosenButton.Size = new System.Drawing.Size(103, 23);
+            this.tourneyChosenButton.TabIndex = 19;
+            this.tourneyChosenButton.Text = "Tourney Chosen";
+            this.tourneyChosenButton.UseVisualStyleBackColor = true;
+            this.tourneyChosenButton.Click += new System.EventHandler(this.tourneyChosenButton_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(345, 163);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(103, 23);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "Tourney All";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // randomizeButton
+            // 
+            this.randomizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.randomizeButton.Location = new System.Drawing.Point(389, 105);
+            this.randomizeButton.Name = "randomizeButton";
+            this.randomizeButton.Size = new System.Drawing.Size(61, 23);
+            this.randomizeButton.TabIndex = 21;
+            this.randomizeButton.Text = "Randomize";
+            this.randomizeButton.UseVisualStyleBackColor = true;
+            this.randomizeButton.Click += new System.EventHandler(this.randomizeButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(462, 443);
+            this.Controls.Add(this.randomizeButton);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.tourneyChosenButton);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.gameVerbose);
             this.Controls.Add(this.label1);
@@ -270,6 +306,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox gameVerbose;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Button tourneyChosenButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button randomizeButton;
     }
 }
 
