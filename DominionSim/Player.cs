@@ -233,10 +233,11 @@ namespace DominionSim
             Log("    Buying a "+name);
             if (Moneys >= c.Cost && Buys > 0)
             {
-                if (mSupply.GainCard(name))
+                var card = mSupply.GainCard(name);
+                if (null != card)
                 {
-                    DiscardPile.Add(name);
-                    Deck.Add(name);
+                    DiscardPile.Add(card.CardLogic.CardId);
+                    Deck.Add(card.CardLogic.CardId);
                     Moneys -= c.Cost;
                     Buys--;
                     Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Buy));
@@ -326,7 +327,8 @@ namespace DominionSim
 
         public void GainCardFromSupply(CardIdentifier s, List<CardIdentifier> destination)
         {
-            if (mSupply.GainCard(s))
+            var card = mSupply.GainCard(s);
+            if (null != card)
             {
                 GainCard(s, destination);
             }
