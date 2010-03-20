@@ -174,7 +174,7 @@ namespace DominionSim.Strategy
         /// <param name="p"></param>
         /// <param name="card"></param>
         /// <returns>TRUE to set the card aside, FALSE to draw it</returns>
-        public bool ChooseToSetAsideCard(PlayerFacade p, CardIdentifier card)
+        public bool ChooseToSetAsideCard(PlayerFacade p, VirtualCard card)
         {
             // Base strategy naively hopes to get money and sets aside everything else
             if ((card.Logic.Type & Card.CardType.Treasure) != 0)

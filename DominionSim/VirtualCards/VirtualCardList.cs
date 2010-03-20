@@ -13,14 +13,14 @@ namespace DominionSim.VirtualCards
         /// <summary>
         /// Inner list
         /// </summary>
-        private List<VirtualCard> mVirtualCardList = new List<VirtualCard>();
+        private IList<VirtualCard> mVirtualCardList;
 
         /// <summary>
         /// Basic constructor
         /// </summary>
         public VirtualCardList()
         {
-
+            mVirtualCardList = new List<VirtualCard>();
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace DominionSim.VirtualCards
         /// </summary>
         /// <param name="cardId">Card identifier we care about</param>
         /// <param name="count">Number of them</param>
-        public VirtualCardList(CardIdentifier cardId, int count)
+        public VirtualCardList(CardIdentifier cardId, int count) : this()
         {
             for (var i = 0; i < count; ++i)
             {
@@ -37,12 +37,28 @@ namespace DominionSim.VirtualCards
         }
 
         /// <summary>
+        /// Constructor, taking a read-only list
+        /// </summary>
+        /// <param name="readOnlyList">The list as a read-only list</param>
+        private VirtualCardList(System.Collections.ObjectModel.ReadOnlyCollection<VirtualCard> readOnlyList)
+        {
+            mVirtualCardList = readOnlyList;
+        }
+
+        /// <summary>
         /// Convert the List to a read-only version of itself
         /// </summary>
-        /// <returns>A read-only collection</returns>
-        public System.Collections.ObjectModel.ReadOnlyCollection<VirtualCard> AsReadOnly()
+        /// <returns>A read-only version</returns>
+        public VirtualCardList AsReadOnly()
         {
-            return mVirtualCardList.AsReadOnly();
+            if (IsReadOnly)
+            {
+                return this;
+            }
+            else
+            {
+                return new VirtualCardList((mVirtualCardList as List<VirtualCard>).AsReadOnly());
+            }
         }
 
         /// <summary>
@@ -167,7 +183,7 @@ namespace DominionSim.VirtualCards
 
         public bool IsReadOnly
         {
-            get { throw new NotImplementedException(); }
+            get { return mVirtualCardList.IsReadOnly; }
         }
 
         public bool Remove(VirtualCard item)

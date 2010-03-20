@@ -19,8 +19,8 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            var treasureCards = VirtualCardList();
-            var discards = VirtualCardList();
+            var treasureCards = new VirtualCardList();
+            var discards = new VirtualCardList();
 
             bool outOfCards = false;
             while (treasureCards.Count < 2 && outOfCards == false)
@@ -47,7 +47,7 @@ namespace DominionSim.Cards
 
             p.AddCardsToHand(treasureCards);
 
-            foreach (CardIdentifier c in discards)
+            foreach (var c in discards)
             {
                 p.Hand.Add(c);
                 p.DiscardCard(c);

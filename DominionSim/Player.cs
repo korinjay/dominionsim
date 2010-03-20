@@ -88,13 +88,13 @@ namespace DominionSim
             for (int i = 0; i < 7; i++)
             {
                 Deck.Add(new VirtualCard(CardList.Copper));
-                DrawPile.Add(CardList.Copper);
+                DrawPile.Add(new VirtualCard(CardList.Copper));
             }
 
             for (int i = 0; i < 3; i++)
             {
                 Deck.Add(new VirtualCard(CardList.Estate));
-                DrawPile.Add(CardList.Estate);
+                DrawPile.Add(new VirtualCard(CardList.Estate));
             }
 
             DrawPile = Utility.Shuffle(DrawPile);
@@ -107,7 +107,7 @@ namespace DominionSim
         {
             Log("== "+Name+" taking Turn #"+turn+" ==");
             PrintDeckStats();            
-            Log("  Hand: "+StringFromList(Hand));
+            Log("  Hand: "+StringFromCardList(Hand));
 
             mSupply = supply;
 
@@ -115,9 +115,9 @@ namespace DominionSim
             Strategy.TurnAction(mFacade, supply);
 
             // Cash in Treasure
-            foreach (CardIdentifier name in Hand)
+            foreach (var card in Hand)
             {
-                Card c = name.Logic;
+                Card c = card.Logic;
                 if ( (c.Type & Card.CardType.Treasure) != 0)
                 {
                     Moneys += c.Moneys;
@@ -132,7 +132,7 @@ namespace DominionSim
             mTurn++;
         }
 
-        public CardIdentifier DrawCard()
+        public VirtualCard DrawCard()
         {
             return DrawCards(1).ElementAt(0);
         }
@@ -140,7 +140,7 @@ namespace DominionSim
         public IEnumerable<VirtualCard> DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
-            var drawnCards = VirtualCardList();
+            var drawnCards = new VirtualCardList();
 
             string draws = "Drew ";
             for (int i = 0; i < num; i++ )
@@ -154,7 +154,7 @@ namespace DominionSim
 
                 if (DrawPile.Count > 0)
                 {
-                    CardIdentifier draw = DrawPile[0];
+                    var draw = DrawPile[0];
                     DrawPile.RemoveAt(0);
                     drawnCards.Add(draw);
                     draws += draw;
@@ -180,45 +180,46 @@ namespace DominionSim
         /// If you don't want the stats to record "Drew X", then just manipulate Hand directly.
         /// </summary>
         /// <param name="cards"Cards to add></param>
-        public void AddCardsToHand(IEnumerable<VirtualCard> cards)
+        public void AddCardsToHand(VirtualCardList cards)
         {
-            Hand.AddRange(cards);
-
-            foreach (CardIdentifier c in cards)
+            foreach (var card in cards)
             {
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, c, Stats.PlayerAction.AddToHand));
+                AddCardToHand(card);
             }
         }
 
-        public void AddCardToHand(CardIdentifier card)
+        /// <summary>
+        /// Add a single card to the Hand in a trackable, logged way
+        /// </summary>
+        /// <param name="card">Card to add</param>
+        public void AddCardToHand(VirtualCard card)
         {
-            List<CardIdentifier> list = new List<CardIdentifier>();
-            list.Add(card);
-            AddCardsToHand(list);
+            Hand.Add(card);
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AddToHand));
         }
 
-        public void PlayActionCard(CardIdentifier cardId)
+        public void PlayActionCard(VirtualCard card)
         {
-            if (cardId == null)
+            if (card == null)
             {
                 Log("    Playing no actions!");
                 Actions--;
                 return;
             }
-            else if(Hand.Contains(cardId))
+            else if (Hand.Contains(card))
             {
-                Card c = cardId.Logic;
-                Log("    Playing a " + cardId + "!");
+                Card c = card.Logic;
+                Log("    Playing a " + card + "!");
 
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.Play));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Play));
 
                 Actions--;
-                MoveCard(cardId, Hand, PlayPile);
+                MoveCard(card, Hand, PlayPile);
                 c.ExecuteCard(this, mSupply);
             }
             else
             {
-                throw new Exception("Card " + cardId + " not in hand.");
+                throw new InvalidOperationException("Card " + card + " not in hand.");
             }
         }
 
@@ -240,11 +241,11 @@ namespace DominionSim
                 var card = mSupply.GainCard(name);
                 if (null != card)
                 {
-                    DiscardPile.Add(card.CardId);
+                    DiscardPile.Add(card);
                     Deck.Add(card);
                     Moneys -= c.Cost;
                     Buys--;
-                    Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Buy));
+                    Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Buy));
                 }
                 else
                 {
@@ -373,7 +374,7 @@ namespace DominionSim
             GainCardFromSupply(s, DiscardPile);
         }
 
-        public void AttackedBy(string player, CardIdentifier card, IEnumerable<CardIdentifier> reactedWith)
+        public void AttackedBy(string player, VirtualCard card, IEnumerable<VirtualCard> reactedWith)
         {
             Log(this.Name + " was attacked by a " + card + " from " + player + (reactedWith.Count() > 0 ? ", reacted with: (" + reactedWith.Aggregate("", (s, c) => s + c + " " + ")") : "") + "!");
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AttackedBy));
@@ -405,25 +406,25 @@ namespace DominionSim
 
 
 
-        public String StringFromList(IEnumerable<CardIdentifier> list)
+        public String StringFromCardList(VirtualCardList list)
         {
             // Loop through the list and concatenate everything together like:
             //     "listItem1 listItem2 listItem3"
             return list.Aggregate("", (s, c) => s + c + " ");
         }
 
-        public String StatStringFromList(IEnumerable<CardIdentifier> list)
+        public String StatStringFromList(VirtualCardList list)
         {
-            Dictionary<CardIdentifier, int> counts = new Dictionary<CardIdentifier, int>();
-            foreach (CardIdentifier card in list)
+            var counts = new Dictionary<CardIdentifier, int>();
+            foreach (var card in list)
             {
-                if (counts.ContainsKey(card))
+                if (counts.ContainsKey(card.CardId))
                 {
-                    counts[card]++;
+                    counts[card.CardId]++;
                 }
                 else
                 {
-                    counts[card] = 1;
+                    counts[card.CardId] = 1;
                 }
             }
 
