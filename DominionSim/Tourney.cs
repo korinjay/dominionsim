@@ -51,6 +51,11 @@ namespace DominionSim
 
         public int Run()
         {
+            return Run2Player();
+        }
+
+        public int Run2Player()
+        {
             BuildMatchups();
 
             mStats = new Dictionary<string, PlayerStats>();
