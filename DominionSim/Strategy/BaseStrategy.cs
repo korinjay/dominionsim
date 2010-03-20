@@ -136,7 +136,7 @@ namespace DominionSim.Strategy
         /// <param name="opponent">Name of the opponent you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        public virtual IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<CardIdentifier> cards)
+        public virtual IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<VirtualCard> cards)
         {
             // Always gain any non-copper treasure, nothing else
             return cards.Where(c => c == CardList.Silver || c == CardList.Gold).Take(max);

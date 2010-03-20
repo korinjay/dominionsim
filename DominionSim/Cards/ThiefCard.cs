@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Cards
 {
-    
-
     class ThiefCard : Card
     {
         public ThiefCard() : base(CardList.Thief, Card.ActionAttack, 4, 0, 0, 0, 0, 0)
@@ -23,27 +22,27 @@ namespace DominionSim.Cards
                 if (!HandleAttackReactions(p, opponent, supply))
                 {
                     // Draw two cards from this player
-                    IEnumerable<CardIdentifier> twoCards = opponent.DrawCards(2);
+                    var twoCards = opponent.DrawCards(2);
 
                     // Divide them into treasure and non-treasure
-                    List<CardIdentifier> treasure = new List<CardIdentifier>(twoCards.Where(c => (c.Logic.Type & CardType.Treasure) != 0));
-                    List<CardIdentifier> nonTreasure = new List<CardIdentifier>(twoCards.Where(c => (c.Logic.Type & CardType.Treasure) == 0));
+                    var treasure = twoCards.Where(c => (c.Logic.Type & CardType.Treasure) != 0);
+                    var nonTreasure = twoCards.Where(c => (c.Logic.Type & CardType.Treasure) == 0);
 
                     // So that it ends up logged as a discard, put the non-treasure in his hand
                     opponent.Hand.AddRange(nonTreasure);
-                    foreach (CardIdentifier name in nonTreasure)
+                    foreach (var card in nonTreasure)
                     {
                         // Then tell him to discard the non-treasure
-                        opponent.DiscardCard(name);
+                        opponent.DiscardCard(card);
                     }
 
                     if (treasure.Count() > 0)
                     {
                         // Choose one treasure card to trash
-                        CardIdentifier toTrash = p.Strategy.ChoosePlayerCardsToTrash(p.GetFacade(), 1, 1, opponent.Name, treasure).ElementAt(0);
+                        var toTrash = p.Strategy.ChoosePlayerCardsToTrash(p.GetFacade(), 1, 1, opponent.Name, treasure).ElementAt(0);
 
                         // Remove it from our treasure list
-                        treasure.Remove(toTrash);
+                        treasure = treasure.Where(c => c != toTrash);
 
                         // Add it to his hand
                         opponent.Hand.Add(toTrash);
@@ -51,7 +50,7 @@ namespace DominionSim.Cards
                         opponent.TrashCardFromHand(toTrash);
 
                         // Choose whether to gain this card
-                        List<CardIdentifier> choices = new List<CardIdentifier>();
+                        var choices = new VirtualCardList();
                         choices.Add(toTrash);
                         IEnumerable<CardIdentifier> gains = p.Strategy.ChoosePlayerCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
 
