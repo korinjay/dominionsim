@@ -23,12 +23,12 @@ namespace DominionSim
             {
                 sRandom = new Random();
             }
-            List<T> shuffled = new List<T>();
+            var shuffled = new VirtualCardList();
 
             while (deck.Count > 0)
             {
                 int index = sRandom.Next(deck.Count);
-                T card = deck[index];
+                var card = deck[index];
                 deck.RemoveAt(index);
                 shuffled.Add(card);
             }

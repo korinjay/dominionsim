@@ -22,6 +22,10 @@ namespace DominionSim.Stats
         public string Action;
         public CardIdentifier Card;
 
+        public PlayerAction(int turn, VirtualCard card, string action) : this(turn, card.CardId, action)
+        {
+        }
+
         public PlayerAction(int turn, CardIdentifier cardId, string action)
         {
             Turn = turn;

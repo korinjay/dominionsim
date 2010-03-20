@@ -88,7 +88,7 @@ namespace DominionSim.Strategy
         /// <param name="victim">Name of the victim you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>All cards you wish to gain from the collection</returns>
-        IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string victim, IEnumerable<CardIdentifier> cards);
+        IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string victim, IEnumerable<VirtualCard> cards);
 
 
         /// <summary>
