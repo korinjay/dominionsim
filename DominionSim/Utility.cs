@@ -17,7 +17,7 @@ namespace DominionSim
             return sRandom.Next(min, max);
         }
 
-        public static List<T> Shuffle<T>(List<T> deck)
+        public static VirtualCardList Shuffle(VirtualCardList deck)
         {
             if (sRandom == null)
             {

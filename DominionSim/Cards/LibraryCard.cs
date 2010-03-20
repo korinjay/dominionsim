@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Cards
 {
@@ -18,10 +19,10 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            List<CardIdentifier> setAside = new List<CardIdentifier>();
+            var setAside = new VirtualCardList();
             while (p.Hand.Count < 7)
             {
-                CardIdentifier nextCard = p.DrawCard();
+                var nextCard = p.DrawCard();
 
                 // If it's an action card, ask the strategy what to do with it
                 if ((nextCard.Logic.Type & CardType.Action) != 0)

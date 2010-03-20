@@ -29,34 +29,19 @@ namespace DominionSim.Strategy
         }
 
         /// <summary>
-        /// Utility function to make a shallow copy of a list of cards
-        /// </summary>
-        /// <param name="original"></param>
-        /// <returns></returns>
-        private List<CardIdentifier> CopyList(List<CardIdentifier> original)
-        {
-            List<CardIdentifier> copy = new List<CardIdentifier>();
-            for (int i = 0; i < original.Count; i++)
-            {
-                copy.Add(original[i]);
-            }
-            return copy;
-        }
-
-        /// <summary>
         /// Return a copy of the Player's Hand, so that there's no chance the actual Hand can be manipulated
         /// </summary>
         /// <returns>Cards in hand</returns>
-        public IEnumerable<CardIdentifier> GetHand()
+        public VirtualCardList GetHand()
         {
-            return CopyList(mPlayer.Hand);
+            return mPlayer.Hand.AsReadOnly();
         }
 
         /// <summary>
         /// Return a copy of the Player's Deck, so that there's no chance the actual Deck can by manipulated
         /// </summary>
         /// <returns>Cards in deck</returns>
-        public System.Collections.ObjectModel.ReadOnlyCollection<VirtualCard> GetDeck()
+        public VirtualCardList GetDeck()
         {
             return mPlayer.Deck.AsReadOnly();
         }
