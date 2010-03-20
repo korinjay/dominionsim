@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Stats
 {
@@ -19,9 +20,9 @@ namespace DominionSim.Stats
 
         public int Turn;
         public string Action;
-        public CardIdentifier Card;
+        public VirtualCard Card;
 
-        public PlayerAction(int turn, CardIdentifier card, string action)
+        public PlayerAction(int turn, VirtualCard card, string action)
         {
             Turn = turn;
             Card = card;

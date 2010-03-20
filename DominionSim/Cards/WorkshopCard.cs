@@ -24,7 +24,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            CardIdentifier card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
+            var card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
 
             p.GainCardFromSupply(card);
         }

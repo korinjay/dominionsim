@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Cards
 {
@@ -18,17 +19,16 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            List<CardIdentifier> treasureCards = new List<CardIdentifier>();
-            List<CardIdentifier> discards = new List<CardIdentifier>();
+            var treasureCards = VirtualCardList();
+            var discards = VirtualCardList();
 
             bool outOfCards = false;
             while (treasureCards.Count < 2 && outOfCards == false)
             {
-                IEnumerable<CardIdentifier> nextCards = p.DrawCards(1);
-
+                var nextCards = p.DrawCards(1);
                 if (nextCards.Count() > 0)
                 {
-                    CardIdentifier nextCard = nextCards.ElementAt(0);
+                    var nextCard = nextCards.ElementAt(0);
                     if ((nextCard.Logic.Type & CardType.Treasure) != 0)
                     {
                         // Hey, it's treasure!
