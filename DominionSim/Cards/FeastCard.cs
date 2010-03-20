@@ -16,7 +16,7 @@ namespace DominionSim.Cards
         public override void ExecuteCard(Player p, Supply supply)
         {
             // First trash ourselves!
-            p.TrashCardFromPlay(CardId);
+            p.TrashCardFromPlay(p.PlayPile.First(CardId));
             
             // Then gain!
             GainACard(p, supply);
@@ -42,7 +42,7 @@ namespace DominionSim.Cards
         public override void ExecuteCardTwice(Player p, Supply supply)
         {
             // Trash once, gain twice
-            p.TrashCardFromPlay(CardId);
+            p.TrashCardFromPlay(p.PlayPile.First(CardId));
 
             GainACard(p, supply);
             base.ExecuteCard(p, supply);

@@ -137,7 +137,7 @@ namespace DominionSim
             return DrawCards(1).ElementAt(0);
         }
 
-        public IEnumerable<VirtualCard> DrawCards(int num)
+        public VirtualCardList DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
             var drawnCards = new VirtualCardList();
@@ -195,7 +195,7 @@ namespace DominionSim
         public void AddCardToHand(VirtualCard card)
         {
             Hand.Add(card);
-            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AddToHand));
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card.CardId, Stats.PlayerAction.AddToHand));
         }
 
         public void PlayActionCard(VirtualCard card)
@@ -211,7 +211,7 @@ namespace DominionSim
                 Card c = card.Logic;
                 Log("    Playing a " + card + "!");
 
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Play));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card.CardId, Stats.PlayerAction.Play));
 
                 Actions--;
                 MoveCard(card, Hand, PlayPile);
@@ -294,20 +294,20 @@ namespace DominionSim
             }
         }
 
-        public void TrashCardFromPlay(CardIdentifier s)
+        public void TrashCardFromPlay(VirtualCard card)
         {
-            if (PlayPile.Contains(s))
+            if (PlayPile.Contains(card))
             {
                 // Some cards trash when you play them (like Feast)
-                Log("    Trashing " + s + "!");
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
+                Log("    Trashing " + card + "!");
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Trash));
 
-                PlayPile.Remove(s);
-                Deck.Remove(Deck.First(vi => vi.CardId == s));  // TODO Should not be First, should be the actual instance
+                PlayPile.Remove(card);
+                Deck.Remove(card);
             }
             else
             {
-                throw new Exception("Told to trash " + s + " but it's not in play!");
+                throw new Exception("Told to trash " + card + " but it's not in play!");
             }
         }
 
@@ -340,7 +340,7 @@ namespace DominionSim
         public void GainCard(VirtualCard card, VirtualCardList destination)
         {
             Log("  Gained a " + card.ToString());
-            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Gain));
 
             destination.Add(card);
             Deck.Add(card);
@@ -362,7 +362,7 @@ namespace DominionSim
         /// <param name="destination">Where to put it</param>
         public void GainCardFromSupply(CardIdentifier cardId, VirtualCardList destination)
         {
-            var card = mSupply.GainCard(s);
+            var card = mSupply.GainCard(cardId);
             if (null != card)
             {
                 GainCard(card, destination);
@@ -374,10 +374,10 @@ namespace DominionSim
             GainCardFromSupply(s, DiscardPile);
         }
 
-        public void AttackedBy(string player, VirtualCard card, IEnumerable<VirtualCard> reactedWith)
+        public void AttackedBy(string player, CardIdentifier cardId, IEnumerable<VirtualCard> reactedWith)
         {
-            Log(this.Name + " was attacked by a " + card + " from " + player + (reactedWith.Count() > 0 ? ", reacted with: (" + reactedWith.Aggregate("", (s, c) => s + c + " " + ")") : "") + "!");
-            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AttackedBy));
+            Log(this.Name + " was attacked by a " + cardId + " from " + player + (reactedWith.Count() > 0 ? ", reacted with: (" + reactedWith.Aggregate("", (s, c) => s + c + " " + ")") : "") + "!");
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.AttackedBy));
         }
 
 
@@ -436,9 +436,9 @@ namespace DominionSim
             return str;
         }
 
-        public void Print(List<CardIdentifier> list)
+        public void Print(VirtualCardList list)
         {
-            Log(StringFromList(list));
+            Log(StringFromCardList(list));
         }
 
 
@@ -446,7 +446,7 @@ namespace DominionSim
         {
             Log("== Deck for " + Name + " ==");
 
-            Log(StatStringFromList(Deck.GetCardIds()));
+            Log(StatStringFromList(Deck));
         }
 
         public void Log(string str)

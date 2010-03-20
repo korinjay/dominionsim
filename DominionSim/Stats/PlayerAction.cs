@@ -20,12 +20,12 @@ namespace DominionSim.Stats
 
         public int Turn;
         public string Action;
-        public VirtualCard Card;
+        public CardIdentifier Card;
 
-        public PlayerAction(int turn, VirtualCard card, string action)
+        public PlayerAction(int turn, CardIdentifier cardId, string action)
         {
             Turn = turn;
-            Card = card;
+            Card = cardId;
             Action = action;
         }
     }
