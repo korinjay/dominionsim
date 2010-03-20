@@ -73,9 +73,9 @@ namespace DominionSim.Strategy
             return mPlayer.Buys;
         }
 
-        public void PlayActionCard(CardIdentifier name)
+        public void PlayActionCard(VirtualCard card)
         {
-            mPlayer.PlayActionCard(name);
+            mPlayer.PlayActionCard(card);
         }
 
         public void BuyCard(CardIdentifier name)
