@@ -17,14 +17,14 @@ namespace DominionSim.VirtualCards
         /// <summary>
         /// Card identifier this wraps
         /// </summary>
-        private CardIdentifier mCardId;
+        public CardIdentifier CardId { get; private set; }
 
         /// <summary>
         /// Logic associated with this Card
         /// </summary>
         public Card CardLogic
         {
-            get { return CardList.Cards[mCardId]; }
+            get { return CardList.Cards[CardId]; }
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace DominionSim.VirtualCards
         /// <param name="cardId">Identifier of the card this will talk to</param>
         public VirtualCard(CardIdentifier cardId)
         {
-            mCardId = cardId;
+            CardId = cardId;
         }
     }
 }

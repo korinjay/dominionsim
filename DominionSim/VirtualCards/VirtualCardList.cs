@@ -36,6 +36,15 @@ namespace DominionSim.VirtualCards
             }
         }
 
+        /// <summary>
+        /// Convert the List to a read-only version of itself
+        /// </summary>
+        /// <returns>A read-only collection</returns>
+        public System.Collections.ObjectModel.ReadOnlyCollection<VirtualCard> AsReadOnly()
+        {
+            return mVirtualCardList.AsReadOnly();
+        }
+
         #region IList<VirtualCard> Members
 
         public int IndexOf(VirtualCard item)

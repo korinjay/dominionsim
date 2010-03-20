@@ -108,7 +108,7 @@ namespace DominionSim.Strategy
         {
             if (CanAfford(p, mCardToBuy))
             {
-                int numOwned = Utility.CountCardIn(mCardToBuy, p.GetDeck());
+                int numOwned = p.GetDeck().Where(vi => vi.CardId == mCardToBuy).Count();
                 if (numOwned < mNumCardsToHave)
                 {
                     p.BuyCard(mCardToBuy);
