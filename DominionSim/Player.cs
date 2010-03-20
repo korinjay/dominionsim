@@ -15,11 +15,11 @@ namespace DominionSim
 
         public Strategy.IStrategy Strategy { get; set; }
         public VirtualCardList Deck { get; set; }
-        public List<CardIdentifier> DrawPile { get; set; }
-        public List<CardIdentifier> DiscardPile { get; set; }
-        public List<CardIdentifier> DurationCards { get; set; }
-        public List<CardIdentifier> Hand { get; set; }
-        public List<CardIdentifier> PlayPile { get; set; }
+        public VirtualCardList DrawPile { get; set; }
+        public VirtualCardList DiscardPile { get; set; }
+        public VirtualCardList DurationCards { get; set; }
+        public VirtualCardList Hand { get; set; }
+        public VirtualCardList PlayPile { get; set; }
 
         public int Buys { get; set; }
         public int Actions { get; set; }
@@ -57,27 +57,32 @@ namespace DominionSim
             Hand.AddRange(DrawCards(5));
         }
 
-        public void MoveCards<T>(List<T> from, List<T> to)
+        public void MoveCards<T>(IList<T> from, IList<T> to)
         {
-            to.AddRange(from);
+            foreach (var item in from)
+            {
+                to.Add(item);
+            }
             from.Clear();
         }
 
-        public void MoveCard<T>(T c, List<T> from, List<T> to)
+        public void MoveCard<T>(T c, IList<T> from, IList<T> to)
         {
-            from.Remove(c);
-            to.Add(c);
+            if (from.Remove(c))
+            {
+                to.Add(c);
+            }
         }
 
         public void StartNewGame()
         {
             mTurn = 0;
             Deck = new VirtualCardList();
-            DrawPile = new List<CardIdentifier>();
-            DiscardPile = new List<CardIdentifier>();
-            DurationCards = new List<CardIdentifier>();
-            Hand = new List<CardIdentifier>();
-            PlayPile = new List<CardIdentifier>();
+            DrawPile = new VirtualCardList();
+            DiscardPile = new VirtualCardList();
+            DurationCards = new VirtualCardList();
+            Hand = new VirtualCardList();
+            PlayPile = new VirtualCardList();
             OtherPlayers = new List<Player>();
 
             for (int i = 0; i < 7; i++)
@@ -132,10 +137,10 @@ namespace DominionSim
             return DrawCards(1).ElementAt(0);
         }
 
-        public IEnumerable<CardIdentifier> DrawCards(int num)
+        public IEnumerable<VirtualCard> DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
-            List<CardIdentifier> drawnCards = new List<CardIdentifier>();
+            var drawnCards = VirtualCardList();
 
             string draws = "Drew ";
             for (int i = 0; i < num; i++ )
@@ -174,8 +179,8 @@ namespace DominionSim
         /// This should be used when a card makes a player draw.
         /// If you don't want the stats to record "Drew X", then just manipulate Hand directly.
         /// </summary>
-        /// <param name="cards"></param>
-        public void AddCardsToHand(IEnumerable<CardIdentifier> cards)
+        /// <param name="cards"Cards to add></param>
+        public void AddCardsToHand(IEnumerable<VirtualCard> cards)
         {
             Hand.AddRange(cards);
 
@@ -310,26 +315,40 @@ namespace DominionSim
         }
 
 
-        public void GainCard(CardIdentifier s, List<CardIdentifier> destination)
+        /// <summary>
+        /// Gain a card and put it in the given destination
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="destination"></param>
+        public void GainCard(VirtualCard card, VirtualCardList destination)
         {
-            Log("  Gained a " + s);
+            Log("  Gained a " + card.ToString());
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
 
-            destination.Add(s);
-            Deck.Add(new VirtualCard(s)); // TODO Should be getting an actual instance, not newing one
+            destination.Add(card);
+            Deck.Add(card);
         }
 
-        public void GainCard(CardIdentifier s)
+        /// <summary>
+        /// Gain a card.  Goes to the default location
+        /// </summary>
+        /// <param name="card">Card to gain</param>
+        public void GainCard(VirtualCard card)
         {
-            GainCard(s, DiscardPile);
+            GainCard(card, DiscardPile);
         }
 
-        public void GainCardFromSupply(CardIdentifier s, List<CardIdentifier> destination)
+        /// <summary>
+        /// Get a Card with the iven Identifier and put it in the given destination
+        /// </summary>
+        /// <param name="cardId">Card's identifier</param>
+        /// <param name="destination">Where to put it</param>
+        public void GainCardFromSupply(CardIdentifier cardId, VirtualCardList destination)
         {
             var card = mSupply.GainCard(s);
             if (null != card)
             {
-                GainCard(s, destination);
+                GainCard(card, destination);
             }
         }
 

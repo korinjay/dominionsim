@@ -30,7 +30,7 @@ namespace DominionSim.Cards
 
             foreach (CardIdentifier card in toPutBack)
             {
-                them.DrawPile.Insert(0, card);
+                them.DrawPile.Insert(0, new VirtualCards.VirtualCard(card)); // TODO Should not be a new instance, should be a 
             }
         }
 

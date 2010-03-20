@@ -54,6 +54,59 @@ namespace DominionSim.VirtualCards
             return mVirtualCardList.Select(vc => vc.CardId);
         }
 
+        /// <summary>
+        /// Adds the elements of the specified list to the end of this VirtualCardList
+        /// </summary>
+        /// <param name="cards">List of cards to add</param>
+        /// <exception cref="System.ArgumentNullException">If the argument is null</exception>
+        public void AddRange(IEnumerable<VirtualCard> cards)
+        {
+            mVirtualCardList.AddRange(cards);
+        }
+
+        /// <summary>
+        /// Return whether this VirtualCardList contains a VirtualCard with the given CardId
+        /// </summary>
+        /// <param name="cardId">Identifier</param>
+        /// <returns>true if the VirtualCardList has any Cards matching that type</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if cardId is null</exception>
+        public bool Contains(CardIdentifier cardId)
+        {
+            if (cardId == null) throw new ArgumentNullException("cardId");
+
+            var enumerate = GetEnumerator();
+            while (enumerate.MoveNext())
+            {
+                if (enumerate.Current.CardId == cardId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Return the first VirtualCard in this VirtualCardList with the given CardIdentifier
+        /// </summary>
+        /// <param name="cardId">CardIdentifier of the card we want</param>
+        /// <returns>First card with that identifier</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if cardId is null</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown if no Card found with that CardId</exception>
+        public VirtualCard First(CardIdentifier cardId)
+        {
+            if (cardId == null) throw new ArgumentNullException("cardId");
+
+            var enumerate = GetEnumerator();
+            while (enumerate.MoveNext())
+            {
+                if (enumerate.Current.CardId == cardId)
+                {
+                    return enumerate.Current;
+                }
+            }
+            throw new InvalidOperationException("No VirtualCard found with the given cardId " + cardId.ToString());
+        }
+
         #region IList<VirtualCard> Members
 
         public int IndexOf(VirtualCard item)
