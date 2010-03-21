@@ -68,10 +68,10 @@ namespace DominionSim
 
         public int Run()
         {
-            return RunNPlayer(4);
+            return RunSwiss(4);
         }
 
-        public int RunNPlayer(int numPlayers)
+        public int RunSwiss(int numPlayers)
         {
             Random rand = new Random();
             mStats = new Dictionary<string, PlayerStats>();
