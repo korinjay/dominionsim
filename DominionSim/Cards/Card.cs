@@ -26,6 +26,7 @@ namespace DominionSim
         public const CardType TreasureVictory = CardType.Treasure | CardType.Victory;
         public const CardType VictoryAction = CardType.Victory | CardType.Action;
         public const CardType ReactionAction = CardType.Reaction | CardType.Action;
+        public const CardType ActionDuration = CardType.Action | CardType.Duration;
 
         /// <summary>
         /// The Name of this card.
@@ -36,14 +37,19 @@ namespace DominionSim
         /// <summary>
         /// Identifier for the kind of card this is
         /// </summary>
-        public CardIdentifier CardId { get; set; }
+        public CardIdentifier CardId { get; private set; }
 
-        public CardType Type { get; set; }
-        public int Cost { get; set; }
-        public int Buys { get; set; }
-        public int Actions { get; set; }
-        public int Draws { get; set; }
-        public int Moneys { get; set; }
+        public CardType Type { get; private set; }
+        public int Cost { get; private set; }
+        public int Buys { get; private set; }
+        public int Actions { get; private set; }
+        public int Draws { get; private set; }
+        public int Moneys { get; private set; }
+
+        public int DurationBuys { get; private set; }
+        public int DurationActions { get; private set; }
+        public int DurationDraws { get; private set; }
+        public int DurationMoneys { get; private set; }
 
         // If this card is just simply worth N VPs, this property is used
         private int mSimpleVPs;
@@ -58,6 +64,20 @@ namespace DominionSim
             Moneys = moneys;
             Buys = buys;
             mSimpleVPs = vps;
+
+            DurationDraws = 0;
+            DurationActions = 0;
+            DurationMoneys = 0;
+            DurationBuys = 0;
+        }
+
+        public Card(CardIdentifier cardId, CardType type, int cost, int draws, int actions, int moneys, int buys, int vps, int durationDraws, int durationActions, int durationMoneys, int durationBuys)
+            : this(cardId, type, cost, draws, actions, moneys, buys, vps)
+        {
+            DurationDraws = durationDraws;
+            DurationActions = durationActions;
+            DurationMoneys = durationMoneys;
+            DurationBuys = durationBuys;
         }
 
         public virtual int GetNumVictoryPoints(VirtualCardList deck)
@@ -74,6 +94,22 @@ namespace DominionSim
             p.Actions += Actions;
             p.Buys += Buys;
             p.Moneys += Moneys;
+        }
+
+        /// <summary>
+        /// Execute this card when it is in the Duration pile
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="supply">Supply</param>
+        public virtual void ExecuteDuration(Player p, Supply supply)
+        {
+            if (DurationDraws > 0)
+            {
+                p.AddCardsToHand(p.DrawCards(DurationDraws));
+            }
+            p.Actions += DurationActions;
+            p.Buys += DurationBuys;
+            p.Moneys += DurationMoneys;
         }
 
         /// <summary>
@@ -106,6 +142,18 @@ namespace DominionSim
         }
 
         /// <summary>
+        /// Perform a reaction when in the Duration pile
+        /// </summary>
+        /// <param name="attacker">One performing the attack</param>
+        /// <param name="victim">One getting hit by the attack</param>
+        /// <param name="supply">The supply</param>
+        /// <returns>True if the attack was successfully prevented from affecting the victim</returns>
+        public virtual bool ExecuteDurationReaction(Player attacker, Player victim, Supply supply)
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Perform this card as an attack against the given opponent
         /// </summary>
         /// <param name="attacker">Player attacking</param>
@@ -126,11 +174,15 @@ namespace DominionSim
                 throw new Exception("Victim " + victim.Name + "'s Strategy lied about the Reaction cards in his hand!");
             }
 
-            // Get every card he reacted with combined with his duration cards.  Find only the ones of type Reaction.
-            // Attempt to react to them all, and return true if any of their ExecuteReaction functions returned true.
-            return attackReactionCards.Where(c => (c.Logic.Type & CardType.Reaction) != 0)
-                                      .Union(victim.DurationCards)
-                                      .Aggregate(false, (blocked, cardId) => blocked || cardId.Logic.ExecuteReaction(attacker, victim, supply));
+            // Get every card he reacted with.  Find only the ones of type Reaction.
+            // Attempt to react to them all, and figure out if any blocked the attack.
+            var blockedAttack = attackReactionCards.Where(c => (c.Logic.Type & CardType.Reaction) != 0)
+                                                   .Aggregate(false, (blocked, cardId) => blocked || cardId.Logic.ExecuteReaction(attacker, victim, supply));
+
+            // Also check against all the Duration cards.
+            blockedAttack = blockedAttack || victim.DurationPile.Aggregate(false, (blocked, cardId) => blocked || cardId.Logic.ExecuteDurationReaction(attacker, victim, supply));
+
+            return blockedAttack;
         }
     }
 
@@ -158,6 +210,10 @@ namespace DominionSim
     #endregion
 
     #region Seaside
+    class FishingVillageCard : Card { public FishingVillageCard() : base(CardList.FishingVillage, ActionDuration, 3, 0, 2, 1, 0, 0, 0, 1, 1, 0) {} }
+    class MerchantShipCard   : Card { public MerchantShipCard()   : base(CardList.MerchantShip,   ActionDuration, 5, 0, 0, 2, 0, 0, 0, 0, 2, 0) {} }
+    class CaravanCard        : Card { public CaravanCard()        : base(CardList.Caravan,        ActionDuration, 4, 1, 1, 0, 0, 0, 1, 0, 0, 0) {} }
+    class WharfCard          : Card { public WharfCard()          : base(CardList.Wharf,          ActionDuration, 5, 2, 0, 0, 1, 0, 2, 0, 0, 1) {} }
     #endregion
 
     #endregion

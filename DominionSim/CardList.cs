@@ -117,31 +117,60 @@ namespace DominionSim
         public static readonly CardIdentifier Workshop = (CardIdentifier)"Workshop";
 
         // Intrigue
-        public static readonly CardIdentifier SecretChamber = (CardIdentifier)"Secret Chamber"; // NYI
-        public static readonly CardIdentifier Baron = (CardIdentifier)"Baron";                  // NYI
-        public static readonly CardIdentifier Bridge = (CardIdentifier)"Bridge";                // NYI
-        public static readonly CardIdentifier Conspirator = (CardIdentifier)"Conspirator";      // NYI
-        public static readonly CardIdentifier Coppersmith = (CardIdentifier)"Coppersmith";      // NYI
-        public static readonly CardIdentifier Courtyard = (CardIdentifier)"Courtyard";          // NYI
+        public static readonly CardIdentifier SecretChamber = (CardIdentifier)"Secret Chamber";     // NYI
+        public static readonly CardIdentifier Baron = (CardIdentifier)"Baron";                      // NYI
+        public static readonly CardIdentifier Bridge = (CardIdentifier)"Bridge";                    // NYI
+        public static readonly CardIdentifier Conspirator = (CardIdentifier)"Conspirator";          // NYI
+        public static readonly CardIdentifier Coppersmith = (CardIdentifier)"Coppersmith";          // NYI
+        public static readonly CardIdentifier Courtyard = (CardIdentifier)"Courtyard";              // NYI
         public static readonly CardIdentifier Ironworks = (CardIdentifier)"Ironworks";
-        public static readonly CardIdentifier Maskquerade = (CardIdentifier)"Maskquerade";      // NYI
-        public static readonly CardIdentifier MiningVillage = (CardIdentifier)"Mining Village"; // NYI
-        public static readonly CardIdentifier Minion = (CardIdentifier)"Minion";                // NYI
-        public static readonly CardIdentifier Pawn = (CardIdentifier)"Pawn";                    // NYI
-        public static readonly CardIdentifier Saboteur = (CardIdentifier)"Saboteur";            // NYI
-        public static readonly CardIdentifier Scout = (CardIdentifier)"Scout";                  // NYI
+        public static readonly CardIdentifier Maskquerade = (CardIdentifier)"Maskquerade";          // NYI
+        public static readonly CardIdentifier MiningVillage = (CardIdentifier)"Mining Village";     // NYI
+        public static readonly CardIdentifier Minion = (CardIdentifier)"Minion";                    // NYI
+        public static readonly CardIdentifier Pawn = (CardIdentifier)"Pawn";                        // NYI
+        public static readonly CardIdentifier Saboteur = (CardIdentifier)"Saboteur";                // NYI
+        public static readonly CardIdentifier Scout = (CardIdentifier)"Scout";                      // NYI
         public static readonly CardIdentifier ShantyTown = (CardIdentifier)"Shanty Town";
-        public static readonly CardIdentifier Steward = (CardIdentifier)"Steward";              // NYI
-        public static readonly CardIdentifier Swindler = (CardIdentifier)"Swindler";            // NYI
-        public static readonly CardIdentifier Torturer = (CardIdentifier)"Torturer";            // NYI
-        public static readonly CardIdentifier TradingPost = (CardIdentifier)"Trading Post";     // NYI
-        public static readonly CardIdentifier Tribute = (CardIdentifier)"Tribute";              // NYI
-        public static readonly CardIdentifier Upgrade = (CardIdentifier)"Upgrade";              // NYI
-        public static readonly CardIdentifier WishingWell = (CardIdentifier)"Wishing Well";     // NYI
+        public static readonly CardIdentifier Steward = (CardIdentifier)"Steward";                  // NYI
+        public static readonly CardIdentifier Swindler = (CardIdentifier)"Swindler";                // NYI
+        public static readonly CardIdentifier Torturer = (CardIdentifier)"Torturer";                // NYI
+        public static readonly CardIdentifier TradingPost = (CardIdentifier)"Trading Post";         // NYI
+        public static readonly CardIdentifier Tribute = (CardIdentifier)"Tribute";                  // NYI
+        public static readonly CardIdentifier Upgrade = (CardIdentifier)"Upgrade";                  // NYI
+        public static readonly CardIdentifier WishingWell = (CardIdentifier)"Wishing Well";         // NYI
         public static readonly CardIdentifier GreatHall = (CardIdentifier)"Great Hall";
-        public static readonly CardIdentifier Nobles = (CardIdentifier)"Nobles";                // NYI
-        public static readonly CardIdentifier Harem = (CardIdentifier)"Harem";                  // NYI
+        public static readonly CardIdentifier Nobles = (CardIdentifier)"Nobles";                    // NYI
+        public static readonly CardIdentifier Harem = (CardIdentifier)"Harem";                      // NYI
         public static readonly CardIdentifier Duke = (CardIdentifier)"Duke";
+
+        // Seaside
+        public static readonly CardIdentifier Ambassador = (CardIdentifier)"Ambassador";            // NYI
+        public static readonly CardIdentifier Bazaar = (CardIdentifier)"Bazaar";                    // NYI
+        public static readonly CardIdentifier Caravan = (CardIdentifier)"Caravan";
+        public static readonly CardIdentifier Cutpurse = (CardIdentifier)"Cutpurse";                // NYI
+        public static readonly CardIdentifier Embargo = (CardIdentifier)"Embargo";                  // NYI
+        public static readonly CardIdentifier Explorer = (CardIdentifier)"Explorer";                // NYI
+        public static readonly CardIdentifier FishingVillage = (CardIdentifier)"Fishing Village";
+        public static readonly CardIdentifier GhostShip = (CardIdentifier)"Ghost Ship";             // NYI
+        public static readonly CardIdentifier Haven = (CardIdentifier)"Haven";                      // NYI
+        public static readonly CardIdentifier Island = (CardIdentifier)"Island";                    // NYI
+        public static readonly CardIdentifier Lighthouse = (CardIdentifier)"Lighthouse";
+        public static readonly CardIdentifier Lookout = (CardIdentifier)"Lookout";                  // NYI
+        public static readonly CardIdentifier MerchantShip = (CardIdentifier)"Merchant Ship";
+        public static readonly CardIdentifier NativeVillage = (CardIdentifier)"Native Village";     // NYI
+        public static readonly CardIdentifier Navigator = (CardIdentifier)"Navigator";              // NYI
+        public static readonly CardIdentifier Outpost = (CardIdentifier)"Outpost";                  // NYI
+        public static readonly CardIdentifier PearlDiver = (CardIdentifier)"Pearl Diver";           // NYI
+        public static readonly CardIdentifier PirateShip = (CardIdentifier)"Pirate Ship";           // NYI
+        public static readonly CardIdentifier Salvager = (CardIdentifier)"Salvager";                // NYI
+        public static readonly CardIdentifier SeaHag = (CardIdentifier)"Sea Hag";                   // NYI
+        public static readonly CardIdentifier Smugglers = (CardIdentifier)"Smugglers";              // NYI
+        public static readonly CardIdentifier Tactician = (CardIdentifier)"Tactician";              // NYI, subtly difficult due to an "if"
+        public static readonly CardIdentifier TreasureMap = (CardIdentifier)"Treasure Map";         // NYI
+        public static readonly CardIdentifier Treasury = (CardIdentifier)"Treasury";                // NYI
+        public static readonly CardIdentifier Warehouse = (CardIdentifier)"Warehouse";              // NYI
+        public static readonly CardIdentifier Wharf = (CardIdentifier)"Wharf";
+
 
 
         private static Dictionary<CardIdentifier, Card> Cards;

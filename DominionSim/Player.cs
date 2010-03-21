@@ -15,7 +15,7 @@ namespace DominionSim
         public VirtualCardList Deck { get; set; }
         public VirtualCardList DrawPile { get; set; }
         public VirtualCardList DiscardPile { get; set; }
-        public VirtualCardList DurationCards { get; set; }
+        public VirtualCardList DurationPile { get; set; }
         public VirtualCardList Hand { get; set; }
         public VirtualCardList PlayPile { get; set; }
 
@@ -83,7 +83,7 @@ namespace DominionSim
             Deck = new VirtualCardList();
             DrawPile = new VirtualCardList();
             DiscardPile = new VirtualCardList();
-            DurationCards = new VirtualCardList();
+            DurationPile = new VirtualCardList();
             Hand = new VirtualCardList();
             PlayPile = new VirtualCardList();
             OtherPlayers = new List<Player>();
@@ -110,11 +110,18 @@ namespace DominionSim
  
         public void TakeTurn(int turn, Supply supply)
         {
+            mSupply = supply;
+
             Log("== "+Name+" taking Turn #"+turn+" ==");
             PrintDeckStats();            
             Log("  Hand: "+StringFromCardList(Hand));
-
-            mSupply = supply;
+            
+            // When the turn starts, all duration cards fire and then move to the Play Pile
+            foreach (var card in DurationPile)
+            {
+                card.Logic.ExecuteDuration(this, supply);
+            }
+            MoveCards(DurationPile, PlayPile);
 
             Log("  Choosing an action...");
             Strategy.TurnAction(mFacade, supply);
@@ -233,7 +240,16 @@ namespace DominionSim
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card.CardId, Stats.PlayerAction.Play));
 
                 Actions--;
-                MoveCard(card, Hand, PlayPile);
+
+                // Duration cards go to the Duration pile.  Everything else goes to the Play pile
+                if ((card.Logic.Type & Card.CardType.Duration) != 0)
+                {
+                    MoveCard(card, Hand, DurationPile);
+                }
+                else
+                {
+                    MoveCard(card, Hand, PlayPile);
+                }
                 c.ExecuteCard(this, mSupply);
             }
             else
@@ -486,7 +502,7 @@ namespace DominionSim
             // other cards combined.
             var allCardsInDeck = DrawPile
                           .Union(DiscardPile)
-                          .Union(DurationCards)
+                          .Union(DurationPile)
                           .Union(Hand)
                           .Union(PlayPile);
 
