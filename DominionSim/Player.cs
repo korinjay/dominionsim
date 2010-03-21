@@ -411,7 +411,7 @@ namespace DominionSim
             foreach (var card in Deck)
             {
                 Card c = card.Logic;
-                vps += c.VictoryPoints;
+                vps += c.GetNumVictoryPoints(Deck);
             }
 
             return vps;
