@@ -93,12 +93,12 @@ namespace DominionSim
         public static readonly CardIdentifier Adventurer = (CardIdentifier)"Adventurer";
         public static readonly CardIdentifier Bureaucrat = (CardIdentifier)"Bureaucrat";      // Not implemented
         public static readonly CardIdentifier Cellar = (CardIdentifier)"Cellar";
-        public static readonly CardIdentifier Chancellor = (CardIdentifier)"Chancellor";      // Not implemented
+        public static readonly CardIdentifier Chancellor = (CardIdentifier)"Chancellor";
         public static readonly CardIdentifier Chapel = (CardIdentifier)"Chapel";
         public static readonly CardIdentifier CouncilRoom = (CardIdentifier)"CouncilRoom";
         public static readonly CardIdentifier Feast = (CardIdentifier)"Feast";
         public static readonly CardIdentifier Festival = (CardIdentifier)"Festival";
-        public static readonly CardIdentifier Gardens = (CardIdentifier)"Gardens";            // Not implemented
+        public static readonly CardIdentifier Gardens = (CardIdentifier)"Gardens";
         public static readonly CardIdentifier Laboratory = (CardIdentifier)"Laboratory";
         public static readonly CardIdentifier Library = (CardIdentifier)"Library";
         public static readonly CardIdentifier Market = (CardIdentifier)"Market";
