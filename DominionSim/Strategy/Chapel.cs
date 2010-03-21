@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     class Chapel1 : Chapel
     {
         public Chapel1() : base(1) {}
@@ -19,72 +16,43 @@ namespace DominionSim.Strategy
     }
 
 
-    abstract class Chapel : BigMoneyDuchy
+    abstract class Chapel : BuyOneCard
     {
-        private int mNumChapels = 0;
-
-        public Chapel(int numChapels)
+        public Chapel(int numChapels) : base(CardList.Chapel, numChapels)
         {
-            mNumChapels = numChapels;
         }
 
-        public override void TurnAction(PlayerFacade p, Supply s)
+        public override IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
-            if (p.GetHand().Contains(CardList.Chapel))
-            {
-                p.PlayActionCard(CardList.Chapel);
-            }
-        }
-
-        public override void TurnBuy(PlayerFacade p, Supply s)
-        {
-            // Grab our chapels as early as possible
-            int chapelCount = Utility.CountCardIn(CardList.Chapel, p.GetDeck());
-            if (chapelCount < mNumChapels)
-            {
-                if (p.GetMoneys() < 4 && CanAfford(p, CardList.Chapel))
-                {
-                    p.BuyCard(CardList.Chapel);
-                    return;
-                }
-            }
-
-            // Otherwise play like BMD
-            base.TurnBuy(p, s);
-        }
-
-        public override IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
-        {
-            List<CardIdentifier> toTrash = new List<CardIdentifier>();
+            var toTrash = new VirtualCardList();
 
             int turn = p.GetTurn();
 
-            int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
-            int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
-
-            var allTreasure = Utility.FilterCardListByType(p.GetDeck(), Card.CardType.Treasure);
+            // Could up all the money so we make sure we don't go too low
+            var allTreasure = Utility.FilterCardsByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
-            foreach (CardIdentifier t in allTreasure)
+            foreach (var t in allTreasure)
             {
-                Card c = CardList.Cards[t];
+                Card c = t.Logic;
                 totalMoney += c.Moneys;
             }
-
-            // Don't trash so much we drop our deck below 3 treasure
-            numCopper = Math.Min(numCopper, totalMoney - 3);
 
             if (turn < 8)
             {
                 // Trash all the estates we can
-                for (int i = 0; i < numEstates && toTrash.Count < max; i++)
+                var estateEnumer = p.GetHand().Where(vi => vi.CardId == CardList.Estate).GetEnumerator();
+                while (estateEnumer.MoveNext() && toTrash.Count < max)
                 {
-                    toTrash.Add(CardList.Estate);
+                    toTrash.Add(estateEnumer.Current);
                 }
             }
-            // After that trash all the copper we can
-            for (int i = 0; i < numCopper && toTrash.Count < max; i++)
+            // After that trash all the copper we can.  Make sure to keep at least money in the deck
+            var copperEnumer = p.GetHand().Where(vi => vi.CardId == CardList.Copper).GetEnumerator();
+            int numCopperTrashed = 0;
+            while (copperEnumer.MoveNext() && toTrash.Count < max && (totalMoney - numCopperTrashed) > 3)
             {
-                toTrash.Add(CardList.Copper);
+                numCopperTrashed++;
+                toTrash.Add(copperEnumer.Current);
             }
 
             return toTrash;

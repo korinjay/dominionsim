@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DominionSim.Strategy
 {
-    
-
     class SingleCard : BigMoneyDuchy
     {
         private int mNumDesiredCard = 0;
@@ -26,14 +21,14 @@ namespace DominionSim.Strategy
         {
             if (p.GetHand().Contains(mCard))
             {
-                p.PlayActionCard(mCard);
+                p.PlayActionCard(p.GetHand().First(mCard));
             }
         }
 
         public override void TurnBuy(PlayerFacade p, Supply s)
         {
             // Grab our cards as early as possible
-            int cardCount = Utility.CountCardIn(mCard, p.GetDeck());
+            int cardCount = p.GetDeck().Where(vi => vi.CardId == mCard).Count();
             if (cardCount < mNumDesiredCard)
             {
                 if (CanAfford(p, mCard))

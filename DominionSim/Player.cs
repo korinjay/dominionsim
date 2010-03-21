@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections;
+using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-    
-
     class Player
     {
         public string Name { get; set; }
@@ -15,12 +12,12 @@ namespace DominionSim
         public List<Player> OtherPlayers { get; set; }
 
         public Strategy.IStrategy Strategy { get; set; }
-        public List<CardIdentifier> Deck { get; set; }
-        public List<CardIdentifier> DrawPile { get; set; }
-        public List<CardIdentifier> DiscardPile { get; set; }
-        public List<CardIdentifier> DurationCards { get; set; }
-        public List<CardIdentifier> Hand { get; set; }
-        public List<CardIdentifier> PlayPile { get; set; }
+        public VirtualCardList Deck { get; set; }
+        public VirtualCardList DrawPile { get; set; }
+        public VirtualCardList DiscardPile { get; set; }
+        public VirtualCardList DurationCards { get; set; }
+        public VirtualCardList Hand { get; set; }
+        public VirtualCardList PlayPile { get; set; }
 
         public int Buys { get; set; }
         public int Actions { get; set; }
@@ -58,42 +55,49 @@ namespace DominionSim
             Hand.AddRange(DrawCards(5));
         }
 
-        public void MoveCards<T>(List<T> from, List<T> to)
+        public void MoveCards<T>(IList<T> from, IList<T> to)
         {
-            to.AddRange(from);
+            foreach (var item in from)
+            {
+                to.Add(item);
+            }
             from.Clear();
         }
 
-        public void MoveCard<T>(T c, List<T> from, List<T> to)
+        public void MoveCard<T>(T c, IList<T> from, IList<T> to)
         {
-            from.Remove(c);
-            to.Add(c);
+            if (from.Remove(c))
+            {
+                to.Add(c);
+            }
         }
 
         public void StartNewGame()
         {
             mTurn = 0;
-            Deck = new List<CardIdentifier>();
-            DrawPile = new List<CardIdentifier>();
-            DiscardPile = new List<CardIdentifier>();
-            DurationCards = new List<CardIdentifier>();
-            Hand = new List<CardIdentifier>();
-            PlayPile = new List<CardIdentifier>();
+            Deck = new VirtualCardList();
+            DrawPile = new VirtualCardList();
+            DiscardPile = new VirtualCardList();
+            DurationCards = new VirtualCardList();
+            Hand = new VirtualCardList();
+            PlayPile = new VirtualCardList();
             OtherPlayers = new List<Player>();
 
             for (int i = 0; i < 7; i++)
             {
-                Deck.Add(CardList.Copper);
-                DrawPile.Add(CardList.Copper);
+                var copper = new VirtualCard(CardList.Copper);
+                Deck.Add(copper);
+                DrawPile.Add(copper);
             }
 
             for (int i = 0; i < 3; i++)
             {
-                Deck.Add(CardList.Estate);
-                DrawPile.Add(CardList.Estate);
+                var estate = new VirtualCard(CardList.Estate);
+                Deck.Add(estate);
+                DrawPile.Add(estate);
             }
 
-            DrawPile = Utility.Shuffle(DrawPile);
+            DrawPile = DrawPile.Shuffle();
 
             Cleanup();
         }
@@ -103,7 +107,7 @@ namespace DominionSim
         {
             Log("== "+Name+" taking Turn #"+turn+" ==");
             PrintDeckStats();            
-            Log("  Hand: "+StringFromList(Hand));
+            Log("  Hand: "+StringFromCardList(Hand));
 
             mSupply = supply;
 
@@ -111,9 +115,9 @@ namespace DominionSim
             Strategy.TurnAction(mFacade, supply);
 
             // Cash in Treasure
-            foreach (CardIdentifier name in Hand)
+            foreach (var card in Hand)
             {
-                Card c = CardList.Cards[name];
+                Card c = card.Logic;
                 if ( (c.Type & Card.CardType.Treasure) != 0)
                 {
                     Moneys += c.Moneys;
@@ -128,15 +132,29 @@ namespace DominionSim
             mTurn++;
         }
 
-        public CardIdentifier DrawCard()
+        /// <summary>
+        /// Draw a card from the Draw deck.  Will Shuffle if necessary.
+        /// </summary>
+        /// <returns>The first card off the Deck, or null if none</returns>
+        public VirtualCard DrawCard()
         {
-            return DrawCards(1).ElementAt(0);
+            var topCards = DrawCards(1);
+            if (topCards.Count() > 0)
+            {
+                return topCards.ElementAt(0);
+            }
+            return null;
         }
 
-        public IEnumerable<CardIdentifier> DrawCards(int num)
+        /// <summary>
+        /// Return a list of the top cards drawn off the Draw deck.  Will Shuffle if necessary.
+        /// </summary>
+        /// <param name="num"># of cards to draw</param>
+        /// <returns>List of them</returns>
+        public IEnumerable<VirtualCard> DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
-            List<CardIdentifier> drawnCards = new List<CardIdentifier>();
+            var drawnCards = new VirtualCardList();
 
             string draws = "Drew ";
             for (int i = 0; i < num; i++ )
@@ -145,12 +163,12 @@ namespace DominionSim
                 {
                     Log("  Had to shuffle!");
                     MoveCards(DiscardPile, DrawPile);
-                    DrawPile = Utility.Shuffle(DrawPile);
+                    DrawPile = DrawPile.Shuffle();
                 }
 
                 if (DrawPile.Count > 0)
                 {
-                    CardIdentifier draw = DrawPile[0];
+                    var draw = DrawPile[0];
                     DrawPile.RemoveAt(0);
                     drawnCards.Add(draw);
                     draws += draw;
@@ -175,46 +193,47 @@ namespace DominionSim
         /// This should be used when a card makes a player draw.
         /// If you don't want the stats to record "Drew X", then just manipulate Hand directly.
         /// </summary>
-        /// <param name="cards"></param>
-        public void AddCardsToHand(IEnumerable<CardIdentifier> cards)
+        /// <param name="cards"Cards to add></param>
+        public void AddCardsToHand(IEnumerable<VirtualCard> cards)
         {
-            Hand.AddRange(cards);
-
-            foreach (CardIdentifier c in cards)
+            foreach (var card in cards)
             {
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, c, Stats.PlayerAction.AddToHand));
+                AddCardToHand(card);
             }
         }
 
-        public void AddCardToHand(CardIdentifier card)
+        /// <summary>
+        /// Add a single card to the Hand in a trackable, logged way
+        /// </summary>
+        /// <param name="card">Card to add</param>
+        public void AddCardToHand(VirtualCard card)
         {
-            List<CardIdentifier> list = new List<CardIdentifier>();
-            list.Add(card);
-            AddCardsToHand(list);
+            Hand.Add(card);
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card.CardId, Stats.PlayerAction.AddToHand));
         }
 
-        public void PlayActionCard(CardIdentifier cardId)
+        public void PlayActionCard(VirtualCard card)
         {
-            if (cardId == null)
+            if (card == null)
             {
                 Log("    Playing no actions!");
                 Actions--;
                 return;
             }
-            else if(Hand.Contains(cardId))
+            else if (Hand.Contains(card))
             {
-                Card c = CardList.Cards[cardId];
-                Log("    Playing a " + cardId + "!");
+                Card c = card.Logic;
+                Log("    Playing a " + card + "!");
 
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.Play));
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card.CardId, Stats.PlayerAction.Play));
 
                 Actions--;
-                MoveCard(cardId, Hand, PlayPile);
+                MoveCard(card, Hand, PlayPile);
                 c.ExecuteCard(this, mSupply);
             }
             else
             {
-                throw new Exception("Card " + cardId + " not in hand.");
+                throw new InvalidOperationException("Card " + card + " not in hand.");
             }
         }
 
@@ -228,18 +247,19 @@ namespace DominionSim
                 return;
             }
 
-            Card c = CardList.Cards[name];
+            Card c = name.Logic;
 
             Log("    Buying a "+name);
             if (Moneys >= c.Cost && Buys > 0)
             {
-                if (mSupply.GainCard(name))
+                var card = mSupply.GainCard(name);
+                if (null != card)
                 {
-                    DiscardPile.Add(name);
-                    Deck.Add(name);
+                    DiscardPile.Add(card);
+                    Deck.Add(card);
                     Moneys -= c.Cost;
                     Buys--;
-                    Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, name, Stats.PlayerAction.Buy));
+                    Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Buy));
                 }
                 else
                 {
@@ -259,76 +279,107 @@ namespace DominionSim
             }
         }
 
-        public void TrashCardFromHand(CardIdentifier s)
+        /// <summary>
+        /// Trash a particular card Id from the hand
+        /// </summary>
+        /// <param name="cardId">Card Id to trash</param>
+        public void TrashCardFromHand(CardIdentifier cardId)
         {
-            if (Hand.Contains(s))
+            TrashCardFromHand(Hand.First(cardId));
+        }
+
+        /// <summary>
+        /// Trash a parcticular card from the hand
+        /// </summary>
+        /// <param name="card">Card to trash</param>
+        public void TrashCardFromHand(VirtualCard card)
+        {
+            if (Hand.Contains(card))
             {
-                Log("    Trashing "+s+"!");
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
+                Log("    Trashing "+card+"!");
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Trash));
 
-
-                Hand.Remove(s);
-                Deck.Remove(s);
+                Hand.Remove(card);
+                Deck.Remove(card);
             }
             else
             {
-                throw new Exception("Told to trash " + s + " but I'm not holding that!");
+                throw new Exception("Told to trash " + card + " but I'm not holding that!");
             }
         }
 
-        public void TrashCardFromPlay(CardIdentifier s)
+        public void TrashCardFromPlay(VirtualCard card)
         {
-            if (PlayPile.Contains(s))
+            if (PlayPile.Contains(card))
             {
                 // Some cards trash when you play them (like Feast)
-                Log("    Trashing " + s + "!");
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Trash));
+                Log("    Trashing " + card + "!");
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Trash));
 
-                PlayPile.Remove(s);
-                Deck.Remove(s);
+                PlayPile.Remove(card);
+                Deck.Remove(card);
             }
             else
             {
-                throw new Exception("Told to trash " + s + " but it's not in play!");
+                throw new Exception("Told to trash " + card + " but it's not in play!");
             }
         }
 
-        public void DiscardCard(CardIdentifier s)
+        /// <summary>
+        /// Discard the given card.  Must be in the Hand
+        /// </summary>
+        /// <param name="s">Card to discard</param>
+        public void DiscardCard(VirtualCard card)
         {
-            if (Hand.Contains(s))
+            if (Hand.Contains(card))
             {
-                Log("    Discarding " + s + "!");
-                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Discard));
+                Log("    Discarding " + card + "!");
+                Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Discard));
 
-                Hand.Remove(s);
-                DiscardPile.Add(s);
+                Hand.Remove(card);
+                DiscardPile.Add(card);
             }
             else
             {
-                throw new Exception("Told to discard " + s + " but I'm not holding that!");
+                throw new InvalidOperationException("Told to discard " + card + " but I'm not holding that!");
             }
         }
 
 
-        public void GainCard(CardIdentifier s, List<CardIdentifier> destination)
+        /// <summary>
+        /// Gain a card and put it in the given destination
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="destination"></param>
+        public void GainCard(VirtualCard card, VirtualCardList destination)
         {
-            Log("  Gained a " + s);
-            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, s, Stats.PlayerAction.Gain));
+            Log("  Gained a " + card.ToString());
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Gain));
 
-            destination.Add(s);
-            Deck.Add(s);
+            destination.Add(card);
+            Deck.Add(card);
         }
 
-        public void GainCard(CardIdentifier s)
+        /// <summary>
+        /// Gain a card.  Goes to the default location
+        /// </summary>
+        /// <param name="card">Card to gain</param>
+        public void GainCard(VirtualCard card)
         {
-            GainCard(s, DiscardPile);
+            GainCard(card, DiscardPile);
         }
 
-        public void GainCardFromSupply(CardIdentifier s, List<CardIdentifier> destination)
+        /// <summary>
+        /// Get a Card with the iven Identifier and put it in the given destination
+        /// </summary>
+        /// <param name="cardId">Card's identifier</param>
+        /// <param name="destination">Where to put it</param>
+        public void GainCardFromSupply(CardIdentifier cardId, VirtualCardList destination)
         {
-            if (mSupply.GainCard(s))
+            var card = mSupply.GainCard(cardId);
+            if (null != card)
             {
-                GainCard(s, destination);
+                GainCard(card, destination);
             }
         }
 
@@ -337,10 +388,10 @@ namespace DominionSim
             GainCardFromSupply(s, DiscardPile);
         }
 
-        public void AttackedBy(string player, CardIdentifier card, IEnumerable<CardIdentifier> reactedWith)
+        public void AttackedBy(string player, CardIdentifier cardId, IEnumerable<VirtualCard> reactedWith)
         {
-            Log(this.Name + " was attacked by a " + card + " from " + player + (reactedWith.Count() > 0 ? ", reacted with: (" + reactedWith.Aggregate("", (s, c) => s + c + " " + ")") : "") + "!");
-            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.AttackedBy));
+            Log(this.Name + " was attacked by a " + cardId + " from " + player + (reactedWith.Count() > 0 ? ", reacted with: (" + reactedWith.Aggregate("", (s, c) => s + c + " " + ")") : "") + "!");
+            Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.AttackedBy));
         }
 
 
@@ -357,9 +408,9 @@ namespace DominionSim
         public int GetNumVictoryPoints()
         {
             int vps = 0;
-            foreach (CardIdentifier name in Deck)
+            foreach (var card in Deck)
             {
-                Card c = CardList.Cards[name];
+                Card c = card.Logic;
                 vps += c.VictoryPoints;
             }
 
@@ -369,25 +420,25 @@ namespace DominionSim
 
 
 
-        public String StringFromList(IEnumerable<CardIdentifier> list)
+        public String StringFromCardList(VirtualCardList list)
         {
             // Loop through the list and concatenate everything together like:
             //     "listItem1 listItem2 listItem3"
             return list.Aggregate("", (s, c) => s + c + " ");
         }
 
-        public String StatStringFromList(IEnumerable<CardIdentifier> list)
+        public String StatStringFromList(IEnumerable<VirtualCard> list)
         {
-            Dictionary<CardIdentifier, int> counts = new Dictionary<CardIdentifier, int>();
-            foreach (CardIdentifier card in list)
+            var counts = new Dictionary<CardIdentifier, int>();
+            foreach (var card in list)
             {
-                if (counts.ContainsKey(card))
+                if (counts.ContainsKey(card.CardId))
                 {
-                    counts[card]++;
+                    counts[card.CardId]++;
                 }
                 else
                 {
-                    counts[card] = 1;
+                    counts[card.CardId] = 1;
                 }
             }
 
@@ -399,9 +450,9 @@ namespace DominionSim
             return str;
         }
 
-        public void Print(List<CardIdentifier> list)
+        public void Print(VirtualCardList list)
         {
-            Log(StringFromList(list));
+            Log(StringFromCardList(list));
         }
 
 
@@ -418,6 +469,37 @@ namespace DominionSim
             {
                 Console.WriteLine(str);
             }
+        }
+
+        /// <summary>
+        /// Run any logic that happens after the game is over
+        /// </summary>
+        public void HandleEndOfGame()
+        {
+#if DEBUG
+            // Do some verification.  Notably, the Deck should be the same as the
+            // other cards combined.
+            var allCardsInDeck = DrawPile
+                          .Union(DiscardPile)
+                          .Union(DurationCards)
+                          .Union(Hand)
+                          .Union(PlayPile);
+
+            var excluded1 = Deck.Except(allCardsInDeck);
+            if (excluded1.Count() > 0)
+            {
+                Console.WriteLine("The extra cards are:");
+                Console.WriteLine(excluded1.Aggregate("", (s, c) => s + c + "\n"));
+                throw new Exception("Player " + Name + "'s Deck has more cards than were in the rest of his piles combined.  See Console output for which ones are extra.");
+            }
+            var excluded2 = allCardsInDeck.Except(Deck);
+            if (excluded2.Count() > 0)
+            {
+                Console.WriteLine("The missing cards are:");
+                Console.WriteLine(excluded2.Aggregate("", (s, c) => s + c + "\n"));
+                throw new Exception("Player " + Name + "'s deck has fewer cards than were in the rest of his piles combined.  See Console output for which ones are missing.");
+            }
+#endif
         }
     }
 }

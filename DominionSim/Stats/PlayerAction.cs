@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DominionSim.VirtualCards;
 
 namespace DominionSim.Stats
 {
-    
-
     class PlayerAction
     {
         public const string Buy = "Buy";
@@ -21,10 +16,14 @@ namespace DominionSim.Stats
         public string Action;
         public CardIdentifier Card;
 
-        public PlayerAction(int turn, CardIdentifier card, string action)
+        public PlayerAction(int turn, VirtualCard card, string action) : this(turn, card.CardId, action)
+        {
+        }
+
+        public PlayerAction(int turn, CardIdentifier cardId, string action)
         {
             Turn = turn;
-            Card = card;
+            Card = cardId;
             Action = action;
         }
     }

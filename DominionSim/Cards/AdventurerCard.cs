@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Cards
 {
-    
-
     class AdventurerCard : Card
     {
         public AdventurerCard() : base( CardList.Adventurer, CardType.Action, 6, 0, 0, 0, 0, 0)
@@ -18,18 +14,17 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            List<CardIdentifier> treasureCards = new List<CardIdentifier>();
-            List<CardIdentifier> discards = new List<CardIdentifier>();
+            var treasureCards = new VirtualCardList();
+            var discards = new VirtualCardList();
 
             bool outOfCards = false;
             while (treasureCards.Count < 2 && outOfCards == false)
             {
-                IEnumerable<CardIdentifier> nextCards = p.DrawCards(1);
-
+                var nextCards = p.DrawCards(1);
                 if (nextCards.Count() > 0)
                 {
-                    CardIdentifier nextCard = nextCards.ElementAt(0);
-                    if ((CardList.Cards[nextCard].Type & CardType.Treasure) != 0)
+                    var nextCard = nextCards.ElementAt(0);
+                    if ((nextCard.Logic.Type & CardType.Treasure) != 0)
                     {
                         // Hey, it's treasure!
                         treasureCards.Add(nextCard);
@@ -47,7 +42,7 @@ namespace DominionSim.Cards
 
             p.AddCardsToHand(treasureCards);
 
-            foreach (CardIdentifier c in discards)
+            foreach (var c in discards)
             {
                 p.Hand.Add(c);
                 p.DiscardCard(c);

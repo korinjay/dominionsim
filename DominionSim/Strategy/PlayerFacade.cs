@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     /// <summary>
     /// Wrapper class exposing only certain functionality of a Player to a Strategy
     /// This is the only object that Strategies can manipulate in order to make stuff happen in the game.
@@ -28,36 +23,21 @@ namespace DominionSim.Strategy
         }
 
         /// <summary>
-        /// Utility function to make a shallow copy of a list of cards
-        /// </summary>
-        /// <param name="original"></param>
-        /// <returns></returns>
-        private List<CardIdentifier> CopyList(List<CardIdentifier> original)
-        {
-            List<CardIdentifier> copy = new List<CardIdentifier>();
-            for (int i = 0; i < original.Count; i++)
-            {
-                copy.Add(original[i]);
-            }
-            return copy;
-        }
-
-        /// <summary>
         /// Return a copy of the Player's Hand, so that there's no chance the actual Hand can be manipulated
         /// </summary>
         /// <returns>Cards in hand</returns>
-        public IEnumerable<CardIdentifier> GetHand()
+        public VirtualCardList GetHand()
         {
-            return CopyList(mPlayer.Hand);
+            return mPlayer.Hand.AsReadOnly();
         }
 
         /// <summary>
         /// Return a copy of the Player's Deck, so that there's no chance the actual Deck can by manipulated
         /// </summary>
         /// <returns>Cards in deck</returns>
-        public IEnumerable<CardIdentifier> GetDeck()
+        public VirtualCardList GetDeck()
         {
-            return CopyList(mPlayer.Deck);
+            return mPlayer.Deck.AsReadOnly();
         }
 
         #region Passthrough Functions
@@ -87,9 +67,9 @@ namespace DominionSim.Strategy
             return mPlayer.Buys;
         }
 
-        public void PlayActionCard(CardIdentifier name)
+        public void PlayActionCard(VirtualCard card)
         {
-            mPlayer.PlayActionCard(name);
+            mPlayer.PlayActionCard(card);
         }
 
         public void BuyCard(CardIdentifier name)

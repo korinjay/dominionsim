@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     interface IStrategy
     {
         /// <summary>
@@ -31,7 +27,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum number of cards you must trash</param>
         /// <param name="max">Maximum number of cards you may trash</param>
         /// <returns>An enumeration of cards in hand to trash</returns>
-        IEnumerable<CardIdentifier> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
+        IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is asking you to trash some of your victim's cards!
@@ -43,7 +39,7 @@ namespace DominionSim.Strategy
         /// <param name="victim">Name of the victim whose cards you are trashing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>An enumeration of cards from the provided collection to trash</returns>
-        IEnumerable<CardIdentifier> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string victim, IEnumerable<CardIdentifier> cards);
+        IEnumerable<VirtualCard> ChoosePlayerCardsToTrash(PlayerFacade p, int min, int max, string victim, IEnumerable<VirtualCard> cards);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to discard some cards!
@@ -54,7 +50,7 @@ namespace DominionSim.Strategy
         /// <param name="max">Maximum number of cards you may discard</param>
         /// <param name="s">An enumeration of cards in hand to discard</param>
         /// <returns></returns>
-        IEnumerable<CardIdentifier> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
+        IEnumerable<VirtualCard> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
 
         /// <summary>
         /// An Action (perhaps one you played) is letting you make an victim discard some cards!
@@ -66,7 +62,7 @@ namespace DominionSim.Strategy
         /// <param name="victim">Name of the victim you're screwing</param>
         /// <param name="cards">Collection of cards to choose from</param>
         /// <returns>Collection of cards to discard</returns>
-        IEnumerable<CardIdentifier> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string victim, IEnumerable<CardIdentifier> cards);
+        IEnumerable<VirtualCard> ChoosePlayerCardsToDiscard(PlayerFacade p, int min, int max, string victim, IEnumerable<VirtualCard> cards);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to gain a card.
@@ -87,7 +83,7 @@ namespace DominionSim.Strategy
         /// <param name="victim">Name of the victim you're gaining cards from</param>
         /// <param name="cards">Collection of cards to gain from</param>
         /// <returns>All cards you wish to gain from the collection</returns>
-        IEnumerable<CardIdentifier> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string victim, IEnumerable<CardIdentifier> cards);
+        IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string victim, IEnumerable<VirtualCard> cards);
 
 
         /// <summary>
@@ -98,7 +94,7 @@ namespace DominionSim.Strategy
         /// <param name="attackerName">Name of the attacking player</param>
         /// <param name="cardId">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
-        IEnumerable<CardIdentifier> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId);
+        IEnumerable<VirtualCard> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId);
 
         /// <summary>
         /// You have the opportunity to either draw a card or set it aside (i.e. from Library)
@@ -106,7 +102,7 @@ namespace DominionSim.Strategy
         /// <param name="p"></param>
         /// <param name="card"></param>
         /// <returns>TRUE to set the card aside, FALSE to draw it</returns>
-        bool ChooseToSetAsideCard(PlayerFacade p, CardIdentifier card);
+        bool ChooseToSetAsideCard(PlayerFacade p, VirtualCard card);
 
         /// <summary>
         /// You have the opportunity to play an Action card twice (i.e. due to Throne Room)
@@ -114,6 +110,6 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
-        CardIdentifier ChooseCardToPlayTwice(PlayerFacade p, Supply s);
+        VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply s);
     }
 }
