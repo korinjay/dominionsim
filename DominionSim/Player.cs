@@ -97,7 +97,7 @@ namespace DominionSim
                 DrawPile.Add(new VirtualCard(CardList.Estate));
             }
 
-            DrawPile = Utility.Shuffle(DrawPile);
+            DrawPile = DrawPile.Shuffle();
 
             Cleanup();
         }
@@ -149,7 +149,7 @@ namespace DominionSim
                 {
                     Log("  Had to shuffle!");
                     MoveCards(DiscardPile, DrawPile);
-                    DrawPile = Utility.Shuffle(DrawPile);
+                    DrawPile = DrawPile.Shuffle();
                 }
 
                 if (DrawPile.Count > 0)
@@ -413,7 +413,7 @@ namespace DominionSim
             return list.Aggregate("", (s, c) => s + c + " ");
         }
 
-        public String StatStringFromList(VirtualCardList list)
+        public String StatStringFromList(IEnumerable<VirtualCard> list)
         {
             var counts = new Dictionary<CardIdentifier, int>();
             foreach (var card in list)

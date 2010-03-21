@@ -17,39 +17,23 @@ namespace DominionSim
             return sRandom.Next(min, max);
         }
 
-        public static VirtualCardList Shuffle(VirtualCardList deck)
+        public static List<T> Shuffle<T>(List<T> deck)
         {
             if (sRandom == null)
             {
                 sRandom = new Random();
             }
-            var shuffled = new VirtualCardList();
+            List<T> shuffled = new List<T>();
 
             while (deck.Count > 0)
             {
                 int index = sRandom.Next(deck.Count);
-                var card = deck[index];
+                T card = deck[index];
                 deck.RemoveAt(index);
                 shuffled.Add(card);
             }
 
             return shuffled;
-        }
-
-        public static int CountCardIn(CardIdentifier card, IEnumerable<CardIdentifier> inThis)
-        {
-            int numCard = 0;
-            var g = inThis.GroupBy(name => name);
-
-            foreach (var grp in g)
-            {
-                if (grp.Key == card)
-                {
-                    numCard = grp.Count();
-                }
-            }
-
-            return numCard;
         }
 
         public static IEnumerable<VirtualCard> FilterCardsByType(IEnumerable<VirtualCard> toFilter, Card.CardType type)

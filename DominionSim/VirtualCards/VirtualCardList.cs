@@ -8,7 +8,7 @@ namespace DominionSim.VirtualCards
     /// <summary>
     /// Simply List wrapper for VirtualCards.
     /// </summary>
-    class VirtualCardList : IList<VirtualCard>
+    class VirtualCardList : IList<VirtualCard>, ICollection<VirtualCard>, IEnumerable<VirtualCard>
     {
         /// <summary>
         /// Inner list
@@ -77,7 +77,11 @@ namespace DominionSim.VirtualCards
         /// <exception cref="System.ArgumentNullException">If the argument is null</exception>
         public void AddRange(IEnumerable<VirtualCard> cards)
         {
-            mVirtualCardList.AddRange(cards);
+            var enumer = cards.GetEnumerator();
+            while (enumer.MoveNext())
+            {
+                mVirtualCardList.Add(enumer.Current);
+            }
         }
 
         /// <summary>
@@ -121,6 +125,14 @@ namespace DominionSim.VirtualCards
                 }
             }
             throw new InvalidOperationException("No VirtualCard found with the given cardId " + cardId.ToString());
+        }
+
+        public VirtualCardList Shuffle()
+        {
+            if (IsReadOnly) throw new InvalidOperationException("Cannot Shuffle a ReadOnly list");
+
+            Utility.Shuffle(mVirtualCardList as List<VirtualCard>);
+            return this;
         }
 
         #region IList<VirtualCard> Members

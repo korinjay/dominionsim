@@ -28,13 +28,11 @@ namespace DominionSim.Strategy
 
         public override IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
         {
-            List<CardIdentifier> toTrash = new List<CardIdentifier>();
+            var toTrash = new VirtualCardList();
 
             int turn = p.GetTurn();
 
-            int numEstates = Utility.CountCardIn(CardList.Estate, p.GetHand());
-            int numCopper = Utility.CountCardIn(CardList.Copper, p.GetHand());
-
+            // Could up all the money so we make sure we don't go too low
             var allTreasure = Utility.FilterCardsByType(p.GetDeck(), Card.CardType.Treasure);
             int totalMoney = 0;
             foreach (var t in allTreasure)
@@ -43,21 +41,22 @@ namespace DominionSim.Strategy
                 totalMoney += c.Moneys;
             }
 
-            // Don't trash so much we drop our deck below 3 treasure
-            numCopper = Math.Min(numCopper, totalMoney - 3);
-
             if (turn < 8)
             {
                 // Trash all the estates we can
-                for (int i = 0; i < numEstates && toTrash.Count < max; i++)
+                var estateEnumer = p.GetHand().Where(vi => vi.CardId == CardList.Estate).GetEnumerator();
+                while (estateEnumer.MoveNext() && toTrash.Count < max)
                 {
-                    toTrash.Add(CardList.Estate);
+                    toTrash.Add(estateEnumer.Current);
                 }
             }
-            // After that trash all the copper we can
-            for (int i = 0; i < numCopper && toTrash.Count < max; i++)
+            // After that trash all the copper we can.  Make sure to keep at least money in the deck
+            var copperEnumer = p.GetHand().Where(vi => vi.CardId == CardList.Copper).GetEnumerator();
+            int numCopperTrashed = 0;
+            while (copperEnumer.MoveNext() && toTrash.Count < max && (totalMoney - numCopperTrashed) > 3)
             {
-                toTrash.Add(CardList.Copper);
+                numCopperTrashed++;
+                toTrash.Add(copperEnumer.Current);
             }
 
             return toTrash;

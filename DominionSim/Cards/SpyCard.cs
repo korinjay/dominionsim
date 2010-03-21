@@ -26,9 +26,9 @@ namespace DominionSim.Cards
                 them.DiscardCard(card);
             }
 
-            foreach (CardIdentifier card in toPutBack)
+            foreach (var card in toPutBack)
             {
-                them.DrawPile.Insert(0, new VirtualCards.VirtualCard(card)); // TODO Should not be a new instance, should be a 
+                them.DrawPile.Insert(0, card);
             }
         }
 
