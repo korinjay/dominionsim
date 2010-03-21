@@ -72,6 +72,11 @@ namespace DominionSim.Strategy
             mPlayer.PlayActionCard(card);
         }
 
+        public void PlayActionCardById(CardIdentifier card)
+        {
+            mPlayer.PlayActionCard(mPlayer.Hand.First(card));
+        }
+
         public void BuyCard(CardIdentifier name)
         {
             mPlayer.BuyCard(name);
