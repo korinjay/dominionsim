@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cards\BureaucratCard.cs" />
     <Compile Include="Cards\ChancellorCard.cs" />
     <Compile Include="Cards\GardensCard.cs" />
     <Compile Include="VirtualCards\VirtualCardList.cs" />

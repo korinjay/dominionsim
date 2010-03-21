@@ -38,6 +38,11 @@ namespace DominionSim
             StartNewGame();
         }
 
+        public Player(string name, Strategy.IStrategy strategy) : this(name)
+        {
+            Strategy = strategy;
+        }
+
         public void Cleanup()
         {
             Buys = 1;

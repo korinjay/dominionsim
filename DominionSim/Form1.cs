@@ -132,6 +132,8 @@ namespace DominionSim
                 }
 
                 outputBox.Text += Environment.NewLine + Stats.Tracker.Instance.GetAllPlayCountsString();
+
+                Stats.Tracker.Instance.Clear();
             }
             else
             {
@@ -172,10 +174,38 @@ namespace DominionSim
             
         }
 
+        private void tourneyAllButton_Click(object sender, EventArgs e)
+        {
+            outputBox.Text = "";
+            // Get a list of all the AIs to use
+            var aisToUse = mTypes.Select(sth => sth.Type);
+
+            Tourney t = new Tourney(aisToUse);
+            int numMatchups = t.Run();
+            outputBox.Text += numMatchups + " different matchups..." + Environment.NewLine;
+
+            var stats = t.GetStats();
+
+            var sortedDict = stats.OrderByDescending((kvp) => kvp.Value.Wins + kvp.Value.Ties);
+
+            foreach (var kvp in sortedDict)
+            {
+                string name = kvp.Key.ToString();
+                int wins = kvp.Value.Wins;
+                int ties = kvp.Value.Ties;
+                int games = kvp.Value.Games;
+                float percentWins = 100.0f * wins / games;
+                float percentTies = 100.0f * ties / games;
+                outputBox.Text += name + " - Wins: " + wins + " (" + percentWins + "%), Ties: " + ties + " (" + percentTies + "%), Highest Score %: " + ((wins + ties) * 100.0f / games) + Environment.NewLine;
+            }
+        }
+
         private void randomizeButton_Click(object sender, EventArgs e)
         {
             RandomizePlayers();
         }
+
+  
     }
 
     /// <summary>
