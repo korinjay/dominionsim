@@ -95,7 +95,7 @@ namespace DominionSim
         public static readonly CardIdentifier Cellar = (CardIdentifier)"Cellar";
         public static readonly CardIdentifier Chancellor = (CardIdentifier)"Chancellor";
         public static readonly CardIdentifier Chapel = (CardIdentifier)"Chapel";
-        public static readonly CardIdentifier CouncilRoom = (CardIdentifier)"CouncilRoom";
+        public static readonly CardIdentifier CouncilRoom = (CardIdentifier)"Council Room";
         public static readonly CardIdentifier Feast = (CardIdentifier)"Feast";
         public static readonly CardIdentifier Festival = (CardIdentifier)"Festival";
         public static readonly CardIdentifier Gardens = (CardIdentifier)"Gardens";
@@ -110,14 +110,38 @@ namespace DominionSim
         public static readonly CardIdentifier Smithy = (CardIdentifier)"Smithy";
         public static readonly CardIdentifier Spy = (CardIdentifier)"Spy";
         public static readonly CardIdentifier Thief = (CardIdentifier)"Thief";
-        public static readonly CardIdentifier ThroneRoom = (CardIdentifier)"ThroneRoom";
+        public static readonly CardIdentifier ThroneRoom = (CardIdentifier)"Throne Room";
         public static readonly CardIdentifier Village = (CardIdentifier)"Village";
         public static readonly CardIdentifier Witch = (CardIdentifier)"Witch";
         public static readonly CardIdentifier Woodcutter = (CardIdentifier)"Woodcutter";
         public static readonly CardIdentifier Workshop = (CardIdentifier)"Workshop";
 
         // Intrigue
-        public static readonly CardIdentifier Harem = (CardIdentifier)"Harem";
+        public static readonly CardIdentifier SecretChamber = (CardIdentifier)"Secret Chamber"; // NYI
+        public static readonly CardIdentifier Baron = (CardIdentifier)"Baron";                  // NYI
+        public static readonly CardIdentifier Bridge = (CardIdentifier)"Bridge";                // NYI
+        public static readonly CardIdentifier Conspirator = (CardIdentifier)"Conspirator";      // NYI
+        public static readonly CardIdentifier Coppersmith = (CardIdentifier)"Coppersmith";      // NYI
+        public static readonly CardIdentifier Courtyard = (CardIdentifier)"Courtyard";          // NYI
+        public static readonly CardIdentifier Ironworks = (CardIdentifier)"Ironworks";
+        public static readonly CardIdentifier Maskquerade = (CardIdentifier)"Maskquerade";      // NYI
+        public static readonly CardIdentifier MiningVillage = (CardIdentifier)"Mining Village"; // NYI
+        public static readonly CardIdentifier Minion = (CardIdentifier)"Minion";                // NYI
+        public static readonly CardIdentifier Pawn = (CardIdentifier)"Pawn";                    // NYI
+        public static readonly CardIdentifier Saboteur = (CardIdentifier)"Saboteur";            // NYI
+        public static readonly CardIdentifier Scout = (CardIdentifier)"Scout";                  // NYI
+        public static readonly CardIdentifier ShantyTown = (CardIdentifier)"Shanty Town";
+        public static readonly CardIdentifier Steward = (CardIdentifier)"Steward";              // NYI
+        public static readonly CardIdentifier Swindler = (CardIdentifier)"Swindler";            // NYI
+        public static readonly CardIdentifier Torturer = (CardIdentifier)"Torturer";            // NYI
+        public static readonly CardIdentifier TradingPost = (CardIdentifier)"Trading Post";     // NYI
+        public static readonly CardIdentifier Tribute = (CardIdentifier)"Tribute";              // NYI
+        public static readonly CardIdentifier Upgrade = (CardIdentifier)"Upgrade";              // NYI
+        public static readonly CardIdentifier WishingWell = (CardIdentifier)"Wishing Well";     // NYI
+        public static readonly CardIdentifier GreatHall = (CardIdentifier)"Great Hall";
+        public static readonly CardIdentifier Nobles = (CardIdentifier)"Nobles";                // NYI
+        public static readonly CardIdentifier Harem = (CardIdentifier)"Harem";                  // NYI
+        public static readonly CardIdentifier Duke = (CardIdentifier)"Duke";
 
 
         private static Dictionary<CardIdentifier, Card> Cards;
