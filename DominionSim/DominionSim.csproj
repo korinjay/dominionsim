@@ -48,11 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cards\BureaucratCard.cs" />
     <Compile Include="Cards\ChancellorCard.cs" />
     <Compile Include="Cards\DukeCard.cs" />
     <Compile Include="Cards\GardensCard.cs" />
     <Compile Include="Cards\IronworksCard.cs" />
+    <Compile Include="Cards\LighthouseCard.cs" />
     <Compile Include="Cards\ShantyTownCard.cs" />
+    <Compile Include="Strategy\Caravan.cs" />
     <Compile Include="VirtualCards\VirtualCardList.cs" />
     <Compile Include="VirtualCards\VirtualCard.cs" />
     <Compile Include="Cards\AdventurerCard.cs" />
@@ -77,7 +80,6 @@
     <Compile Include="Strategy\BaseStrategy.cs" />
     <Compile Include="Strategy\BuyOneCard.cs" />
     <Compile Include="Strategy\Chapel.cs" />
-    <Compile Include="Strategy\SingleCard.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Form1.cs">

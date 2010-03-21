@@ -15,7 +15,7 @@ namespace DominionSim.Cards
         /// 
         /// Reveal your hand.
         /// If you have no Action cards in hand,
-        /// +2 Cards
+        /// +2 Cards"
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="supply">Supply</param>
