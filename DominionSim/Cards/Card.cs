@@ -21,6 +21,7 @@ namespace DominionSim
         }
 
         public const CardType ActionAttack = CardType.Action | CardType.Attack;
+        public const CardType ActionVictory = CardType.Action | CardType.Victory;
         public const CardType TreasureAction = CardType.Treasure | CardType.Action;
         public const CardType TreasureVictory = CardType.Treasure | CardType.Victory;
         public const CardType VictoryAction = CardType.Victory | CardType.Action;
@@ -152,6 +153,7 @@ namespace DominionSim
     #endregion
 
     #region Intrigue
+    class GreatHallCard : Card { public GreatHallCard() : base(CardList.GreatHall,  ActionVictory,          3, 1, 1, 0, 0, 1) {} }
     class HaremCard     : Card { public HaremCard()     : base(CardList.Harem,      TreasureVictory,        6, 0, 0, 2, 0, 2) {} }
     #endregion
 
