@@ -52,16 +52,16 @@ namespace DominionSim.Cards
                         // Choose whether to gain this card
                         var choices = new VirtualCardList();
                         choices.Add(toTrash);
-                        IEnumerable<CardIdentifier> gains = p.Strategy.ChoosePlayerCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
+                        var gains = p.Strategy.ChoosePlayerCardsToGain(p.GetFacade(), 0, choices.Count, opponent.Name, choices);
 
                         // Gain it if needed
-                        foreach (CardIdentifier name in gains)
+                        foreach (var name in gains)
                         {
                             p.GainCard(name);
                         }
 
                         // Discard any other treasure
-                        foreach (CardIdentifier name in treasure)
+                        foreach (var name in treasure)
                         {
                             opponent.Hand.Add(name);
                             opponent.DiscardCard(name);

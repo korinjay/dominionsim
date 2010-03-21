@@ -52,7 +52,7 @@ namespace DominionSim.Strategy
                 {
                     while (p.GetActions() > 0 && p.GetHand().Contains(mCardToBuy))
                     {
-                        p.PlayActionCard(mCardToBuy);
+                        p.PlayActionCard(p.GetHand().First(mCardToBuy));
                     }
                 }
             }

@@ -139,7 +139,7 @@ namespace DominionSim.Strategy
         public virtual IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string opponent, IEnumerable<VirtualCard> cards)
         {
             // Always gain any non-copper treasure, nothing else
-            return cards.Where(c => c == CardList.Silver || c == CardList.Gold).Take(max);
+            return cards.Where(c => c.CardId == CardList.Silver || c.CardId == CardList.Gold).Take(max);
         }
 
 

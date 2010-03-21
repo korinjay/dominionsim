@@ -45,7 +45,7 @@ namespace DominionSim.Cards
             }
 
             p.Hand.AddRange(setAside);
-            foreach (CardIdentifier card in setAside)
+            foreach (var card in setAside)
             {
                 p.DiscardCard(card);
             }

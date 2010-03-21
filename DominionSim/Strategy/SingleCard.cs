@@ -26,7 +26,7 @@ namespace DominionSim.Strategy
         {
             if (p.GetHand().Contains(mCard))
             {
-                p.PlayActionCard(mCard);
+                p.PlayActionCard(p.GetHand().First(mCard));
             }
         }
 
