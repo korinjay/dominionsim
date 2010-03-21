@@ -47,7 +47,7 @@
             this.gameVerbose = new System.Windows.Forms.CheckBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.tourneyChosenButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.tourneyAllButton = new System.Windows.Forms.Button();
             this.randomizeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -232,14 +232,15 @@
             this.tourneyChosenButton.UseVisualStyleBackColor = true;
             this.tourneyChosenButton.Click += new System.EventHandler(this.tourneyChosenButton_Click);
             // 
-            // button1
+            // tourneyAllButton
             // 
-            this.button1.Location = new System.Drawing.Point(345, 163);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(103, 23);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Tourney All";
-            this.button1.UseVisualStyleBackColor = true;
+            this.tourneyAllButton.Location = new System.Drawing.Point(345, 163);
+            this.tourneyAllButton.Name = "tourneyAllButton";
+            this.tourneyAllButton.Size = new System.Drawing.Size(103, 23);
+            this.tourneyAllButton.TabIndex = 20;
+            this.tourneyAllButton.Text = "Tourney All";
+            this.tourneyAllButton.UseVisualStyleBackColor = true;
+            this.tourneyAllButton.Click += new System.EventHandler(this.tourneyAllButton_Click);
             // 
             // randomizeButton
             // 
@@ -258,7 +259,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(462, 443);
             this.Controls.Add(this.randomizeButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.tourneyAllButton);
             this.Controls.Add(this.tourneyChosenButton);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.gameVerbose);
@@ -306,7 +307,7 @@
         private System.Windows.Forms.CheckBox gameVerbose;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button tourneyChosenButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button tourneyAllButton;
         private System.Windows.Forms.Button randomizeButton;
     }
 }
