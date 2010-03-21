@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace DominionSim.Cards
 {
-    
-
     class ChapelCard : Card
     {
         /// <summary>
@@ -20,7 +14,7 @@ namespace DominionSim.Cards
         public override void ExecuteCard(Player p, Supply supply)
         {
             var toTrash = p.Strategy.ChooseCardsToTrash(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
-            foreach (CardIdentifier card in toTrash)
+            foreach (var card in toTrash)
             {
                 p.TrashCardFromHand(card);
             }

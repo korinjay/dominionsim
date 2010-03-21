@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DominionSim.VirtualCards;
 
 namespace DominionSim.Cards
 {
-    
-
     class LibraryCard : Card
     {
         public LibraryCard() : base(CardList.Library, CardType.Action, 5, 0, 0, 0, 0, 0)
@@ -18,13 +13,18 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            List<CardIdentifier> setAside = new List<CardIdentifier>();
+            var setAside = new VirtualCardList();
             while (p.Hand.Count < 7)
             {
-                CardIdentifier nextCard = p.DrawCard();
+                var nextCard = p.DrawCard();
+                if (nextCard == null)
+                {
+                    // Deck is out of cards - can't keep drawing.
+                    break;
+                }
 
                 // If it's an action card, ask the strategy what to do with it
-                if ((CardList.Cards[nextCard].Type & CardType.Action) != 0)
+                if ((nextCard.Logic.Type & CardType.Action) != 0)
                 {
                     bool setThisAside = p.Strategy.ChooseToSetAsideCard(p.GetFacade(), nextCard);
 
@@ -44,7 +44,7 @@ namespace DominionSim.Cards
             }
 
             p.Hand.AddRange(setAside);
-            foreach (CardIdentifier card in setAside)
+            foreach (var card in setAside)
             {
                 p.DiscardCard(card);
             }

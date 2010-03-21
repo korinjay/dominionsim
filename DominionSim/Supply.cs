@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-    
-
     class Supply
     {
         public enum GameState
@@ -16,13 +14,13 @@ namespace DominionSim
             EndViaSupply
         }
 
-        public Dictionary<CardIdentifier, int> CardSupply { get; set; }
+        public Dictionary<CardIdentifier, VirtualCardList> CardSupply { get; set; }
 
         private int mNumPlayers;
 
         public Supply()
         {
-            CardSupply = new Dictionary<CardIdentifier, int>();
+            CardSupply = new Dictionary<CardIdentifier, VirtualCardList>();
         }
 
         private void SetupTreasureAndVictory(int numPlayers)
@@ -31,13 +29,13 @@ namespace DominionSim
 
             CardSupply.Clear();
 
-            CardSupply.Add(CardList.Copper, 100);
-            CardSupply.Add(CardList.Silver, 100);
-            CardSupply.Add(CardList.Gold, 100);
+            AddToSupply(CardList.Copper, 100);
+            AddToSupply(CardList.Silver, 100);
+            AddToSupply(CardList.Gold, 100);
 
-            CardSupply.Add(CardList.Estate, 12);
-            CardSupply.Add(CardList.Duchy, 12);
-            CardSupply.Add(CardList.Province, 12 + ((mNumPlayers - 4) * 3));
+            AddToSupply(CardList.Estate, 12);
+            AddToSupply(CardList.Duchy, 12);
+            AddToSupply(CardList.Province, (12 + ((mNumPlayers - 4) * 3)));
         }
 
         /// <summary>
@@ -48,44 +46,53 @@ namespace DominionSim
         {
             SetupTreasureAndVictory(numPlayers);
 
-            var cardsToAdd = CardList.Cards.Where((kvp) => !CardSupply.ContainsKey(kvp.Key))
-                                           .Select((kvp) => kvp.Key);
+            // Find all the Card classes that exist but we haven't put in the supply yet
 
-            CardSupply.Add(CardList.Feast, 10);
-            CardSupply.Add(CardList.ThroneRoom, 10);
+            var cardsToAdd = CardList.GetAllCardIds().Where(cardId => !CardSupply.ContainsKey(cardId));
 
-            foreach (CardIdentifier name in cardsToAdd)
+            foreach (CardIdentifier cardId in cardsToAdd)
             {
-                Card.CardType type = CardList.Cards[name].Type;
+                Card.CardType type = cardId.Logic.Type;
 
                 if ((type & Card.CardType.Victory) != 0)
                 {
                     // Add 12 copies of Victory cards
-                    CardSupply.Add(name, 12);
+                    AddToSupply(cardId, 12);
                 }
                 else
                 {
                     // Add 10 copies of all other cards
-                    CardSupply.Add(name, 10);
+                   AddToSupply(cardId, 10);
                 }
             }
         }
+
+        /// <summary>
+        /// Add the specified number of cards to the Supply
+        /// </summary>
+        /// <param name="cardId"></param>
+        /// <param name="count"></param>
+        private void AddToSupply(CardIdentifier cardId, int count)
+        {
+            CardSupply.Add(cardId, new VirtualCardList(cardId, count));
+        }
+
 
         public void SetupForStartingSet(int numPlayers)
         {
             SetupTreasureAndVictory(numPlayers);
 
             // STARTING SET
-            CardSupply.Add(CardList.Cellar, 10);
-            CardSupply.Add(CardList.Moat, 10);
-            CardSupply.Add(CardList.Village, 10);
-            CardSupply.Add(CardList.Militia, 10);
-            CardSupply.Add(CardList.Workshop, 10);
-            CardSupply.Add(CardList.Woodcutter, 10);
-            CardSupply.Add(CardList.Smithy, 10);
-            CardSupply.Add(CardList.Remodel, 10);
-            CardSupply.Add(CardList.Mine, 10);
-            CardSupply.Add(CardList.Market, 10);
+            AddToSupply(CardList.Cellar, 10);
+            AddToSupply(CardList.Moat, 10);
+            AddToSupply(CardList.Village, 10);
+            AddToSupply(CardList.Militia, 10);
+            AddToSupply(CardList.Workshop, 10);
+            AddToSupply(CardList.Woodcutter, 10);
+            AddToSupply(CardList.Smithy, 10);
+            AddToSupply(CardList.Remodel, 10);
+            AddToSupply(CardList.Mine, 10);
+            AddToSupply(CardList.Market, 10);
             // END STARTING SET
         }
 
@@ -93,28 +100,29 @@ namespace DominionSim
         /// Gain a card from the supply
         /// </summary>
         /// <param name="c">Card you would like to gain</param>
-        /// <returns>TRUE if there were enough left for you to gain one</returns>
-        public bool GainCard(CardIdentifier cardId)
+        /// <returns>The card you are gaining, or null if there isn't one</returns>
+        public VirtualCard GainCard(CardIdentifier cardId)
         {
             if (!CardSupply.ContainsKey(cardId))
             {
                 throw new Exception("Card "+cardId+" is not in the supply for this game!");
             }
 
-            if (CardSupply[cardId] > 0)
+            if (CardSupply[cardId].Count > 0)
             {
-                CardSupply[cardId]--;
-                return true;
+                var first = CardSupply[cardId].First();
+                CardSupply[cardId].Remove(first);
+                return first;
             }
             else
             {
-                return false;
+                return null;
             }
         }
 
         public int Quantity(CardIdentifier cardId)
         {
-            return CardSupply[cardId];
+            return CardSupply[cardId].Count;
         }
 
         public IEnumerable<CardIdentifier> GetAllCardsAtCost(int cost)
@@ -124,20 +132,20 @@ namespace DominionSim
 
         public IEnumerable<CardIdentifier> GetAllCardsInCostRange(int min, int max)
         {
-            return CardSupply.Where( (kvp) => CardList.Cards[kvp.Key].Cost >= min && CardList.Cards[kvp.Key].Cost <= max)
-                             .OrderByDescending( (kvp) => CardList.Cards[kvp.Key].Cost)
+            return CardSupply.Where( (kvp) => kvp.Key.Logic.Cost >= min && kvp.Key.Logic.Cost <= max)
+                             .OrderByDescending( (kvp) => kvp.Key.Logic.Cost)
                              .Select((kvp) => kvp.Key);
         }
 
         public GameState GetGameState()
         {
-            if(CardSupply[CardList.Province] == 0)
+            if(CardSupply[CardList.Province].Count == 0)
             {
                 return GameState.EndViaProvinces;
             }
             else
             {
-                int numEmpty = CardSupply.Where(k => k.Value == 0).Count();
+                int numEmpty = CardSupply.Where(k => k.Value.Count == 0).Count();
 
                 int numToEnd = 3;
                 if(mNumPlayers > 4)
@@ -167,7 +175,7 @@ namespace DominionSim
             }
             else if (state == GameState.EndViaSupply)
             {
-                var emptyPiles = CardSupply.Where(k => k.Value == 0);
+                var emptyPiles = CardSupply.Where(k => k.Value.Count == 0);
 
                 return "Ran out of "+emptyPiles.Aggregate("", (a, k) => a + k.Key + " ");
             }

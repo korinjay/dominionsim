@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     /// <summary>
     /// Buys and plays cards completely at random
     /// </summary>
@@ -23,7 +20,7 @@ namespace DominionSim.Strategy
         {
             while (p.GetActions() > 0)
             {
-                IEnumerable<CardIdentifier> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
+                var actionCards = Utility.FilterCardsByType(p.GetHand(), Card.CardType.Action);
 
                 var numCards = actionCards.Count();
                 if (numCards == 0)
@@ -63,9 +60,9 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
-        public override CardIdentifier ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
+        public override VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
         {
-            IEnumerable<CardIdentifier> actionCards = Utility.FilterCardListByType(p.GetHand(), Card.CardType.Action);
+            var actionCards = Utility.FilterCardsByType(p.GetHand(), Card.CardType.Action);
             var numCards = actionCards.Count();
             if (numCards == 0)
             {

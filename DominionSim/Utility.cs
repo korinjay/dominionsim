@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-    
-
     class Utility
     {
         private static Random sRandom;
@@ -16,7 +15,13 @@ namespace DominionSim
             return sRandom.Next(min, max);
         }
 
-        public static List<T> Shuffle<T>(List<T> deck)
+        /// <summary>
+        /// Shuffle an arbitrary List and return another List of the items shuffled
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="list">List to shuffle</param>
+        /// <returns>Shuffled version of the list</returns>
+        public static List<T> Shuffle<T>(List<T> list)
         {
             if (sRandom == null)
             {
@@ -24,36 +29,20 @@ namespace DominionSim
             }
             List<T> shuffled = new List<T>();
 
-            while (deck.Count > 0)
+            while (list.Count > 0)
             {
-                int index = sRandom.Next(deck.Count);
-                T card = deck[index];
-                deck.RemoveAt(index);
-                shuffled.Add(card);
+                int index = sRandom.Next(list.Count);
+                T item = list[index];
+                list.RemoveAt(index);
+                shuffled.Add(item);
             }
 
             return shuffled;
         }
 
-        public static int CountCardIn(CardIdentifier card, IEnumerable<CardIdentifier> inThis)
+        public static IEnumerable<VirtualCard> FilterCardsByType(IEnumerable<VirtualCard> toFilter, Card.CardType type)
         {
-            int numCard = 0;
-            var g = inThis.GroupBy(name => name);
-
-            foreach (var grp in g)
-            {
-                if (grp.Key == card)
-                {
-                    numCard = grp.Count();
-                }
-            }
-
-            return numCard;
-        }
-
-        public static IEnumerable<CardIdentifier> FilterCardListByType(IEnumerable<CardIdentifier> toFilter, Card.CardType type)
-        {
-            return toFilter.Where(c => (CardList.Cards[c].Type & type) != 0);
+            return toFilter.Where(c => (c.Logic.Type & type) != 0);
         }
     }
 }

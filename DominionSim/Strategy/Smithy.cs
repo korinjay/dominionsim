@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DominionSim.Strategy
 {
@@ -33,7 +30,7 @@ namespace DominionSim.Strategy
         {
             if (CanAfford(p, mCardToBuy))
             {
-                int numSmithies = Utility.CountCardIn(mCardToBuy, p.GetDeck());
+                int numSmithies = p.GetDeck().Where(vi => vi.CardId == mCardToBuy).Count();
                 int numCards = p.GetDeck().Count();
                 // Attempt to maintain a healthy ratio of 1 per # cards
                 if ((numCards / 8) > numSmithies)

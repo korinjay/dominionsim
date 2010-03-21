@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace DominionSim
 {
-    
-
     class GameStats
     {
         public IEnumerable<Player> Winners;
@@ -21,8 +18,6 @@ namespace DominionSim
         public Supply Supply { get; set; }
         public Dictionary<Player, int> Wins {get ; set;}
         public Dictionary<Player, int> Ties { get; set; }
-
-        public int CurrentGame { get; set; }
 
         public Simulator()
         {
@@ -43,7 +38,6 @@ namespace DominionSim
 
             for(int i=0; i < n; i++)
             {
-                CurrentGame = n;
                 GameStats results = PlayOneGame(verbose);
 
                 var listToAddTo = (results.Winners.Count() > 1 ? Ties : Wins);
@@ -92,9 +86,12 @@ namespace DominionSim
                 turns++;
             }
 
-            Supply.GameState state = Supply.GetGameState();
-            GameStats stats = new GameStats();
+            foreach (var player in Players)
+            {
+                player.HandleEndOfGame();
+            }
 
+            GameStats stats = new GameStats();
             int highScore = 0;
             foreach (var player in Players)
             {
@@ -120,9 +117,9 @@ namespace DominionSim
                 Player player = Players[i];
                 int vps = player.GetNumVictoryPoints();
 
-                IEnumerable<CardIdentifier> vpCards = Utility.FilterCardListByType(player.Deck, Card.CardType.Victory);
                 if (verbose)
                 {
+                    var vpCards = Utility.FilterCardsByType(player.Deck, Card.CardType.Victory);
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
                     Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck) + ")");
                     Console.WriteLine("  Purchases: ( " + Stats.Tracker.Instance.PurchaseString(player) + ")");
@@ -135,6 +132,25 @@ namespace DominionSim
             {
                 Console.WriteLine();
             }
+
+#if DEBUG
+            // Post-game verification step.  Ensure that no 2 players have the same EXACT card
+            // in their hands.  If they did, something went wrong and 2 players own the same card.
+            for (var i = 0; i < Players.Count - 1; ++i)
+            {
+                for (var j = i+1 ; j < Players.Count; ++j)
+                {
+                    var deckIntersection = Players[i].Deck.Intersect(Players[j].Deck);
+                    if (deckIntersection.Count() > 0)
+                    {
+                        Console.WriteLine("The shared cards are:");
+                        Console.WriteLine(deckIntersection.Aggregate("", (s, c) => s + c + "\n"));
+                        throw new Exception("Players " + Players[i].Name + " and " + Players[j].Name + " are somehow sharing cards.  See Console output for which ones are in both Decks.");
+                    }
+                }
+            }
+#endif
+
             return stats;
         }
     }

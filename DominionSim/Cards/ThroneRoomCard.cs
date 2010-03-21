@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DominionSim.Cards
 {
@@ -28,8 +25,8 @@ namespace DominionSim.Cards
                 {
                     throw new Exception("Player " + p.Name + "'s Strategy lied about a card in his hand he wanted to Throne Room!");
                 }
-                var cardLogic = CardList.Cards[playThisTwice];
-                if ((cardLogic.Type & CardType.Action) == 0)
+                var Logic = playThisTwice.Logic;
+                if ((Logic.Type & CardType.Action) == 0)
                 {
                     throw new Exception("Player " + p.Name + "'s Strategy provided a non-action card to Throne Room!");
                 }
@@ -38,7 +35,7 @@ namespace DominionSim.Cards
 
                 // The card only goes from the Hand to the PlayPile the first time.  This also costs 0 actions
                 p.MoveCard(playThisTwice, p.Hand, p.PlayPile);
-                CardList.Cards[playThisTwice].ExecuteCardTwice(p, supply);
+                playThisTwice.Logic.ExecuteCardTwice(p, supply);
             }
         }
     }

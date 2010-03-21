@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VirtualCards\VirtualCardList.cs" />
+    <Compile Include="VirtualCards\VirtualCard.cs" />
     <Compile Include="Cards\AdventurerCard.cs" />
     <Compile Include="Cards\Card.cs" />
     <Compile Include="Cards\LibraryCard.cs" />

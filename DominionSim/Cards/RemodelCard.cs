@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DominionSim.Cards
 {
-    
-
     class RemodelCard : Card
     {
         public RemodelCard() : base(CardList.Remodel, CardType.Action, 4, 0, 0, 0, 0, 0)
@@ -24,11 +20,10 @@ namespace DominionSim.Cards
 
                 if (toTrash.Count() == 1)
                 {
-                    CardIdentifier card = toTrash.ElementAt(0);
+                    var card = toTrash.ElementAt(0);
                     p.TrashCardFromHand(card);
 
-                    CardIdentifier toGain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, CardList.Cards[card].Cost + 2, CardType.Any, supply);
-
+                    var toGain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, card.Logic.Cost + 2, CardType.Any, supply);
                     p.GainCardFromSupply(toGain);
                 }
                 else

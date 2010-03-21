@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DominionSim.Strategy
 {
-    
-
     abstract class BuyOneCard : BigMoneyDuchy
     {
         /// <summary>
@@ -48,11 +43,11 @@ namespace DominionSim.Strategy
         {
             if (mCardToBuy != null)
             {
-                if ((CardList.Cards[mCardToBuy].Type & Card.CardType.Action) != 0)
+                if ((mCardToBuy.Logic.Type & Card.CardType.Action) != 0)
                 {
                     while (p.GetActions() > 0 && p.GetHand().Contains(mCardToBuy))
                     {
-                        p.PlayActionCard(mCardToBuy);
+                        p.PlayActionCard(p.GetHand().First(mCardToBuy));
                     }
                 }
             }
@@ -108,7 +103,7 @@ namespace DominionSim.Strategy
         {
             if (CanAfford(p, mCardToBuy))
             {
-                int numOwned = Utility.CountCardIn(mCardToBuy, p.GetDeck());
+                int numOwned = p.GetDeck().Where(vi => vi.CardId == mCardToBuy).Count();
                 if (numOwned < mNumCardsToHave)
                 {
                     p.BuyCard(mCardToBuy);

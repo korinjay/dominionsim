@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace DominionSim.Cards
 {
-    
-
     class WorkshopCard : Card
     {
         /// <summary>
@@ -24,7 +18,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            CardIdentifier card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
+            var card = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
 
             p.GainCardFromSupply(card);
         }
