@@ -198,6 +198,17 @@ namespace DominionSim.Strategy
             return null;
         }
 
+        /// <summary>
+        /// You have the opportunity to put your deck in your discard pile if you wish
+        /// </summary>
+        /// <param name="p">Player</param>
+        /// <param name="s">The supply</param>
+        /// <returns>TRUE to put your deck into discard, forcing a reshuffle</returns>
+        public virtual bool ChooseToDiscardDrawPile(PlayerFacade p, Supply supply)
+        {
+            return false;
+        }
+
         #endregion
     }
 }
