@@ -17,7 +17,13 @@ namespace DominionSim
             return sRandom.Next(min, max);
         }
 
-        public static List<T> Shuffle<T>(List<T> deck)
+        /// <summary>
+        /// Shuffle an arbitrary List and return another List of the items shuffled
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="list">List to shuffle</param>
+        /// <returns>Shuffled version of the list</returns>
+        public static List<T> Shuffle<T>(List<T> list)
         {
             if (sRandom == null)
             {
@@ -25,12 +31,12 @@ namespace DominionSim
             }
             List<T> shuffled = new List<T>();
 
-            while (deck.Count > 0)
+            while (list.Count > 0)
             {
-                int index = sRandom.Next(deck.Count);
-                T card = deck[index];
-                deck.RemoveAt(index);
-                shuffled.Add(card);
+                int index = sRandom.Next(list.Count);
+                T item = list[index];
+                list.RemoveAt(index);
+                shuffled.Add(item);
             }
 
             return shuffled;
