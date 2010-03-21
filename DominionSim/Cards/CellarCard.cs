@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace DominionSim.Cards
 {
-    
-
-	class CellarCard : Card
-	{
+    class CellarCard : Card
+    {
         public CellarCard() : base(CardList.Cellar, CardType.Action, 2, 0, 1, 0, 0, 0)
         {
 
@@ -26,5 +20,5 @@ namespace DominionSim.Cards
                 p.AddCardsToHand(p.DrawCards(1));
             }
         }
-	}
+    }
 }

@@ -6,8 +6,6 @@ using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-    
-
     class Utility
     {
         private static Random sRandom;

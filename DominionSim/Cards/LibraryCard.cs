@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DominionSim.VirtualCards;
+﻿using DominionSim.VirtualCards;
 
 namespace DominionSim.Cards
 {
-    
-
     class LibraryCard : Card
     {
         public LibraryCard() : base(CardList.Library, CardType.Action, 5, 0, 0, 0, 0, 0)

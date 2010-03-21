@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DominionSim.Cards
 {
-    
-
     class RemodelCard : Card
     {
         public RemodelCard() : base(CardList.Remodel, CardType.Action, 4, 0, 0, 0, 0, 0)

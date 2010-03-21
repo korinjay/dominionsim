@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DominionSim.Cards
 {
-    
-
     class MineCard : Card
     {
         public MineCard() : base(CardList.Mine, CardType.Action, 5, 0, 0, 0, 0, 0)

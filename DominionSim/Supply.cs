@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-    
-
     class Supply
     {
         public enum GameState

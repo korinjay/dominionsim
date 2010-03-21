@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DominionSim.Strategy
 {
-    
-
     class SingleCard : BigMoneyDuchy
     {
         private int mNumDesiredCard = 0;

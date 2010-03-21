@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DominionSim.VirtualCards;
+﻿using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     /// <summary>
     /// Wrapper class exposing only certain functionality of a Player to a Strategy
     /// This is the only object that Strategies can manipulate in order to make stuff happen in the game.
