@@ -263,8 +263,6 @@ namespace DominionSim
             if (name == null)
             {
                 Log("    Buying nothing!");
-
-                Buys--;
                 return;
             }
 
