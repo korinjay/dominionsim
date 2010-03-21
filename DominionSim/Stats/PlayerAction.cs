@@ -11,6 +11,7 @@ namespace DominionSim.Stats
         public const string Play = "Play";
         public const string Discard = "Discard";
         public const string AttackedBy = "Attacked by";
+        public const string Revealed = "Revealed";
 
         public int Turn;
         public string Action;

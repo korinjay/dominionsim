@@ -85,7 +85,6 @@ namespace DominionSim.Strategy
         /// <returns>All cards you wish to gain from the collection</returns>
         IEnumerable<VirtualCard> ChoosePlayerCardsToGain(PlayerFacade p, int min, int max, string victim, IEnumerable<VirtualCard> cards);
 
-
         /// <summary>
         /// Someone attacked you, and now you need to react
         /// </summary>
@@ -111,6 +110,16 @@ namespace DominionSim.Strategy
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
         VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply s);
+
+        /// <summary>
+        /// You have to Reveal a Card - which would you like?
+        /// </summary>
+        /// <param name="p">Your player</param>
+        /// <param name="supply">Current supply</param>
+        /// <param name="cardType">Type of card you need to reveal</param>
+        /// <param name="becauseOf">Why you are revealing it</param>
+        /// <returns>The card</returns>
+        VirtualCard ChooseCardToReveal(PlayerFacade p, Supply supply, Card.CardType cardType, CardIdentifier becauseOf);
 
         /// <summary>
         /// You have the opportunity to put your deck in your discard pile if you wish

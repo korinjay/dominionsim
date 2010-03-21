@@ -252,7 +252,7 @@ namespace DominionSim
             Log("    Buying a "+name);
             if (Moneys >= c.Cost && Buys > 0)
             {
-                var card = mSupply.GainCard(name);
+                var card = mSupply.TakeCard(name);
                 if (null != card)
                 {
                     DiscardPile.Add(card);
@@ -376,7 +376,7 @@ namespace DominionSim
         /// <param name="destination">Where to put it</param>
         public void GainCardFromSupply(CardIdentifier cardId, VirtualCardList destination)
         {
-            var card = mSupply.GainCard(cardId);
+            var card = mSupply.TakeCard(cardId);
             if (null != card)
             {
                 GainCard(card, destination);

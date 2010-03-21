@@ -97,11 +97,11 @@ namespace DominionSim
         }
 
         /// <summary>
-        /// Gain a card from the supply
+        /// Take a card from the supply
         /// </summary>
-        /// <param name="c">Card you would like to gain</param>
-        /// <returns>The card you are gaining, or null if there isn't one</returns>
-        public VirtualCard GainCard(CardIdentifier cardId)
+        /// <param name="c">Card you would like to take</param>
+        /// <returns>The card you are taking, or null if there isn't one</returns>
+        public VirtualCard TakeCard(CardIdentifier cardId)
         {
             if (!CardSupply.ContainsKey(cardId))
             {

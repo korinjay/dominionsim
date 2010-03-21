@@ -186,7 +186,6 @@ namespace DominionSim.Strategy
             }
         }
 
-
         /// <summary>
         /// You have the opportunity to play an Action card twice (i.e. due to Throne Room)
         /// </summary>
@@ -196,6 +195,20 @@ namespace DominionSim.Strategy
         public virtual VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
         {
             return null;
+        }
+
+
+        /// <summary>
+        /// You have to Reveal a Card - which would you like?
+        /// </summary>
+        /// <param name="p">Your player</param>
+        /// <param name="supply">Current supply</param>
+        /// <param name="cardType">Type of card you need to reveal</param>
+        /// <param name="becauseOf">Why you are revealing it</param>
+        /// <returns>The card</returns>
+        public virtual VirtualCard ChooseCardToReveal(PlayerFacade p, Supply supply, Card.CardType cardType, CardIdentifier becauseOf)
+        {
+            return p.GetHand().First(vi => (vi.Logic.Type & cardType) != 0);
         }
 
         /// <summary>
