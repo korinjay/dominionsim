@@ -120,8 +120,9 @@ namespace DominionSim
                 if (verbose)
                 {
                     var vpCards = Utility.FilterCardsByType(player.Deck, Card.CardType.Victory);
+                    vpCards = vpCards.Concat(Utility.FilterCardsByType(player.Deck, Card.CardType.Curse));
                     Console.WriteLine(player.Name + ": " + vps + " ( " + player.StatStringFromList(vpCards) + ")");
-                    Console.WriteLine("  Deck: ( " + player.StatStringFromList(player.Deck) + ")");
+                    Console.WriteLine("  Deck ["+player.Deck.Count+"]: ( " + player.StatStringFromList(player.Deck) + ")");
                     Console.WriteLine("  Purchases: ( " + Stats.Tracker.Instance.PurchaseString(player) + ")");
                     Console.WriteLine(player.Name+" Activity:");
                     Console.WriteLine(Stats.Tracker.Instance.ActivityString(player));

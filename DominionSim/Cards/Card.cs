@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
@@ -42,7 +43,9 @@ namespace DominionSim
         public int Actions { get; set; }
         public int Draws { get; set; }
         public int Moneys { get; set; }
-        public int VictoryPoints { get; set; }
+
+        // If this card is just simply worth N VPs, this property is used
+        private int mSimpleVPs;
 
         public Card(CardIdentifier cardId, CardType type, int cost, int draws, int actions, int moneys, int buys, int vps)
         {
@@ -53,7 +56,12 @@ namespace DominionSim
             Actions = actions;
             Moneys = moneys;
             Buys = buys;
-            VictoryPoints = vps;
+            mSimpleVPs = vps;
+        }
+
+        public virtual int GetNumVictoryPoints(VirtualCardList deck)
+        {
+            return mSimpleVPs;
         }
 
         public virtual void ExecuteCard(Player p, Supply supply)
