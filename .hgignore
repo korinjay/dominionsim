@@ -7,3 +7,4 @@ bin/*
 *.csproj.user
 *.exe.manifest
 *.orig
+Mark.cs
