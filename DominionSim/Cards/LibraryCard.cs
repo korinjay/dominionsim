@@ -23,6 +23,11 @@ namespace DominionSim.Cards
             while (p.Hand.Count < 7)
             {
                 var nextCard = p.DrawCard();
+                if (nextCard == null)
+                {
+                    // Deck is out of cards - can't keep drawing.
+                    break;
+                }
 
                 // If it's an action card, ask the strategy what to do with it
                 if ((nextCard.Logic.Type & CardType.Action) != 0)

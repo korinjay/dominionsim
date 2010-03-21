@@ -89,9 +89,12 @@ namespace DominionSim
                 turns++;
             }
 
-            Supply.GameState state = Supply.GetGameState();
-            GameStats stats = new GameStats();
+            foreach (var player in Players)
+            {
+                player.HandleEndOfGame();
+            }
 
+            GameStats stats = new GameStats();
             int highScore = 0;
             foreach (var player in Players)
             {
@@ -132,6 +135,25 @@ namespace DominionSim
             {
                 Console.WriteLine();
             }
+
+#if DEBUG
+            // Post-game verification step.  Ensure that no 2 players have the same EXACT card
+            // in their hands.  If they did, something went wrong and 2 players own the same card.
+            for (var i = 0; i < Players.Count - 1; ++i)
+            {
+                for (var j = i+1 ; j < Players.Count; ++j)
+                {
+                    var deckIntersection = Players[i].Deck.Intersect(Players[j].Deck);
+                    if (deckIntersection.Count() > 0)
+                    {
+                        Console.WriteLine("The shared cards are:");
+                        Console.WriteLine(deckIntersection.Aggregate("", (s, c) => s + c + "\n"));
+                        throw new Exception("Players " + Players[i].Name + " and " + Players[j].Name + " are somehow sharing cards.  See Console output for which ones are in both Decks.");
+                    }
+                }
+            }
+#endif
+
             return stats;
         }
     }
