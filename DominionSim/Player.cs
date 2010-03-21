@@ -134,12 +134,26 @@ namespace DominionSim
             mTurn++;
         }
 
+        /// <summary>
+        /// Draw a card from the Draw deck.  Will Shuffle if necessary.
+        /// </summary>
+        /// <returns>The first card off the Deck, or null if none</returns>
         public VirtualCard DrawCard()
         {
-            return DrawCards(1).ElementAt(0);
+            var topCards = DrawCards(1);
+            if (topCards.Count() > 0)
+            {
+                return topCards.ElementAt(0);
+            }
+            return null;
         }
 
-        public VirtualCardList DrawCards(int num)
+        /// <summary>
+        /// Return a list of the top cards drawn off the Draw deck.  Will Shuffle if necessary.
+        /// </summary>
+        /// <param name="num"># of cards to draw</param>
+        /// <returns>List of them</returns>
+        public IEnumerable<VirtualCard> DrawCards(int num)
         {
             Log("  Drawing " + num + " cards.");
             var drawnCards = new VirtualCardList();
@@ -182,7 +196,7 @@ namespace DominionSim
         /// If you don't want the stats to record "Drew X", then just manipulate Hand directly.
         /// </summary>
         /// <param name="cards"Cards to add></param>
-        public void AddCardsToHand(VirtualCardList cards)
+        public void AddCardsToHand(IEnumerable<VirtualCard> cards)
         {
             foreach (var card in cards)
             {
@@ -457,6 +471,37 @@ namespace DominionSim
             {
                 Console.WriteLine(str);
             }
+        }
+
+        /// <summary>
+        /// Run any logic that happens after the game is over
+        /// </summary>
+        public void HandleEndOfGame()
+        {
+#if DEBUG
+            // Do some verification.  Notably, the Deck should be the same as the
+            // other cards combined.
+            var allCardsInDeck = DrawPile
+                          .Union(DiscardPile)
+                          .Union(DurationCards)
+                          .Union(Hand)
+                          .Union(PlayPile);
+
+            var excluded1 = Deck.Except(allCardsInDeck);
+            if (excluded1.Count() > 0)
+            {
+                Console.WriteLine("The extra cards are:");
+                Console.WriteLine(excluded1.Aggregate("", (s, c) => s + c + "\n"));
+                throw new Exception("Player " + Name + "'s Deck has more cards than were in the rest of his piles combined.  See Console output for which ones are extra.");
+            }
+            var excluded2 = allCardsInDeck.Except(Deck);
+            if (excluded2.Count() > 0)
+            {
+                Console.WriteLine("The missing cards are:");
+                Console.WriteLine(excluded2.Aggregate("", (s, c) => s + c + "\n"));
+                throw new Exception("Player " + Name + "'s deck has fewer cards than were in the rest of his piles combined.  See Console output for which ones are missing.");
+            }
+#endif
         }
     }
 }
