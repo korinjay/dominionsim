@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DominionSim.VirtualCards;
 
 namespace DominionSim.Strategy
 {
-    
-
     class Chapel1 : Chapel
     {
         public Chapel1() : base(1) {}
