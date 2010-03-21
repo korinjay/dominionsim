@@ -22,8 +22,6 @@ namespace DominionSim
         public Dictionary<Player, int> Wins {get ; set;}
         public Dictionary<Player, int> Ties { get; set; }
 
-        public int CurrentGame { get; set; }
-
         public Simulator()
         {
             CardList.SetupCardList();
@@ -43,7 +41,6 @@ namespace DominionSim
 
             for(int i=0; i < n; i++)
             {
-                CurrentGame = n;
                 GameStats results = PlayOneGame(verbose);
 
                 var listToAddTo = (results.Winners.Count() > 1 ? Ties : Wins);

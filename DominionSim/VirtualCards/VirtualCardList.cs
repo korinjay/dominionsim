@@ -131,7 +131,7 @@ namespace DominionSim.VirtualCards
         {
             if (IsReadOnly) throw new InvalidOperationException("Cannot Shuffle a ReadOnly list");
 
-            Utility.Shuffle(mVirtualCardList as List<VirtualCard>);
+            mVirtualCardList = Utility.Shuffle(mVirtualCardList as List<VirtualCard>);
             return this;
         }
 

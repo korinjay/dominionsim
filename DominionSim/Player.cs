@@ -87,14 +87,16 @@ namespace DominionSim
 
             for (int i = 0; i < 7; i++)
             {
-                Deck.Add(new VirtualCard(CardList.Copper));
-                DrawPile.Add(new VirtualCard(CardList.Copper));
+                var copper = new VirtualCard(CardList.Copper);
+                Deck.Add(copper);
+                DrawPile.Add(copper);
             }
 
             for (int i = 0; i < 3; i++)
             {
-                Deck.Add(new VirtualCard(CardList.Estate));
-                DrawPile.Add(new VirtualCard(CardList.Estate));
+                var estate = new VirtualCard(CardList.Estate);
+                Deck.Add(estate);
+                DrawPile.Add(estate);
             }
 
             DrawPile = DrawPile.Shuffle();
