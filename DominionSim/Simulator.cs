@@ -60,6 +60,7 @@ namespace DominionSim
  
         public GameStats PlayOneGame(bool verbose)
         {
+            //Supply.SetupForStartingSet(Players.Count);
             Supply.SetupForTesting(Players.Count);
 
             Players = Utility.Shuffle(Players);
