@@ -5,7 +5,6 @@ using DominionSim.VirtualCards;
 
 namespace DominionSim
 {
-
     delegate void PlayerCardActionEventHandler(Player sender, CardIdentifier card);
 
     class Player
@@ -39,10 +38,12 @@ namespace DominionSim
         private Supply mSupply;
 
         private Strategy.PlayerFacade mFacade;
+        private Strategy.OpponentFacade mOpponentFacade;
 
         public Player(string name)
         {
             mFacade = new Strategy.PlayerFacade(this);
+            mOpponentFacade = new Strategy.OpponentFacade(this);
             Name = name;
 
             StartNewGame();
@@ -435,10 +436,22 @@ namespace DominionSim
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, cardId, Stats.PlayerAction.AttackedBy));
         }
 
-
+        /// <summary>
+        /// Get a protected view of this Player suitable for use by its own strategy
+        /// </summary>
+        /// <returns></returns>
         public Strategy.PlayerFacade GetFacade()
         {
             return mFacade;
+        }
+
+        /// <summary>
+        /// Get a protected view of this Player suitable for use by an opponent
+        /// </summary>
+        /// <returns></returns>
+        public Strategy.OpponentFacade GetOpponentFacade()
+        {
+            return mOpponentFacade;
         }
 
         public int GetTurn()
