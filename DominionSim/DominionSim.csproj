@@ -56,7 +56,6 @@
     <Compile Include="Cards\LighthouseCard.cs" />
     <Compile Include="Cards\ShantyTownCard.cs" />
     <Compile Include="Strategy\Caravan.cs" />
-    <Compile Include="Strategy\Colin.cs" />
     <Compile Include="VirtualCards\VirtualCardList.cs" />
     <Compile Include="VirtualCards\VirtualCard.cs" />
     <Compile Include="Cards\AdventurerCard.cs" />

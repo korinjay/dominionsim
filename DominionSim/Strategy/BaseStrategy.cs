@@ -146,9 +146,9 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="cardId"></param>
         /// <returns></returns>
-        protected bool AbleToBuy(PlayerFacade p, Supply s, CardIdentifier cardId)
+        protected bool CanAfford(PlayerFacade p, CardIdentifier cardId)
         {
-            return (p.GetMoneys() >= cardId.Logic.Cost && s.CardSupply[cardId].Count() > 0);
+            return (p.GetMoneys() >= cardId.Logic.Cost);
         }
 
         /// <summary>

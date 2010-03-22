@@ -81,7 +81,7 @@ namespace DominionSim.Strategy
                 return;
             }
 
-            if (AttemptBuyCard(p, s))
+            if (AttemptBuyCard(p))
             {
                 return;
             }
@@ -98,11 +98,10 @@ namespace DominionSim.Strategy
         /// Attempt to purchase the Card we are supposed to purchase.
         /// </summary>
         /// <param name="p">Player</param>
-        /// <param name="s">Supply</param>
         /// <returns>Whether we bought one</returns>
-        protected virtual bool AttemptBuyCard(PlayerFacade p, Supply s)
+        protected virtual bool AttemptBuyCard(PlayerFacade p)
         {
-            if (AbleToBuy(p, s, mCardToBuy))
+            if (CanAfford(p, mCardToBuy))
             {
                 int numOwned = p.GetDeck().Where(vi => vi.CardId == mCardToBuy).Count();
                 if (numOwned < mNumCardsToHave)
