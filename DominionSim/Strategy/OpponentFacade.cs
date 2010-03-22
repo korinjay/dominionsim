@@ -37,32 +37,50 @@ namespace DominionSim.Strategy
         #region Event Forwarding
         void ForwardPlayed(Player sender, CardIdentifier card)
         {
-            Played(this, card);
+            if (Played != null)
+            {
+                Played(this, card);
+            }
         }
 
         void ForwardRevealed(Player sender, CardIdentifier card)
         {
-            Revealed(this, card);
+            if (Revealed != null)
+            {
+                Revealed(this, card);
+            }
         }
 
         void ForwardTrashed(Player sender, CardIdentifier card)
         {
-            Trashed(this, card);
+            if (Trashed != null)
+            {
+                Trashed(this, card);
+            }
         }
 
         void ForwardDiscarded(Player sender, CardIdentifier card)
         {
-            Discarded(this, card);
+            if (Discarded != null)
+            {
+                Discarded(this, card);
+            }
         }
 
         void ForwardBought(Player sender, CardIdentifier card)
         {
-            Bought(this, card);
+            if (Bought != null)
+            {
+                Bought(this, card);
+            }
         }
 
         private void ForwardGained(Player sender, CardIdentifier card)
         {
-            Gained(this, card);
+            if (Gained != null)
+            {
+                Gained(this, card);
+            }
         }
 
         #endregion Event Forwarding

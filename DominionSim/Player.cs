@@ -254,7 +254,10 @@ namespace DominionSim
                 Log("    Playing a " + card + "!");
 
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card.CardId, Stats.PlayerAction.Play));
-                Played(this, card.CardId);
+                if (Played != null)
+                {
+                    Played(this, card.CardId);
+                }
                 Actions--;
 
                 // Duration cards go to the Duration pile.  Everything else goes to the Play pile
@@ -297,7 +300,10 @@ namespace DominionSim
                     Moneys -= c.Cost;
                     Buys--;
                     Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Buy));
-                    Bought(this, card.CardId);
+                    if (Bought != null)
+                    {
+                        Bought(this, card.CardId);
+                    }
                 }
                 else
                 {
@@ -336,7 +342,10 @@ namespace DominionSim
             {
                 Log("    Trashing "+card+"!");
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Trash));
-                Trashed(this, card.CardId);
+                if (Trashed != null)
+                {
+                    Trashed(this, card.CardId);
+                }
 
                 Hand.Remove(card);
                 Deck.Remove(card);
@@ -354,7 +363,10 @@ namespace DominionSim
                 // Some cards trash when you play them (like Feast)
                 Log("    Trashing " + card + "!");
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Trash));
-                Trashed(this, card.CardId);
+                if (Trashed != null)
+                {
+                    Trashed(this, card.CardId);
+                }
 
                 PlayPile.Remove(card);
                 Deck.Remove(card);
@@ -375,7 +387,10 @@ namespace DominionSim
             {
                 Log("    Discarding " + card + "!");
                 Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Discard));
-                Discarded(this, card.CardId);
+                if (Discarded != null)
+                {
+                    Discarded(this, card.CardId);
+                }
 
                 Hand.Remove(card);
                 DiscardPile.Add(card);
@@ -396,7 +411,10 @@ namespace DominionSim
         {
             Log("  Gained a " + card.ToString());
             Stats.Tracker.Instance.LogAction(this, new Stats.PlayerAction(mTurn, card, Stats.PlayerAction.Gain));
-            Gained(this, card.CardId);
+            if (Gained != null)
+            {
+                Gained(this, card.CardId);
+            }
 
             destination.Add(card);
             Deck.Add(card);
