@@ -71,6 +71,7 @@ namespace DominionSim
 
                 player.OtherPlayers.AddRange(Players.Where(p => p != player));
 
+                player.InitializeStrategy(Supply);
             }
 
             int turns = 0;
