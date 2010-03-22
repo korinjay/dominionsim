@@ -29,7 +29,7 @@ namespace DominionSim.Cards
 
                     if (discards.Count() < numToDiscard)
                     {
-                        throw new Exception("Player " + p.Name + " failed to discard the required number of cards!");
+                        throw new Exception("Player " + opponent.Name + " failed to discard the required number of cards!");
                     }
 
                     foreach (var card in discards)
