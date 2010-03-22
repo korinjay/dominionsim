@@ -33,9 +33,24 @@ namespace DominionSim
             AddToSupply(CardList.Silver, 100);
             AddToSupply(CardList.Gold, 100);
 
-            AddToSupply(CardList.Estate, 12);
-            AddToSupply(CardList.Duchy, 12);
-            AddToSupply(CardList.Province, (12 + ((mNumPlayers - 4) * 3)));
+            if (mNumPlayers == 2)
+            {
+                AddToSupply(CardList.Estate, 8);
+                AddToSupply(CardList.Duchy, 8);
+                AddToSupply(CardList.Province, 8);
+            }
+            else if(mNumPlayers <= 4)
+            {
+                AddToSupply(CardList.Estate, 12);
+                AddToSupply(CardList.Duchy, 12);
+                AddToSupply(CardList.Province, 12);
+            }
+            else
+            {
+                AddToSupply(CardList.Estate, 12);
+                AddToSupply(CardList.Duchy, 12);
+                AddToSupply(CardList.Province, (12 + ((mNumPlayers - 4) * 3)));
+            }
         }
 
         /// <summary>
