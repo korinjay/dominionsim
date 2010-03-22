@@ -6,6 +6,14 @@ namespace DominionSim.Strategy
     interface IStrategy
     {
         /// <summary>
+        /// Set up this strategy!  Some may want to inspect the initial state of the supply,
+        /// register for events from players, or whatever.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="s"></param>
+        void Init(PlayerFacade p, Supply s);
+
+        /// <summary>
         /// Take the "action" phase of this Player's turn.  Play any and all Action cards you wish to play.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>

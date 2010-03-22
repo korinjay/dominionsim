@@ -87,6 +87,11 @@ namespace DominionSim
             }
         }
 
+        public void InitializeStrategy(Supply s)
+        {
+            Strategy.Init(mFacade, s);
+        }
+
         public void StartNewGame()
         {
             mTurn = 0;

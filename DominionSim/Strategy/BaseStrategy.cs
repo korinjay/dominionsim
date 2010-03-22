@@ -9,6 +9,17 @@ namespace DominionSim.Strategy
         #region IStrategy Members
 
         /// <summary>
+        /// Set up this strategy!  Some may want to inspect the initial state of the supply,
+        /// register for events from players, or whatever.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="s"></param>
+        public virtual void Init(PlayerFacade p, Supply s)
+        {
+            // Eh, do nothing.
+        }
+
+        /// <summary>
         /// Base implementation of the TurnAction function
         /// Defaults to playing no action cards.  Many strategies will override this to actually do something.
         /// </summary>
