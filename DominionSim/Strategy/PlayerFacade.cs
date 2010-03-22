@@ -89,9 +89,9 @@ namespace DominionSim.Strategy
             mPlayer.Log(msg);
         }
 
-        public IEnumerable<PlayerFacade> GetOtherPlayers()
+        public IEnumerable<OpponentFacade> GetOtherPlayers()
         {
-            return mPlayer.OtherPlayers.Select(p => p.GetFacade());
+            return mPlayer.OtherPlayers.Select(p => p.GetOpponentFacade());
         }
 
         #endregion
