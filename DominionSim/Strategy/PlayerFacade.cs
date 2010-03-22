@@ -1,4 +1,6 @@
-﻿using DominionSim.VirtualCards;
+﻿using System.Collections.Generic;
+using DominionSim.VirtualCards;
+using System.Linq;
 
 namespace DominionSim.Strategy
 {
@@ -85,6 +87,11 @@ namespace DominionSim.Strategy
         public void Log(string msg)
         {
             mPlayer.Log(msg);
+        }
+
+        public IEnumerable<PlayerFacade> GetOtherPlayers()
+        {
+            return mPlayer.OtherPlayers.Select(p => p.GetFacade());
         }
 
         #endregion
