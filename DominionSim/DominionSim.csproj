@@ -56,6 +56,8 @@
     <Compile Include="Cards\LighthouseCard.cs" />
     <Compile Include="Cards\ShantyTownCard.cs" />
     <Compile Include="Strategy\Caravan.cs" />
+    <Compile Include="Tournament\Contender.cs" />
+    <Compile Include="Tournament\Tourney.cs" />
     <Compile Include="VirtualCards\VirtualCardList.cs" />
     <Compile Include="VirtualCards\VirtualCard.cs" />
     <Compile Include="Cards\AdventurerCard.cs" />
@@ -121,7 +123,6 @@
     <Compile Include="Strategy\Random.cs" />
     <Compile Include="Strategy\Smithy.cs" />
     <Compile Include="Supply.cs" />
-    <Compile Include="Tourney.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

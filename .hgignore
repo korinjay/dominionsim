@@ -8,3 +8,4 @@ bin/*
 *.exe.manifest
 *.orig
 Mark.cs
+Colin.cs

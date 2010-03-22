@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DominionSim
+namespace DominionSim.Tournament
 {
     using Matchup = List<Player>;
 
@@ -43,27 +43,73 @@ namespace DominionSim
         private int mMinPlayers = 2;
         private int mMaxPlayers = 6;
 
-        IEnumerable<Type> mStrategies;
+        IEnumerable<Contender> mContenders;
 
         Simulator mSim;
 
         List<Matchup> mSchedule;
         Dictionary<string, PlayerStats> mStats;
 
-        public Tourney(IEnumerable<Type> strategies)
-            : this(2, 6, strategies)
-        {
-
-        }
-
-        public Tourney(int minPlayers, int maxPlayers, IEnumerable<Type> strategies)
+        /// <summary>
+        /// Private constructor to simply set up the min and max players
+        /// </summary>
+        /// <param name="minPlayers">Minimum # of players</param>
+        /// <param name="maxPlayers">Maximum # of players</param>
+        private Tourney(int minPlayers, int maxPlayers)
         {
             mMinPlayers = minPlayers;
             mMaxPlayers = maxPlayers;
-
-            mStrategies = strategies.Distinct();
-
             mSchedule = new List<Matchup>();
+        }
+
+        /// <summary>
+        /// Create a Tournament with just a list of Strategy types
+        /// </summary>
+        /// <param name="strategies">List of Strats</param>
+        public Tourney(IEnumerable<Type> strategies)
+            : this(2, 6, strategies)
+        {
+        }
+
+        /// <summary>
+        /// Create a Tournament with a list of Strategy types and the # of players
+        /// </summary>
+        /// <param name="minPlayers">Minimum # of players</param>
+        /// <param name="maxPlayers">Maximum # of players</param>
+        /// <param name="strategies">Strategy types</param>
+        public Tourney(int minPlayers, int maxPlayers, IEnumerable<Type> strategies)
+            : this(minPlayers, maxPlayers)
+        {
+            // Create ContenderHolders from the passed-in Strategy Types
+            mContenders = strategies.Distinct()
+                                    .Select(t => new Contender(t.Name, Activator.CreateInstance(t) as Strategy.IStrategy));
+        }
+
+        /// <summary>
+        /// Create a Tournament with an already-created list of Contenders.
+        /// Use this if you don't want to pass in types, but instead want to
+        /// hand-tweak precise instances of Strategies before passing them in.
+        /// This could be used if you, I dunno, want to programmatically iterate
+        /// on a strategy using an AI routing in order to find the fittest
+        /// iteration. Or something.  Not that anyone would do that.
+        /// </summary>
+        /// <param name="strategies">Instances of Contenders</param>
+        public Tourney(IEnumerable<Contender> contenders)
+            : this(2, 6, contenders)
+        {
+        }
+
+        /// <summary>
+        /// Create a Tournament with a list of Contenders and the # of players
+        /// </summary>
+        /// <param name="minPlayers">Minimum # of players</param>
+        /// <param name="maxPlayers">Maximum # of players</param>
+        /// <param name="contenders">Instances of Contenders</param>
+        public Tourney(int minPlayers, int maxPlayers, IEnumerable<Contender> contenders)
+            : this(minPlayers, maxPlayers)
+        {
+            // Create ContenderHolders from the passed-in Strategy Types
+            mContenders = contenders;
         }
 
         public int Run()
@@ -80,7 +126,7 @@ namespace DominionSim
 
             // Randomly fill games with N players
             List<Player> players = new List<Player>();
-            players.AddRange(mStrategies.Select((t) => new Player(t.Name, Activator.CreateInstance(t) as Strategy.IStrategy)));
+            players.AddRange(mContenders.Select(sh => new Player(sh.Name, sh.Strategy)));
 
             foreach (Player p in players)
             {
@@ -309,20 +355,20 @@ namespace DominionSim
 
         public void Build2PlayerMatchups()
         {
-            for (int i = 0; i < mStrategies.Count(); i++)
+            for (int i = 0; i < mContenders.Count(); i++)
             {
-                var strat = mStrategies.ElementAt(i);
+                var strat = mContenders.ElementAt(i);
 
-                for (int j = i; j < mStrategies.Count(); j++)
+                for (int j = i; j < mContenders.Count(); j++)
                 {
-                    var vsStrat = mStrategies.ElementAt(j);
+                    var vsStrat = mContenders.ElementAt(j);
 
                     if (vsStrat != strat)
                     {
                         Matchup m = new Matchup();
 
-                        m.Add(new Player(strat.Name, Activator.CreateInstance(strat) as Strategy.IStrategy));
-                        m.Add(new Player(vsStrat.Name, Activator.CreateInstance(vsStrat) as Strategy.IStrategy));
+                        m.Add(new Player(strat.Name, strat.Strategy));
+                        m.Add(new Player(vsStrat.Name, vsStrat.Strategy));
 
                         mSchedule.Add(m);
                     }
