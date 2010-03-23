@@ -23,7 +23,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            var gaining = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, CardType.Any, supply);
+            var gaining = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 4, CardType.Any, supply.GetFacade());
             p.GainCardFromSupply(gaining);
 
             // Note that all 3 of these things could potentially happy if you get a card that is

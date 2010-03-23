@@ -20,7 +20,7 @@ namespace DominionSim.Cards
 
         private static void GainACard(Player p, Supply supply)
         {
-            CardIdentifier gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, Card.CardType.Any, supply);
+            CardIdentifier gain = p.Strategy.ChooseCardToGainFromSupply(p.GetFacade(), 0, 5, Card.CardType.Any, supply.GetFacade());
             if (null != gain)
             {
                 p.GainCardFromSupply(gain);

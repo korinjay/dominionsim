@@ -164,7 +164,7 @@ namespace DominionSim
         {
             // Tell the victim's strategy to attack, and then tell the victim's player what happened so
             // it can appropriately 
-            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply, attacker.Name, CardId);
+            var attackReactionCards = victim.Strategy.ChooseReactionsToAttack(victim.GetFacade(), supply.GetFacade(), attacker.Name, CardId);
             victim.AttackedBy(attacker.Name, CardId, attackReactionCards);
 
             // Double check that the Strategy isn't lying.

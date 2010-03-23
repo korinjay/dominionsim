@@ -22,7 +22,7 @@ namespace DominionSim.Strategy
         {
         }
 
-        public override IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public override IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, SupplyFacade s)
         {
             var toTrash = new VirtualCardList();
 

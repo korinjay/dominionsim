@@ -49,7 +49,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum cards to trash</param>
         /// <param name="max">Maximum cards to trash</param>
         /// <returns>Set of cards out of hand to trash</returns>
-        public virtual IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public virtual IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, SupplyFacade s)
         {
             return p.GetHand().Where( c => (c.Logic.Type & type) != 0)
                               .OrderBy(c => c.Logic.Cost).Take(min);
@@ -82,7 +82,7 @@ namespace DominionSim.Strategy
         /// <param name="max"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        public virtual IEnumerable<VirtualCard> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s)
+        public virtual IEnumerable<VirtualCard> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, SupplyFacade s)
         {
             var orderedCards = p.GetHand().Where( c => (c.Logic.Type & type) != 0 )
                                           .OrderBy( c => (c.Logic.Cost) )
@@ -124,12 +124,12 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>The kind of card you wish to gain</returns>
-        public CardIdentifier ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s)
+        public CardIdentifier ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, SupplyFacade s)
         {
-            return s.CardSupply                                             // From the supply, find
+            return s.GetCardSupply()                                             // From the supply, find
                     .Where((k) => (k.Key.Logic.Type & type) != 0) // cards of the correct type
                     .Where((k) => k.Key.Logic.Cost <= maxCost)    // that are less than the max cost
-                    .Where((k) => s.CardSupply[k.Key].Count > 0)            // there are actually cards left
+                    .Where((k) => s.GetCardSupply()[k.Key].Count > 0)            // there are actually cards left
                     .OrderByDescending((k) => k.Key.Logic.Cost)   // in order from most expensive to least
                     .Select((k) => k.Key)                                   // return just their names
                     .ElementAt(0);                                          // and pick the first one
@@ -170,7 +170,7 @@ namespace DominionSim.Strategy
         /// <param name="attackerName">Name of the attacking player</param>
         /// <param name="cardId">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
-        public IEnumerable<VirtualCard> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId)
+        public IEnumerable<VirtualCard> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, SupplyFacade supply, string attackerName, CardIdentifier cardId)
         {
             // Naive implementation - just react with everything
             return victimPlayerFacade.GetHand().Where(c => ((c.Logic.Type & Card.CardType.Reaction) != 0));
