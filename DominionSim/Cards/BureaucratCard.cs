@@ -39,7 +39,7 @@ namespace DominionSim.Cards
                 {
                     if (opponent.Hand.Where(vc => (vc.Logic.Type & CardType.Victory) != 0).Count() > 0)
                     {
-                        var card = opponent.Strategy.ChooseCardToReveal(opponent.GetFacade(), supply, CardType.Victory, CardList.Bureaucrat);
+                        var card = opponent.Strategy.ChooseCardToReveal(opponent.GetFacade(), supply.GetFacade(), CardType.Victory, CardList.Bureaucrat);
                         if (card == null || (card.Logic.Type & CardType.Victory) == 0 || !opponent.Hand.Contains(card))
                         {
                             throw new Exception("Strategy for " + opponent.Name + " did not reveal a Victory Card to put back on his Deck.");

@@ -39,7 +39,7 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="s">Supply</param>
-        public override void TurnAction(PlayerFacade p, Supply s)
+        public override void TurnAction(PlayerFacade p, SupplyFacade s)
         {
             if (mCardToBuy != null)
             {
@@ -58,7 +58,7 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="s">Supply</param>
-        public override void TurnBuy(PlayerFacade p, Supply s)
+        public override void TurnBuy(PlayerFacade p, SupplyFacade s)
         {
             // Always buy provinces
             if (p.GetMoneys() >= 8)

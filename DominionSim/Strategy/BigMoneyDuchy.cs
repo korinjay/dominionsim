@@ -8,7 +8,7 @@ namespace DominionSim.Strategy
     {
         protected const int PROVINCE_THRESHOLD = 4;
 
-        public override void TurnBuy(PlayerFacade p, Supply s)
+        public override void TurnBuy(PlayerFacade p, SupplyFacade s)
         {
             // Always buy provinces
             if (p.GetMoneys() >= 8)
