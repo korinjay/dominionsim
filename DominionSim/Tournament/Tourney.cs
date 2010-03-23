@@ -219,9 +219,9 @@ namespace DominionSim.Tournament
                     }
                 }
 
+                var oldGames = games;
                 games = new List<Matchup>();
 
-                // Fill games based on points
                 temp = new List<Player>();
                 temp.AddRange(players);
                 var ordered = temp.OrderBy((p) => (mStats[p.Name].GetTimesHighestPercent()));
@@ -236,6 +236,12 @@ namespace DominionSim.Tournament
                     Console.WriteLine(line);
                 }
 
+                // Don't print a stupid round label for the next round
+                if (round >= NumRounds)
+                {
+                    break;
+                }
+                // Fill games based on points
                 Console.WriteLine("=== Round " + (round + 2) + " ===");
 
                 // Randomly assign byes to players
@@ -248,19 +254,39 @@ namespace DominionSim.Tournament
                     ordered = ordered.Where(p => p != bye).OrderBy(p => mStats[p.Name].GetTimesHighestPercent());
                 }
 
+                ordered = ordered.OrderByDescending(p => mStats[p.Name].GetTimesHighestPercent());
+
                 // While there are players left to be assigned...
                 while (ordered.Count() >= numPlayers)
                 {
                     Matchup m = new Matchup();
 
-                    // While this matchup is not yet full
-                    // Add players from lowest score to highest
-                    // Thus the highest players will get a bye
                     while (m.Count < numPlayers)
                     {
-                        Player player = ordered.ElementAt(0);
-                        ordered = ordered.Skip(1).OrderBy((p) => (mStats[p.Name].GetTimesHighestPercent()));
-                        m.Add(player);
+                        Player nextPlayer = ordered.ElementAt(0);
+                        // Go through the list looking for someone who is allowed in this match
+                        for (int i = 0; i < ordered.Count(); i++)
+                        {
+                            Player player = ordered.ElementAt(i);
+
+                            // Get their previous matchup
+                            IEnumerable<Matchup> oldMatchups = oldGames.Where(matchup => matchup.Contains(player));
+                            Matchup oldMatchup = oldMatchups.Count() > 0 ? oldMatchups.First() : new Matchup();
+
+                            IEnumerable<Player> overlap = m.Intersect(oldMatchup);
+                            if (overlap.Count() < (numPlayers / 2))
+                            {
+                                nextPlayer = player;
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Too many players in this game that just played with "+player.Name+": "+overlap.Aggregate("", (s,p) => s + p.Name+" "));
+                            }
+                        }
+
+                        ordered = ordered.Where(p => p != nextPlayer).OrderByDescending((p) => (mStats[p.Name].GetTimesHighestPercent()));
+                        m.Add(nextPlayer);
                     }
 
                     Console.WriteLine("  Game " + (games.Count + 1) + " : " + m.Aggregate("", (s, p) => s + p.Name + " "));
