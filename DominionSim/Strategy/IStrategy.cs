@@ -35,7 +35,7 @@ namespace DominionSim.Strategy
         /// <param name="min">Minimum number of cards you must trash</param>
         /// <param name="max">Maximum number of cards you may trash</param>
         /// <returns>An enumeration of cards in hand to trash</returns>
-        IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
+        IEnumerable<VirtualCard> ChooseCardsToTrash(PlayerFacade p, int min, int max, Card.CardType type, SupplyFacade s);
 
         /// <summary>
         /// An Action (perhaps one you played) is asking you to trash some of your victim's cards!
@@ -58,7 +58,7 @@ namespace DominionSim.Strategy
         /// <param name="max">Maximum number of cards you may discard</param>
         /// <param name="s">An enumeration of cards in hand to discard</param>
         /// <returns></returns>
-        IEnumerable<VirtualCard> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, Supply s);
+        IEnumerable<VirtualCard> ChooseCardsToDiscard(PlayerFacade p, int min, int max, Card.CardType type, SupplyFacade s);
 
         /// <summary>
         /// An Action (perhaps one you played) is letting you make an victim discard some cards!
@@ -79,7 +79,7 @@ namespace DominionSim.Strategy
         /// <param name="minCost">Minimum cost of the card</param>
         /// <param name="maxCost">Maximum cost of the card</param>
         /// <returns>Return the kind of card you wish to gain</returns>
-        CardIdentifier ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, Supply s);
+        CardIdentifier ChooseCardToGainFromSupply(PlayerFacade p, int minCost, int maxCost, Card.CardType type, SupplyFacade s);
 
         /// <summary>
         /// An Action (perhaps one you played) is allowing you to
@@ -101,7 +101,7 @@ namespace DominionSim.Strategy
         /// <param name="attackerName">Name of the attacking player</param>
         /// <param name="cardId">Name of the attacking card</param>
         /// <returns>Return the list of cards you wish to react with</returns>
-        IEnumerable<VirtualCard> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, Supply supply, string attackerName, CardIdentifier cardId);
+        IEnumerable<VirtualCard> ChooseReactionsToAttack(PlayerFacade victimPlayerFacade, SupplyFacade supply, string attackerName, CardIdentifier cardId);
 
         /// <summary>
         /// You have the opportunity to either draw a card or set it aside (i.e. from Library)

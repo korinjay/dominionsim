@@ -12,7 +12,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            var cards = p.Strategy.ChooseCardsToDiscard(p.GetFacade(), 0, 4, Card.CardType.Any, supply);
+            var cards = p.Strategy.ChooseCardsToDiscard(p.GetFacade(), 0, 4, Card.CardType.Any, supply.GetFacade());
 
             foreach (var card in cards)
             {
