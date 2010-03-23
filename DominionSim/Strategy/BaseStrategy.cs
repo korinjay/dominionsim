@@ -14,7 +14,7 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p"></param>
         /// <param name="s"></param>
-        public virtual void Init(PlayerFacade p, Supply s)
+        public virtual void Init(PlayerFacade p, SupplyFacade s)
         {
             // Eh, do nothing.
         }
@@ -25,7 +25,7 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="s">Strategy</param>
-        public virtual void TurnAction(PlayerFacade p, Supply s)
+        public virtual void TurnAction(PlayerFacade p, SupplyFacade s)
         {
             p.PlayActionCard(null);
         }
@@ -36,7 +36,7 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p">Player</param>
         /// <param name="s">Strategy</param>
-        public virtual void TurnBuy(PlayerFacade p, Supply s)
+        public virtual void TurnBuy(PlayerFacade p, SupplyFacade s)
         {
             p.BuyCard(null);
         }
@@ -203,7 +203,7 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
-        public virtual VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
+        public virtual VirtualCard ChooseCardToPlayTwice(PlayerFacade p, SupplyFacade supply)
         {
             return null;
         }
@@ -217,7 +217,7 @@ namespace DominionSim.Strategy
         /// <param name="cardType">Type of card you need to reveal</param>
         /// <param name="becauseOf">Why you are revealing it</param>
         /// <returns>The card</returns>
-        public virtual VirtualCard ChooseCardToReveal(PlayerFacade p, Supply supply, Card.CardType cardType, CardIdentifier becauseOf)
+        public virtual VirtualCard ChooseCardToReveal(PlayerFacade p, SupplyFacade supply, Card.CardType cardType, CardIdentifier becauseOf)
         {
             return p.GetHand().First(vi => (vi.Logic.Type & cardType) != 0);
         }
@@ -228,7 +228,7 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="s">The supply</param>
         /// <returns>TRUE to put your deck into discard, forcing a reshuffle</returns>
-        public virtual bool ChooseToDiscardDrawPile(PlayerFacade p, Supply supply)
+        public virtual bool ChooseToDiscardDrawPile(PlayerFacade p, SupplyFacade supply)
         {
             return false;
         }

@@ -90,7 +90,7 @@ namespace DominionSim
 
         public void InitializeStrategy(Supply s)
         {
-            Strategy.Init(mFacade, s);
+            Strategy.Init(mFacade, s.GetFacade());
         }
 
         public void StartNewGame()
@@ -140,7 +140,7 @@ namespace DominionSim
             MoveCards(DurationPile, PlayPile);
 
             Log("  Choosing an action...");
-            Strategy.TurnAction(mFacade, supply);
+            Strategy.TurnAction(mFacade, supply.GetFacade());
 
             // Cash in Treasure
             foreach (var card in Hand)
@@ -154,7 +154,7 @@ namespace DominionSim
             Log("  I have "+Moneys+" moneys and " + Buys + " buys.");
 
             Log("  Choosing Buys...");
-            Strategy.TurnBuy(mFacade, supply);
+            Strategy.TurnBuy(mFacade, supply.GetFacade());
 
             Cleanup();
             mTurn++;

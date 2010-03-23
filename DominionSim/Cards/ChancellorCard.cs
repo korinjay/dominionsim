@@ -16,7 +16,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            if(p.Strategy.ChooseToDiscardDrawPile(p.GetFacade(), supply))
+            if(p.Strategy.ChooseToDiscardDrawPile(p.GetFacade(), supply.GetFacade()))
             {
                 // Okay, move his draw pile into the discard.
                 p.MoveCards(p.DrawPile, p.DiscardPile);

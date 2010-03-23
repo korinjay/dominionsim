@@ -4,7 +4,7 @@ namespace DominionSim.Strategy
     class BigMoney : BaseStrategy
     {
 
-        public override void TurnBuy(PlayerFacade p, Supply s)
+        public override void TurnBuy(PlayerFacade p, SupplyFacade s)
         {
             if (p.GetMoneys() >= 8)
             {

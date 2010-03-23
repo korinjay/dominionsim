@@ -14,6 +14,8 @@ namespace DominionSim
             EndViaSupply
         }
 
+        private Strategy.SupplyFacade mFacade;
+
         public Dictionary<CardIdentifier, VirtualCardList> CardSupply { get; set; }
 
         private int mNumPlayers;
@@ -21,6 +23,12 @@ namespace DominionSim
         public Supply()
         {
             CardSupply = new Dictionary<CardIdentifier, VirtualCardList>();
+            mFacade = new Strategy.SupplyFacade(this);
+        }
+
+        public Strategy.SupplyFacade GetFacade()
+        {
+            return mFacade;
         }
 
         private void SetupTreasureAndVictory(int numPlayers)

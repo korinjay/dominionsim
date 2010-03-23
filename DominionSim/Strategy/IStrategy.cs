@@ -11,21 +11,21 @@ namespace DominionSim.Strategy
         /// </summary>
         /// <param name="p"></param>
         /// <param name="s"></param>
-        void Init(PlayerFacade p, Supply s);
+        void Init(PlayerFacade p, SupplyFacade s);
 
         /// <summary>
         /// Take the "action" phase of this Player's turn.  Play any and all Action cards you wish to play.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
         /// <param name="s">The Supply for this game</param>
-        void TurnAction(PlayerFacade p, Supply s);
+        void TurnAction(PlayerFacade p, SupplyFacade s);
 
         /// <summary>
         /// Take the "buy" phase of this Player's turn.  Buy as many cards as you wish to buy.
         /// </summary>
         /// <param name="p">The Player who is using this Strategy</param>
         /// <param name="s">The Supply for this game</param>
-        void TurnBuy(PlayerFacade p, Supply s);
+        void TurnBuy(PlayerFacade p, SupplyFacade s);
 
         /// <summary>
         /// An Action (perhaps one you played) is forcing you to trash some cards!
@@ -117,7 +117,7 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
-        VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply s);
+        VirtualCard ChooseCardToPlayTwice(PlayerFacade p, SupplyFacade s);
 
         /// <summary>
         /// You have to Reveal a Card - which would you like?
@@ -127,7 +127,7 @@ namespace DominionSim.Strategy
         /// <param name="cardType">Type of card you need to reveal</param>
         /// <param name="becauseOf">Why you are revealing it</param>
         /// <returns>The card</returns>
-        VirtualCard ChooseCardToReveal(PlayerFacade p, Supply supply, Card.CardType cardType, CardIdentifier becauseOf);
+        VirtualCard ChooseCardToReveal(PlayerFacade p, SupplyFacade supply, Card.CardType cardType, CardIdentifier becauseOf);
 
         /// <summary>
         /// You have the opportunity to put your deck in your discard pile if you wish
@@ -135,6 +135,6 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="s">The supply</param>
         /// <returns>TRUE to put your deck into discard, forcing a reshuffle</returns>
-        bool ChooseToDiscardDrawPile(PlayerFacade p, Supply s);
+        bool ChooseToDiscardDrawPile(PlayerFacade p, SupplyFacade s);
     }
 }

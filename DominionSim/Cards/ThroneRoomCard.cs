@@ -18,7 +18,7 @@ namespace DominionSim.Cards
         {
             base.ExecuteCard(p, supply);
 
-            var playThisTwice = p.Strategy.ChooseCardToPlayTwice(p.GetFacade(), supply);
+            var playThisTwice = p.Strategy.ChooseCardToPlayTwice(p.GetFacade(), supply.GetFacade());
             if (null != playThisTwice)
             {
                 if (!p.Hand.Contains(playThisTwice))

@@ -16,7 +16,7 @@ namespace DominionSim.Strategy
             mRandomizer = new System.Random();
         }
         
-        public override void TurnAction(PlayerFacade p, Supply s)
+        public override void TurnAction(PlayerFacade p, SupplyFacade s)
         {
             while (p.GetActions() > 0)
             {
@@ -36,7 +36,7 @@ namespace DominionSim.Strategy
 
         }
 
-        public override void TurnBuy(PlayerFacade p, Supply s)
+        public override void TurnBuy(PlayerFacade p, SupplyFacade s)
         {
             int moneys = p.GetMoneys();
 
@@ -60,7 +60,7 @@ namespace DominionSim.Strategy
         /// <param name="p">Player</param>
         /// <param name="supply">The supply</param>
         /// <returns>Card from your hand to play twice</returns>
-        public override VirtualCard ChooseCardToPlayTwice(PlayerFacade p, Supply supply)
+        public override VirtualCard ChooseCardToPlayTwice(PlayerFacade p, SupplyFacade supply)
         {
             var actionCards = Utility.FilterCardsByType(p.GetHand(), Card.CardType.Action);
             var numCards = actionCards.Count();
