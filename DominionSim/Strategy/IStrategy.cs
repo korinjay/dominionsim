@@ -136,5 +136,12 @@ namespace DominionSim.Strategy
         /// <param name="s">The supply</param>
         /// <returns>TRUE to put your deck into discard, forcing a reshuffle</returns>
         bool ChooseToDiscardDrawPile(PlayerFacade p, SupplyFacade s);
+
+        /// <summary>
+        /// Should this strategy be used in a tourney of all Strategies?  
+        /// This is an easy way to filter out the ones that aren't worth the simulation time
+        /// </summary>
+        /// <returns></returns>
+        bool ValidForTourney();
     }
 }

@@ -13,6 +13,7 @@ namespace DominionSim.Strategy
     {
         public Chapel2() : base(2) {}
         public static string GetDisplayName() { return "Chapel - Buy 2"; }
+        public override bool ValidForTourney() { return false; }
     }
 
 

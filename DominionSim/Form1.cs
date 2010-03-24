@@ -155,7 +155,11 @@ namespace DominionSim
                                          .Select( aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type );
 
             Tourney t = new Tourney(aisToUse);
-            int numMatchups = t.Run();
+            int minPlayers = int.Parse(txtMinPlayers.Text);
+            int maxPlayers = int.Parse(txtMaxPlayers.Text);
+            int gamesPerMatch = int.Parse(txtGamesPerMatch.Text);
+
+            int numMatchups = t.Run(minPlayers, maxPlayers, gamesPerMatch);
             outputBox.Text += numMatchups + " different matchups..." + Environment.NewLine;
 
             var stats = t.GetStats();
@@ -179,10 +183,17 @@ namespace DominionSim
         {
             outputBox.Text = "";
             // Get a list of all the AIs to use
-            var aisToUse = mTypes.Select(sth => sth.Type);
+            var aisToUse = mTypes.Select(sth => sth.Type)
+                                 .Where(type => (Activator.CreateInstance(type) as Strategy.IStrategy).ValidForTourney() == true);
 
             Tourney t = new Tourney(aisToUse);
-            int numMatchups = t.Run();
+
+            int minPlayers = int.Parse(txtMinPlayers.Text);
+            int maxPlayers = int.Parse(txtMaxPlayers.Text);
+            int gamesPerMatch = int.Parse(txtGamesPerMatch.Text);
+
+            int numMatchups = t.Run(minPlayers, maxPlayers, gamesPerMatch);
+
             outputBox.Text += numMatchups + " different matchups..." + Environment.NewLine;
 
             var stats = t.GetStats();

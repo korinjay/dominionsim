@@ -40,5 +40,10 @@ namespace DominionSim.Strategy
 
             p.BuyCard(null);
         }
+
+        public override bool ValidForTourney()
+        {
+            return true;
+        }
     }
 }

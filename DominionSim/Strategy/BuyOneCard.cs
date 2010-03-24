@@ -112,5 +112,11 @@ namespace DominionSim.Strategy
             }
             return false;
         }
+
+        public override bool ValidForTourney()
+        {
+            return true;
+        }
+
     }
 }

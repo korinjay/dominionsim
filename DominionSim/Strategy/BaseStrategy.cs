@@ -233,6 +233,14 @@ namespace DominionSim.Strategy
             return false;
         }
 
+        /// <summary>
+        /// Default to not using strategies in a tourney
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool ValidForTourney()
+        {
+            return false;
+        }
         #endregion
     }
 }
