@@ -45,21 +45,10 @@ namespace DominionSim.Tournament
 
         Simulator mSim;
 
-        List<Matchup> mSchedule;
         Dictionary<string, PlayerStats> mStats;
 
-        /// <summary>
-        /// Create a Tournament with a list of Strategy types and the # of players
-        /// </summary>
-        /// <param name="strategies">Strategy types</param>
-        public Tourney(IEnumerable<Type> strategies)
-        {
-            // Create ContenderHolders from the passed-in Strategy Types
-            mContenders = strategies.Distinct()
-                                    .Select(t => new Contender(t.Name, Activator.CreateInstance(t) as Strategy.IStrategy));
-        }
+        Contender mFeatured = null;
 
-  
         /// <summary>
         /// Create a Tournament with a list of Contenders and the # of players
         /// </summary>
@@ -75,6 +64,11 @@ namespace DominionSim.Tournament
             return mStats;
         }
 
+        public void Feature(Contender c)
+        {
+            mFeatured = c;
+        }
+
         public int Run(int minPlayers, int maxPlayers, int gamesPerMatch)
         {
             return RunAllMatchups(minPlayers, maxPlayers, gamesPerMatch);
@@ -86,6 +80,10 @@ namespace DominionSim.Tournament
             players.AddRange(mContenders.Select(sh => new Player(sh.Name, sh.Strategy)));
 
             int totalGames = 0;
+            if (mFeatured != null)
+            {
+                Console.WriteLine("*** FEATURING "+mFeatured.Name+" ***");
+            }
 
             for (int gameSize = min; gameSize <= max; gameSize++)
             {
@@ -114,12 +112,16 @@ namespace DominionSim.Tournament
                         mSim.Players.Add(p);
                     }
 
-                    //Console.WriteLine("  Matchup " + (currMatchup + 1) + " : " + m.Aggregate("", (s, p) => s + p.Name + " "));
+                    if (mFeatured != null && m.Select(p => p.Name).Contains(mFeatured.Name))
+                    {
+                        Console.WriteLine("  Matchup " + (currMatchup + 1) + " : " + m.Aggregate("", (s, p) => s + p.Name + " "));
+                    }
                     // Run the game
                     mSim.PlayNGames(gamesPerMatch, false);
 
+                    var orderedStats = mSim.Players.OrderByDescending(p => mSim.Wins[p] + mSim.Ties[p] );
                     // Record ending stats for each player
-                    foreach (var player in mSim.Players)
+                    foreach (var player in orderedStats)
                     {
                         string playerName = player.Name;
                         int numWins = mSim.Wins.ContainsKey(player) ? mSim.Wins[player] : 0;
@@ -133,6 +135,13 @@ namespace DominionSim.Tournament
                         mStats[player.Name].Wins += numWins;
                         mStats[player.Name].Ties += numTies;
                         mStats[player.Name].Games += gamesPerMatch;
+
+                        if (mFeatured != null && m.Select(p => p.Name).Contains(mFeatured.Name))
+                        {
+                            string line = String.Format("  {0,15:s}: {1,6} {2,6} {3,6} {4,9:#.##}%", playerName, numWins, numTies, gamesPerMatch, 100.0f * (numWins +numTies) / gamesPerMatch);
+                            Console.WriteLine(line);
+                        }
+
                     }
 
                     currMatchup++;
@@ -141,6 +150,7 @@ namespace DominionSim.Tournament
 
                 var ordered = players.OrderByDescending((p) => (mStats[p.Name].GetTimesHighestPercent()));
 
+                Console.WriteLine();
                 Console.WriteLine(String.Format("  {0,15:s}  {1,6} {2,6} {3,6} {4,10:#.##}", "Strategy", "Wins", "Ties", "Games", "Highest%"));
                 Console.WriteLine(String.Format("  {0,15:s}  {1,6} {2,6} {3,6} {4,10:#.##}", "--------", "----", "----", "-----", "--------"));
                 foreach (Player p in ordered)

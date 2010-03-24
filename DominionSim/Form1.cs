@@ -152,7 +152,8 @@ namespace DominionSim
             outputBox.Text = "";
             // Get a list of all the AIs to use
             var aisToUse = AIUIComponents.Where(aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type != null)
-                                         .Select( aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type );
+                                         .Select( aiui => (aiui.AISelection.SelectedItem as StrategyTypeHolder).Type )
+                                         .Select(type => new Contender(type.Name, Activator.CreateInstance(type) as Strategy.IStrategy));
 
             Tourney t = new Tourney(aisToUse);
             int minPlayers = int.Parse(txtMinPlayers.Text);
@@ -184,9 +185,11 @@ namespace DominionSim
             outputBox.Text = "";
             // Get a list of all the AIs to use
             var aisToUse = mTypes.Select(sth => sth.Type)
-                                 .Where(type => (Activator.CreateInstance(type) as Strategy.IStrategy).ValidForTourney() == true);
+                                 .Where(type => (Activator.CreateInstance(type) as Strategy.IStrategy).ValidForTourney() == true)
+                                 .Select(type => new Contender(type.Name, Activator.CreateInstance(type) as Strategy.IStrategy));
 
             Tourney t = new Tourney(aisToUse);
+            t.Feature(aisToUse.First(con => con.Strategy is Strategy.Smithy1));
 
             int minPlayers = int.Parse(txtMinPlayers.Text);
             int maxPlayers = int.Parse(txtMaxPlayers.Text);
