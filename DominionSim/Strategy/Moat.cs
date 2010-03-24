@@ -10,10 +10,12 @@ namespace DominionSim.Strategy
     {
         public Moat2() : base(CardList.Moat, 2) { }
         public static string GetDisplayName() { return "Moat - Buy 2"; }
+        public override bool ValidForTourney() { return false; }
     }
     class Moat3 : BuyOneCard
     {
         public Moat3() : base(CardList.Moat, 3) { }
         public static string GetDisplayName() { return "Moat - Buy 3"; }
+        public override bool ValidForTourney() { return false; }
     }
 }

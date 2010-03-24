@@ -49,6 +49,12 @@
             this.tourneyChosenButton = new System.Windows.Forms.Button();
             this.tourneyAllButton = new System.Windows.Forms.Button();
             this.randomizeButton = new System.Windows.Forms.Button();
+            this.txtGamesPerMatch = new System.Windows.Forms.TextBox();
+            this.txtMinPlayers = new System.Windows.Forms.TextBox();
+            this.txtMaxPlayers = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // playerCombo0
@@ -65,7 +71,7 @@
             this.playButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.playButton.Location = new System.Drawing.Point(12, 134);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(327, 52);
+            this.playButton.Size = new System.Drawing.Size(219, 52);
             this.playButton.TabIndex = 6;
             this.playButton.Text = "Play!";
             this.playButton.UseVisualStyleBackColor = true;
@@ -77,7 +83,7 @@
             this.playerCombo1.FormattingEnabled = true;
             this.playerCombo1.Location = new System.Drawing.Point(258, 12);
             this.playerCombo1.Name = "playerCombo1";
-            this.playerCombo1.Size = new System.Drawing.Size(192, 21);
+            this.playerCombo1.Size = new System.Drawing.Size(201, 21);
             this.playerCombo1.TabIndex = 1;
             // 
             // playerCombo2
@@ -95,7 +101,7 @@
             this.playerCombo3.FormattingEnabled = true;
             this.playerCombo3.Location = new System.Drawing.Point(258, 39);
             this.playerCombo3.Name = "playerCombo3";
-            this.playerCombo3.Size = new System.Drawing.Size(192, 21);
+            this.playerCombo3.Size = new System.Drawing.Size(201, 21);
             this.playerCombo3.TabIndex = 3;
             // 
             // playerCombo4
@@ -113,7 +119,7 @@
             this.playerCombo5.FormattingEnabled = true;
             this.playerCombo5.Location = new System.Drawing.Point(258, 66);
             this.playerCombo5.Name = "playerCombo5";
-            this.playerCombo5.Size = new System.Drawing.Size(192, 21);
+            this.playerCombo5.Size = new System.Drawing.Size(201, 21);
             this.playerCombo5.TabIndex = 5;
             // 
             // outputBox
@@ -126,7 +132,7 @@
             this.outputBox.Multiline = true;
             this.outputBox.Name = "outputBox";
             this.outputBox.ReadOnly = true;
-            this.outputBox.Size = new System.Drawing.Size(437, 210);
+            this.outputBox.Size = new System.Drawing.Size(447, 210);
             this.outputBox.TabIndex = 7;
             this.outputBox.WordWrap = false;
             // 
@@ -219,12 +225,12 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(12, 408);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(437, 23);
+            this.progressBar.Size = new System.Drawing.Size(447, 23);
             this.progressBar.TabIndex = 18;
             // 
             // tourneyChosenButton
             // 
-            this.tourneyChosenButton.Location = new System.Drawing.Point(346, 134);
+            this.tourneyChosenButton.Location = new System.Drawing.Point(237, 163);
             this.tourneyChosenButton.Name = "tourneyChosenButton";
             this.tourneyChosenButton.Size = new System.Drawing.Size(103, 23);
             this.tourneyChosenButton.TabIndex = 19;
@@ -234,9 +240,9 @@
             // 
             // tourneyAllButton
             // 
-            this.tourneyAllButton.Location = new System.Drawing.Point(345, 163);
+            this.tourneyAllButton.Location = new System.Drawing.Point(346, 163);
             this.tourneyAllButton.Name = "tourneyAllButton";
-            this.tourneyAllButton.Size = new System.Drawing.Size(103, 23);
+            this.tourneyAllButton.Size = new System.Drawing.Size(113, 23);
             this.tourneyAllButton.TabIndex = 20;
             this.tourneyAllButton.Text = "Tourney All";
             this.tourneyAllButton.UseVisualStyleBackColor = true;
@@ -245,19 +251,76 @@
             // randomizeButton
             // 
             this.randomizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.randomizeButton.Location = new System.Drawing.Point(389, 105);
+            this.randomizeButton.Location = new System.Drawing.Point(389, 93);
             this.randomizeButton.Name = "randomizeButton";
-            this.randomizeButton.Size = new System.Drawing.Size(61, 23);
+            this.randomizeButton.Size = new System.Drawing.Size(70, 23);
             this.randomizeButton.TabIndex = 21;
             this.randomizeButton.Text = "Randomize";
             this.randomizeButton.UseVisualStyleBackColor = true;
             this.randomizeButton.Click += new System.EventHandler(this.randomizeButton_Click);
             // 
+            // txtGamesPerMatch
+            // 
+            this.txtGamesPerMatch.Location = new System.Drawing.Point(332, 137);
+            this.txtGamesPerMatch.Name = "txtGamesPerMatch";
+            this.txtGamesPerMatch.Size = new System.Drawing.Size(42, 20);
+            this.txtGamesPerMatch.TabIndex = 22;
+            this.txtGamesPerMatch.Text = "50";
+            // 
+            // txtMinPlayers
+            // 
+            this.txtMinPlayers.Location = new System.Drawing.Point(240, 137);
+            this.txtMinPlayers.Name = "txtMinPlayers";
+            this.txtMinPlayers.Size = new System.Drawing.Size(20, 20);
+            this.txtMinPlayers.TabIndex = 23;
+            this.txtMinPlayers.Text = "2";
+            // 
+            // txtMaxPlayers
+            // 
+            this.txtMaxPlayers.Location = new System.Drawing.Point(272, 137);
+            this.txtMaxPlayers.Name = "txtMaxPlayers";
+            this.txtMaxPlayers.Size = new System.Drawing.Size(18, 20);
+            this.txtMaxPlayers.TabIndex = 24;
+            this.txtMaxPlayers.Text = "6";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(258, 140);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(16, 13);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "to";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(290, 140);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "players,";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(371, 140);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "games per match";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 443);
+            this.ClientSize = new System.Drawing.Size(472, 443);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtMaxPlayers);
+            this.Controls.Add(this.txtMinPlayers);
+            this.Controls.Add(this.txtGamesPerMatch);
             this.Controls.Add(this.randomizeButton);
             this.Controls.Add(this.tourneyAllButton);
             this.Controls.Add(this.tourneyChosenButton);
@@ -309,6 +372,12 @@
         private System.Windows.Forms.Button tourneyChosenButton;
         private System.Windows.Forms.Button tourneyAllButton;
         private System.Windows.Forms.Button randomizeButton;
+        private System.Windows.Forms.TextBox txtGamesPerMatch;
+        private System.Windows.Forms.TextBox txtMinPlayers;
+        private System.Windows.Forms.TextBox txtMaxPlayers;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
 
