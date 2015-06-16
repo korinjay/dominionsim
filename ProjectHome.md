@@ -1,0 +1,1 @@
+A basic simulator to test strategies for the card game Dominion.
